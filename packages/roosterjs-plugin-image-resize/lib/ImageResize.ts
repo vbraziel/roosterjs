@@ -110,6 +110,7 @@ export default class ImageResize implements EditorPlugin {
     showResizeHandle(img: HTMLImageElement) {
         this.resizeDiv = this.createResizeDiv(img);
         img.contentEditable = 'false';
+        img.addEventListener('dragstart', this.imageDragStart, true);
         this.editor.select(this.resizeDiv, PositionType.After);
     }
 
@@ -139,6 +140,11 @@ export default class ImageResize implements EditorPlugin {
             this.removeResizeDiv(this.resizeDiv);
             this.resizeDiv = null;
         }
+    }
+
+    private imageDragStart = (e: DragEvent) => {
+        this.hideResizeHandle(true);
+        e.target.removeEventListener('dragstart', this.imageDragStart, true);
     }
 
     private startResize = (e: MouseEvent) => {

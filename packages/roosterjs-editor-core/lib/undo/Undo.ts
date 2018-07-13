@@ -2,6 +2,7 @@ import UndoSnapshots, { UndoSnapshotsService } from './UndoSnapshots';
 import { ChangeSource, PluginDomEvent, PluginEvent, PluginEventType } from 'roosterjs-editor-types';
 import Editor from '../editor/Editor';
 import UndoService from '../editor/UndoService';
+import { getTagOfNode } from 'roosterjs-editor-dom';
 
 const KEY_BACKSPACE = 8;
 const KEY_DELETE = 46;
@@ -38,7 +39,7 @@ export default class Undo implements UndoService {
      */
     public initialize(editor: Editor): void {
         this.editor = editor;
-        this.onDropDisposer = this.editor.addDomEventHandler('drop', this.onNativeEvent);
+        this.onDropDisposer = this.editor.addDomEventHandler('drop', this.onDropEvent);
         this.onCutDisposer = this.editor.addDomEventHandler('cut', this.onNativeEvent);
 
         // Add an initial snapshot if snapshotsManager isn't created yet
@@ -148,7 +149,6 @@ export default class Undo implements UndoService {
         }
         return this.undoSnapshots;
     }
-
     private restoreSnapshot(delta: number) {
         let snapshot = this.getSnapshotsManager().move(delta);
 
@@ -238,5 +238,11 @@ export default class Undo implements UndoService {
                 e.type == 'cut' ? ChangeSource.Cut : ChangeSource.Drop
             )
         );
+    };
+
+    private onDropEvent = (e: UIEvent) => {
+        // let native drop event finish before adding undo snapshot otherwise
+        // drag move images will create duplicate images
+        requestAnimationFrame(() => this.onNativeEvent(e));
     };
 }
