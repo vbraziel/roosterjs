@@ -1,8 +1,7 @@
 import Position from '../selection/Position';
-import getTagOfNode from '../utils/getTagOfNode';
+import applyTextStyle from '../utils/applyTextStyle';
 import isEditorPointAfter from '../utils/isEditorPointAfter';
 import isNodeAfter from '../utils/isNodeAfter';
-import wrap from '../utils/wrap';
 import {
     BlockElement,
     EditorPoint,
@@ -10,8 +9,6 @@ import {
     NodeType,
     PositionType,
 } from 'roosterjs-editor-types';
-import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeafSibling';
-import { splitBalancedNodeRange } from '../utils/splitParentNode';
 
 /**
  * This presents an inline element that can be reprented by a single html node.
@@ -90,79 +87,14 @@ class NodeInlineElement implements InlineElement {
     /**
      * Apply inline style to an inline element
      */
-    public applyStyle(
-        styler: (element: HTMLElement) => any,
-        fromPoint?: EditorPoint,
-        toPoint?: EditorPoint
-    ): void {
-        let from = fromPoint
-            ? Position.FromEditorPoint(fromPoint)
-            : new Position(this.containerNode, PositionType.Begin).normalize();
-        let to = toPoint
-            ? Position.FromEditorPoint(toPoint)
-            : new Position(this.containerNode, PositionType.End).normalize();
-        if (from.isAtEnd) {
-            let nextNode = getNextLeafSibling(this.containerNode, from.node);
-            from = nextNode ? new Position(nextNode, PositionType.Begin) : null;
-        }
-        if (to.offset == 0) {
-            let previousNode = getPreviousLeafSibling(this.containerNode, to.node);
-            to = previousNode ? new Position(previousNode, PositionType.End) : null;
-        }
-
-        let formatNodes: Node[] = [];
-
-        while (from && to && to.isAfter(from)) {
-            let formatNode = from.node;
-            let parentTag = getTagOfNode(formatNode.parentNode);
-
-            if (formatNode.nodeType != NodeType.Text || ['TR', 'TABLE'].indexOf(parentTag) >= 0) {
-                continue;
-            }
-
-            // The code below modifies DOM. Need to get the next sibling first otherwise you won't be able to reliably get a good next sibling node
-            let nextNode = getNextLeafSibling(this.containerNode, formatNode);
-
-            if (formatNode == to.node && !to.isAtEnd) {
-                formatNode = splitTextNode(formatNode, to.offset, true /*returnFirstPart*/);
-            }
-
-            if (from.offset > 0) {
-                formatNode = splitTextNode(formatNode, from.offset, false /*returnFirstPart*/);
-            }
-
-            formatNodes.push(formatNode);
-            from = nextNode && new Position(nextNode, PositionType.Begin);
-        }
-
-        if (formatNodes.length > 0) {
-            if (formatNodes.every(node => node.parentNode == formatNodes[0].parentNode)) {
-                let newNode = formatNodes.shift();
-                formatNodes.forEach(node => {
-                    newNode.nodeValue += node.nodeValue;
-                    node.parentNode.removeChild(node);
-                });
-                formatNodes = [newNode];
-            }
-
-            formatNodes.forEach(node =>
-                styler(
-                    getTagOfNode(node.parentNode) == 'SPAN'
-                        ? splitBalancedNodeRange(node)
-                        : wrap(node, 'span')
-                )
-            );
-        }
+    public applyStyle(styler: (element: HTMLElement) => any) {
+        applyTextStyle(
+            this.containerNode,
+            styler,
+            Position.FromEditorPoint(this.getStartPoint()),
+            Position.FromEditorPoint(this.getEndPoint())
+        );
     }
 }
 
 export default NodeInlineElement;
-
-function splitTextNode(textNode: Node, offset: number, returnFirstPart: boolean) {
-    let firstPart = textNode.nodeValue.substr(0, offset);
-    let secondPart = textNode.nodeValue.substr(offset);
-    let newNode = textNode.ownerDocument.createTextNode(returnFirstPart ? firstPart : secondPart);
-    textNode.nodeValue = returnFirstPart ? secondPart : firstPart;
-    textNode.parentNode.insertBefore(newNode, returnFirstPart ? textNode : textNode.nextSibling);
-    return newNode;
-}

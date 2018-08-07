@@ -1,7 +1,10 @@
+import Position from '../selection/Position';
+import applyTextStyle from '../utils/applyTextStyle';
+import createRange from '../selection/createRange';
 import isEditorPointAfter from '../utils/isEditorPointAfter';
 import { BlockElement, EditorPoint, InlineElement } from 'roosterjs-editor-types';
-import createRange from '../selection/createRange';
-import Position from '../selection/Position';
+import { PositionType } from 'roosterjs-editor-types';
+import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeafSibling';
 
 /**
  * This is a special version of inline element that identifies a section of an inline element
@@ -108,16 +111,21 @@ class PartialInlineElement implements InlineElement {
     /**
      * apply style
      */
-    public applyStyle(
-        styler: (element: HTMLElement) => any,
-        fromPoint?: EditorPoint,
-        toPoint?: EditorPoint
-    ) {
-        this.inlineElement.applyStyle(
-            styler,
-            fromPoint || this.startPoint,
-            toPoint || this.endPoint
-        );
+    public applyStyle(styler: (element: HTMLElement) => any) {
+        let from = Position.FromEditorPoint(this.getStartPoint()).normalize();
+        let to = Position.FromEditorPoint(this.getEndPoint()).normalize();
+        let container = this.getContainerNode();
+
+        if (from.isAtEnd) {
+            let nextNode = getNextLeafSibling(container, from.node);
+            from = nextNode ? new Position(nextNode, PositionType.Begin) : null;
+        }
+        if (to.offset == 0) {
+            let previousNode = getPreviousLeafSibling(container, to.node);
+            to = previousNode ? new Position(previousNode, PositionType.End) : null;
+        }
+
+        applyTextStyle(container, styler, from, to);
     }
 }
 

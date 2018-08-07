@@ -18,15 +18,9 @@ export default function changeElementTag<K extends keyof HTMLElementTagNameMap>(
  * @param newTag New tag to change to
  * @returns The new element with new tag
  */
-export default function changeElementTag(
-    element: HTMLElement,
-    newTag: string
-): HTMLElement;
+export default function changeElementTag(element: HTMLElement, newTag: string): HTMLElement;
 
-export default function changeElementTag(
-    element: HTMLElement,
-    newTag: string
-): HTMLElement {
+export default function changeElementTag(element: HTMLElement, newTag: string): HTMLElement {
     let newElement = element.ownerDocument.createElement(newTag);
 
     for (let i = 0; i < element.attributes.length; i++) {

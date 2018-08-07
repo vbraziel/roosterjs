@@ -260,16 +260,11 @@ describe('NodeInlineElement applyStyle()', () => {
         let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         let toPoint = { containerNode: testDiv.firstChild.lastChild, offset: 11 };
+        element = new PartialInlineElement(element, fromPoint, toPoint);
         let mockColor = 'red';
 
         // Act
-        element.applyStyle(
-            function(node: HTMLElement) {
-                node.style.color = mockColor;
-            },
-            fromPoint,
-            toPoint
-        );
+        element.applyStyle(node => (node.style.color = mockColor));
 
         // Assert
         expect(testDiv.innerHTML).toBe(
@@ -286,16 +281,11 @@ describe('NodeInlineElement applyStyle()', () => {
         let parentBlock = new NodeBlockElement(testDiv);
         let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
+        element = new PartialInlineElement(element, fromPoint, null);
         let mockColor = 'red';
 
         // Act
-        element.applyStyle(
-            function(node: HTMLElement) {
-                node.style.color = mockColor;
-            },
-            fromPoint,
-            null /*toPoint*/
-        );
+        element.applyStyle(node => (node.style.color = mockColor));
 
         // Assert
         expect(testDiv.innerHTML).toBe(
@@ -312,16 +302,11 @@ describe('NodeInlineElement applyStyle()', () => {
         let parentBlock = new NodeBlockElement(testDiv);
         let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 11 };
+        element = new PartialInlineElement(element, null, toPoint);
         let mockColor = 'red';
 
         // Act
-        element.applyStyle(
-            function(node: HTMLElement) {
-                node.style.color = mockColor;
-            },
-            null /*fromPoint*/,
-            toPoint
-        );
+        element.applyStyle(node => (node.style.color = mockColor));
 
         // Assert
         expect(testDiv.innerHTML).toBe(
@@ -339,16 +324,11 @@ describe('NodeInlineElement applyStyle()', () => {
         let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
+        element = new PartialInlineElement(element, fromPoint, toPoint);
         let mockColor = 'red';
 
         // Act
-        element.applyStyle(
-            function(node: HTMLElement) {
-                node.style.color = mockColor;
-            },
-            fromPoint,
-            toPoint
-        );
+        element.applyStyle(node => (node.style.color = mockColor));
 
         // Assert
         expect(testDiv.innerHTML).toBe('<span>www.example.com</span>');
@@ -364,16 +344,11 @@ describe('NodeInlineElement applyStyle()', () => {
         let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 4 };
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
+        element = new PartialInlineElement(element, fromPoint, toPoint);
         let mockColor = 'red';
 
         // Act
-        element.applyStyle(
-            function(node: HTMLElement) {
-                node.style.color = mockColor;
-            },
-            fromPoint,
-            toPoint
-        );
+        element.applyStyle(node => (node.style.color = mockColor));
 
         // Assert
         expect(testDiv.innerHTML).toBe('<span>www.example.com</span>');

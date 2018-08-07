@@ -55,16 +55,8 @@ interface InlineElement {
 
     /**
      * Apply inline style to a region of an inline element. The region is identified thorugh the from and to point
-     * The fromPoint and toPoint are optional and when bing missed, it indicates the boundary of the element
-     * The function finds the minimal DOM on top of which styles can be applied, or create DOM when needed, i.e.
-     * when the style has to be applied to partial of a text node, in that case, it wraps that in a SPAN and returns the SPAN
-     * The actuall styling is done by consumer through the styler callback
      */
-    applyStyle(
-        styler: (element: HTMLElement) => any,
-        fromPoint?: EditorPoint,
-        toPoint?: EditorPoint
-    ): void;
+    applyStyle(styler: (element: HTMLElement) => any): void;
 }
 
 export default InlineElement;
