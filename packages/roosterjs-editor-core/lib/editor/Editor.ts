@@ -5,7 +5,6 @@ import {
     BlockElement,
     ChangeSource,
     ContentPosition,
-    ContentScope,
     DefaultFormat,
     DocumentCommand,
     ExtractContentEvent,
@@ -739,109 +738,6 @@ export default class Editor {
                 callback();
             }
         });
-    }
-
-    //#endregion
-
-    //#region Deprecated methods
-
-    /**
-     * @deprecated Use queryElements instead
-     */
-    public queryContent(selector: string): NodeListOf<Element> {
-        return this.core.contentDiv.querySelectorAll(selector);
-    }
-
-    /**
-     * @deprecated
-     * Get current selection
-     * @return current selection object
-     */
-    public getSelection(): Selection {
-        return this.core.document.defaultView.getSelection();
-    }
-
-    /**
-     * @deprecated Use select() instead
-     * Update selection in editor
-     * @param selectionRange The selection range to update to
-     * @returns true if selection range is updated. Otherwise false.
-     */
-    public updateSelection(selectionRange: Range): boolean {
-        return this.select(selectionRange);
-    }
-
-    /**
-     * @deprecated Use editWithUndo() instead
-     */
-    public runWithoutAddingUndoSnapshot(callback: () => void) {
-        try {
-            this.core.suspendUndo = true;
-            callback();
-        } finally {
-            this.core.suspendUndo = false;
-        }
-    }
-
-    /**
-     * @deprecated Use getBodyTraverser, getSelectionTraverser, getBlockTraverser instead
-     */
-    public getContentTraverser(
-        scope: ContentScope,
-        position: ContentPosition = ContentPosition.SelectionStart
-    ): ContentTraverser {
-        switch (scope) {
-            case ContentScope.Block:
-                return this.getBlockTraverser(position);
-            case ContentScope.Selection:
-                return this.getSelectionTraverser();
-            case ContentScope.Body:
-                return this.getBodyTraverser();
-        }
-
-        return null;
-    }
-
-    /**
-     * @deprecated This function will be moved to roosterjs-editor-api in next major release
-     * Apply inline style to current selection
-     * @param callback The callback function to apply style
-     */
-    public applyInlineStyle(callback: (element: HTMLElement) => any) {
-        this.focus();
-        let range = this.getSelectionRange();
-
-        if (range && range.collapsed) {
-            // Create a new text node to hold the selection.
-            // Some content is needed to position selection into the span
-            // for here, we inject ZWS - zero width space
-            let tempNode = this.getDocument().createTextNode('\u200B');
-            this.addUndoSnapshot();
-            range.insertNode(tempNode);
-            this.getInlineElementAtNode(tempNode, true /*forceAtNode*/).applyStyle(callback);
-            this.select(tempNode, PositionType.End);
-        } else {
-            // This is start and end node that get the style. The start and end needs to be recorded so that selection
-            // can be re-applied post-applying style
-            this.addUndoSnapshot(() => {
-                let firstNode: Node;
-                let lastNode: Node;
-                let contentTraverser = this.getSelectionTraverser();
-                let inlineElement = contentTraverser && contentTraverser.currentInlineElement;
-                while (inlineElement) {
-                    let nextInlineElement = contentTraverser.getNextInlineElement();
-                    inlineElement.applyStyle(element => {
-                        callback(element);
-                        firstNode = firstNode || element;
-                        lastNode = element;
-                    });
-                    inlineElement = nextInlineElement;
-                }
-                if (firstNode && lastNode) {
-                    this.select(firstNode, PositionType.Before, lastNode, PositionType.After);
-                }
-            }, ChangeSource.Format);
-        }
     }
 
     //#endregion

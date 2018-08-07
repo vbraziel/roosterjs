@@ -14,6 +14,7 @@ export {
 
 export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
 export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
+export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
 
 export { getNextLeafSibling, getPreviousLeafSibling } from './domWalker/getLeafSibling';
 export { getFirstLeafNode, getLastLeafNode } from './domWalker/getLeafNode';
@@ -61,13 +62,3 @@ export { default as VTable, VCell } from './table/VTable';
 export { default as Position } from './selection/Position';
 export { default as createRange } from './selection/createRange';
 export { markSelection, removeMarker } from './selection/selectionMarker';
-
-// Deprecated
-export { default as isTextualInlineElement } from './deprecated/isTextualInlineElement';
-export { default as wrapAll } from './deprecated/wrapAll';
-export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
-export {
-    getInlineElementBeforePoint,
-    getInlineElementAfterPoint,
-} from './deprecated/getInlineElementBeforeAfterPoint';
-export { default as normalizeEditorPoint } from './deprecated/normalizeEditorPoint';

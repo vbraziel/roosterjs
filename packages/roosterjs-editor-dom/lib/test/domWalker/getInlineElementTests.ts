@@ -1,15 +1,16 @@
 import * as DomTestHelper from '../DomTestHelper';
+import Position from '../../selection/Position';
 import {
     getInlineElementAtNode,
     getFirstInlineElement,
     getLastInlineElement,
     getNextPreviousInlineElement,
 } from '../../blockElements/BlockElement';
-import { NodeBoundary, InlineElement, EditorPoint } from 'roosterjs-editor-types';
+import { NodeBoundary, InlineElement, PositionType } from 'roosterjs-editor-types';
 import {
-    getInlineElementBeforePoint,
-    getInlineElementAfterPoint,
-} from '../../deprecated/getInlineElementBeforeAfterPoint';
+    getInlineElementBefore,
+    getInlineElementAfter,
+} from '../../inlineElements/getInlineElementBeforeAfter';
 
 let testID = 'getInlineElement';
 
@@ -376,24 +377,24 @@ describe('getInlineElement getInlineElementBeforePoint()', () => {
 
     function runTest(
         rootNode: Node,
-        editorPoint: EditorPoint,
+        position: Position,
         startOffset: number,
         endOffset: number,
         node: Node
     ) {
         // Arrange
-        let startPoint = { containerNode: node, offset: startOffset };
-        let endPoint = { containerNode: node, offset: endOffset };
+        let start = new Position(node, startOffset);
+        let end = new Position(node, endOffset);
 
         // Act
-        let inlineElementBeforePoint = getInlineElementBeforePoint(rootNode, editorPoint);
+        let inlineElementBeforePoint = getInlineElementBefore(rootNode, position);
 
         // Assert
         expect(
             DomTestHelper.isInlineElementEqual(
                 inlineElementBeforePoint,
-                startPoint,
-                endPoint,
+                start.toEditorPoint(),
+                end.toEditorPoint(),
                 node.textContent.substr(startOffset, endOffset)
             )
         ).toBe(true);
@@ -405,10 +406,10 @@ describe('getInlineElement getInlineElementBeforePoint()', () => {
             testID,
             '<span>abc</span><span>123</span>'
         );
-        let editorPoint = { containerNode: rootNode.firstChild, offset: NodeBoundary.Begin };
+        let position = new Position(rootNode.firstChild, 0);
 
         // Act
-        let inlineElementBeforePoint = getInlineElementBeforePoint(rootNode, editorPoint);
+        let inlineElementBeforePoint = getInlineElementBefore(rootNode, position);
 
         // Assert
         expect(inlineElementBeforePoint).toBe(null);
@@ -419,8 +420,8 @@ describe('getInlineElement getInlineElementBeforePoint()', () => {
             testID,
             '<span>abc</span><span>123</span>'
         );
-        let editorPoint = { containerNode: rootNode.lastChild, offset: NodeBoundary.Begin };
-        runTest(rootNode, editorPoint, NodeBoundary.Begin, 3, rootNode.firstChild.firstChild);
+        let position = new Position(rootNode.lastChild, 0);
+        runTest(rootNode, position, NodeBoundary.Begin, 3, rootNode.firstChild.firstChild);
     });
 
     it('input = <span>www.example.com</span>, partial inlineElement before selection, inlineElementBeforePoint = www', () => {
@@ -428,8 +429,8 @@ describe('getInlineElement getInlineElementBeforePoint()', () => {
             testID,
             '<span>www.example.com</span>'
         );
-        let editorPoint = { containerNode: rootNode.firstChild.firstChild, offset: 3 };
-        runTest(rootNode, editorPoint, NodeBoundary.Begin, 3, rootNode.firstChild.firstChild);
+        let position = new Position(rootNode.firstChild.firstChild, 3);
+        runTest(rootNode, position, NodeBoundary.Begin, 3, rootNode.firstChild.firstChild);
     });
 });
 
@@ -440,24 +441,24 @@ describe('getInlineElement getInlineElementAfterPoint()', () => {
 
     function runTest(
         rootNode: Node,
-        editorPoint: EditorPoint,
+        position: Position,
         startOffset: number,
         endOffset: number,
         node: Node
     ) {
         // Arrange
-        let startPoint = { containerNode: node, offset: startOffset };
-        let endPoint = { containerNode: node, offset: endOffset };
+        let start = new Position(node, startOffset);
+        let end = new Position(node, endOffset);
 
         // Act
-        let inlineElementAfterPoint = getInlineElementAfterPoint(rootNode, editorPoint);
+        let inlineElementAfterPoint = getInlineElementAfter(rootNode, position);
 
         // Assert
         expect(
             DomTestHelper.isInlineElementEqual(
                 inlineElementAfterPoint,
-                startPoint,
-                endPoint,
+                start.toEditorPoint(),
+                end.toEditorPoint(),
                 node.textContent.substr(startOffset, endOffset)
             )
         ).toBe(true);
@@ -469,10 +470,10 @@ describe('getInlineElement getInlineElementAfterPoint()', () => {
             testID,
             '<span>abc</span><span>123</span>'
         );
-        let editorPoint = { containerNode: rootNode.lastChild, offset: NodeBoundary.End };
+        let position = new Position(rootNode.lastChild, PositionType.End);
 
         // Act
-        let inlineElementAfterPoint = getInlineElementAfterPoint(rootNode, editorPoint);
+        let inlineElementAfterPoint = getInlineElementAfter(rootNode, position);
 
         // Assert
         expect(inlineElementAfterPoint).toBe(null);
@@ -483,8 +484,8 @@ describe('getInlineElement getInlineElementAfterPoint()', () => {
             testID,
             '<span>abc</span><span>123</span>'
         );
-        let editorPoint = { containerNode: rootNode.firstChild, offset: NodeBoundary.End };
-        runTest(rootNode, editorPoint, NodeBoundary.Begin, 3, rootNode.lastChild.firstChild);
+        let position = new Position(rootNode.firstChild, PositionType.End);
+        runTest(rootNode, position, NodeBoundary.Begin, 3, rootNode.lastChild.firstChild);
     });
 
     it('input = <span>www.example.com</span>, partial inlineElement after editorPoint, inlineElementAfterPoint = com', () => {
@@ -492,7 +493,7 @@ describe('getInlineElement getInlineElementAfterPoint()', () => {
             testID,
             '<span>www.example.com</span>'
         );
-        let editorPoint = { containerNode: rootNode.firstChild.firstChild, offset: 12 };
-        runTest(rootNode, editorPoint, 12, 15, rootNode.firstChild.firstChild);
+        let position = new Position(rootNode.firstChild.firstChild, 12);
+        runTest(rootNode, position, 12, 15, rootNode.firstChild.firstChild);
     });
 });
