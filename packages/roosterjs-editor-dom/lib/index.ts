@@ -1,11 +1,8 @@
-export {
-    NodeBlockElement,
-    StartEndBlockElement,
-    getBlockElementAtNode,
-    getFirstInlineElement,
-    getLastInlineElement,
-    getInlineElementAtNode,
-} from './blockElements/BlockElement';
+export { default as BlockElement } from './blockElements/BlockElement';
+export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
+export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
+export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
+
 export {
     getFirstBlockElement,
     getFirstLastBlockElement,
@@ -19,12 +16,13 @@ export { default as TraversingScoper } from './contentTraverser/TraversingScoper
 export { getNextLeafSibling, getPreviousLeafSibling } from './domWalker/getLeafSibling';
 export { getFirstLeafNode, getLastLeafNode } from './domWalker/getLeafNode';
 
+export { default as InlineElement } from './inlineElements/InlineElement';
 export { default as ImageInlineElement } from './inlineElements/ImageInlineElement';
 export { default as LinkInlineElement } from './inlineElements/LinkInlineElement';
 export { default as NodeInlineElement } from './inlineElements/NodeInlineElement';
 export { default as PartialInlineElement } from './inlineElements/PartialInlineElement';
 export { default as TextInlineElement } from './inlineElements/TextInlineElement';
-export { default as resolveInlineElement } from './inlineElements/resolveInlineElement';
+export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
 export {
     getInlineElementBefore,
     getInlineElementAfter,
@@ -32,6 +30,7 @@ export {
 
 export { default as Browser, getBrowserInfo } from './utils/Browser';
 export { default as applyFormat } from './utils/applyFormat';
+export { default as applyTextStyle } from './utils/applyTextStyle';
 export { default as changeElementTag } from './utils/changeElementTag';
 export { default as collapseNodes } from './utils/collapseNodes';
 export { default as contains } from './utils/contains';

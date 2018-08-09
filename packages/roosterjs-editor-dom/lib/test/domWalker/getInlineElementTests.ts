@@ -1,12 +1,13 @@
 import * as DomTestHelper from '../DomTestHelper';
+import InlineElement from '../../inlineElements/InlineElement';
 import Position from '../../selection/Position';
+import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import {
-    getInlineElementAtNode,
     getFirstInlineElement,
     getLastInlineElement,
-    getNextPreviousInlineElement,
-} from '../../blockElements/BlockElement';
-import { NodeBoundary, InlineElement, PositionType } from 'roosterjs-editor-types';
+} from '../../inlineElements/getFirstLastInlineElement';
+import { getNextPreviousInlineElement } from '../../inlineElements/getNextPreviousInlineElement';
+import { NodeBoundary, PositionType } from 'roosterjs-editor-types';
 import {
     getInlineElementBefore,
     getInlineElementAfter,

@@ -1,10 +1,11 @@
 import * as DomTestHelper from '../DomTestHelper';
-import ContentTraverser from '../../contentTraverser/ContentTraverser';
+import BlockElement from '../../blockElements/BlockElement';
 import BodyScoper from '../../contentTraverser/BodyScoper';
+import ContentTraverser from '../../contentTraverser/ContentTraverser';
 import SelectionScoper from '../../contentTraverser/SelectionScoper';
 import SelectionBlockScoper from '../../contentTraverser/SelectionBlockScoper';
 import TraversingScoper from '../../contentTraverser/TraversingScoper';
-import { ContentPosition, NodeBoundary, BlockElement } from 'roosterjs-editor-types';
+import { ContentPosition, NodeBoundary } from 'roosterjs-editor-types';
 
 let testID = 'ContentTraverser';
 

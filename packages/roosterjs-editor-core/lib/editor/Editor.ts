@@ -2,13 +2,11 @@ import EditorCore from './EditorCore';
 import EditorOptions from './EditorOptions';
 import createEditorCore from './createEditorCore';
 import {
-    BlockElement,
     ChangeSource,
     ContentPosition,
     DefaultFormat,
     DocumentCommand,
     ExtractContentEvent,
-    InlineElement,
     InsertOption,
     PluginEvent,
     PluginEventType,
@@ -17,6 +15,7 @@ import {
     Rect,
 } from 'roosterjs-editor-types';
 import {
+    BlockElement,
     Browser,
     PositionContentSearcher,
     ContentTraverser,
@@ -24,7 +23,6 @@ import {
     contains,
     fromHtml,
     getBlockElementAtNode,
-    getInlineElementAtNode,
     getTagOfNode,
     isNodeEmpty,
     markSelection,
@@ -185,16 +183,6 @@ export default class Editor {
         }
 
         return false;
-    }
-
-    /**
-     * Get InlineElement at given node
-     * @param node The node to create InlineElement
-     * @param forceAtNode Force to get a NodeInlineElement at the given node
-     * @returns The InlineElement result
-     */
-    public getInlineElementAtNode(node: Node, forceAtNode?: boolean): InlineElement {
-        return getInlineElementAtNode(this.core.contentDiv, node, forceAtNode);
     }
 
     /**

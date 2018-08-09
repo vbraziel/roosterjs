@@ -1,5 +1,5 @@
-import { BlockElement, Direction, ChangeSource } from 'roosterjs-editor-types';
-import { NodeBlockElement, StartEndBlockElement } from 'roosterjs-editor-dom';
+import { BlockElement } from 'roosterjs-editor-dom';
+import { Direction, ChangeSource } from 'roosterjs-editor-types';
 import { Editor } from 'roosterjs-editor-core';
 
 /**
@@ -22,11 +22,7 @@ export default function setDirection(editor: Editor, direction: Direction) {
     if (blockElements.length > 0) {
         editor.addUndoSnapshot((start, end) => {
             for (let block of blockElements) {
-                let nodeBlock =
-                    block instanceof StartEndBlockElement
-                        ? block.toNodeBlockElement()
-                        : (block as NodeBlockElement);
-                let node = nodeBlock.getStartNode() as HTMLElement;
+                let node = block.collapseToSingleElement();
                 node.setAttribute('dir', direction == Direction.LeftToRight ? 'ltr' : 'rtl');
                 node.style.textAlign = direction == Direction.LeftToRight ? 'left' : 'right';
             }

@@ -1,6 +1,8 @@
+import BlockElement from '../blockElements/BlockElement';
+import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import isEditorPointAfter from '../utils/isEditorPointAfter';
-import { BlockElement, EditorPoint, InlineElement } from 'roosterjs-editor-types';
+import { EditorPoint } from 'roosterjs-editor-types';
 
 /**
  * Represents an empty InlineElement.

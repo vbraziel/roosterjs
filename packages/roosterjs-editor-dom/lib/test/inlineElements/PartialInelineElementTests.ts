@@ -1,10 +1,10 @@
 import * as TestHelper from '../DomTestHelper';
+import InlineElement from '../../inlineElements/InlineElement';
+import NodeBlockElement from '../../blockElements/NodeBlockElement';
 import NodeInlineElement from '../../inlineElements/NodeInlineElement';
 import PartialInlineElement from '../../inlineElements/PartialInlineElement';
 import Position from '../../selection/Position';
-import resolveInlineElement from '../../inlineElements/resolveInlineElement';
-import { InlineElement } from 'roosterjs-editor-types';
-import { NodeBlockElement } from '../../blockElements/BlockElement';
+import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 
 let testID = 'PartialInlineElement';
 
@@ -27,7 +27,7 @@ function createPartialInlineElementWithSpan(
     startOffset: number,
     endOffset: number
 ): [PartialInlineElement, InlineElement, NodeBlockElement] {
-    let testParentBlock = new NodeBlockElement(span.parentNode);
+    let testParentBlock = new NodeBlockElement(span.parentNode as HTMLElement);
     let inlineElement = new NodeInlineElement(span, testParentBlock);
     let startPosition = startOffset ? new Position(span.firstChild, startOffset) : null;
     let endPosition = endOffset ? new Position(span.firstChild, endOffset) : null;
@@ -45,7 +45,7 @@ function createPartialInlineElementWithDiv(
     endOffset: number
 ): [PartialInlineElement, InlineElement, NodeBlockElement] {
     let testParentBlock = new NodeBlockElement(testDiv);
-    let inlineElement = resolveInlineElement(testDiv.firstChild, testDiv, testParentBlock);
+    let inlineElement = getInlineElementAtNode(testParentBlock, testDiv.firstChild);
     let startPoint = startOffset
         ? { containerNode: testDiv.firstChild.firstChild, offset: startOffset }
         : null;

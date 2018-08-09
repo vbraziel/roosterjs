@@ -1,5 +1,5 @@
-import BlockElement from './BlockElement';
-import EditorPoint from './EditorPoint';
+import BlockElement from '../blockElements/BlockElement';
+import { EditorPoint } from 'roosterjs-editor-types';
 
 /**
  * This refers to an inline element (as opposed to block) in editor

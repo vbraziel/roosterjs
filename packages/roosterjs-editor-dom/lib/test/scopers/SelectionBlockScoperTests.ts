@@ -1,6 +1,7 @@
 import * as DomTestHelper from '../DomTestHelper';
+import BlockElement from '../../blockElements/BlockElement';
 import SelectionBlockScoper from '../../contentTraverser/SelectionBlockScoper';
-import { BlockElement, NodeBoundary, ContentPosition } from 'roosterjs-editor-types';
+import { NodeBoundary, ContentPosition } from 'roosterjs-editor-types';
 
 let testID = 'SelectionBlockScoper';
 

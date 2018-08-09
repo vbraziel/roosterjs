@@ -1,14 +1,10 @@
+import BlockElement from '../blockElements/BlockElement';
+import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import isEditorPointAfter from '../utils/isEditorPointAfter';
 import isNodeAfter from '../utils/isNodeAfter';
-import {
-    BlockElement,
-    EditorPoint,
-    InlineElement,
-    NodeType,
-    PositionType,
-} from 'roosterjs-editor-types';
+import { EditorPoint, NodeType, PositionType } from 'roosterjs-editor-types';
 
 /**
  * This presents an inline element that can be reprented by a single html node.
@@ -90,9 +86,7 @@ class NodeInlineElement implements InlineElement {
     public applyStyle(styler: (element: HTMLElement) => any) {
         applyTextStyle(
             this.containerNode,
-            styler,
-            Position.FromEditorPoint(this.getStartPoint()),
-            Position.FromEditorPoint(this.getEndPoint())
+            styler
         );
     }
 }

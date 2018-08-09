@@ -1,8 +1,10 @@
+import BlockElement from '../blockElements/BlockElement';
+import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
 import isEditorPointAfter from '../utils/isEditorPointAfter';
-import { BlockElement, EditorPoint, InlineElement } from 'roosterjs-editor-types';
+import { EditorPoint } from 'roosterjs-editor-types';
 import { PositionType } from 'roosterjs-editor-types';
 import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeafSibling';
 

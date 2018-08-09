@@ -15,7 +15,6 @@ import {
     fromHtml,
     isNodeEmpty,
     getBlockElementAtNode,
-    StartEndBlockElement,
 } from 'roosterjs-editor-dom';
 
 const KEY_BACKSPACE = 8;
@@ -125,8 +124,7 @@ export default class CorePlugin implements EditorPlugin {
             // element points to a wrapping node we added "<div><br></div>". We should move the selection left to <br>
             position = new Position(formatNode.firstChild, PositionType.Begin);
         } else {
-            block = block instanceof StartEndBlockElement ? block.toNodeBlockElement() : block;
-            formatNode = block.getStartNode() as HTMLElement;
+            formatNode = block.collapseToSingleElement();
 
             // if the block is empty, apply default format
             // Otherwise, leave it as it is as we don't want to change the style for existing data

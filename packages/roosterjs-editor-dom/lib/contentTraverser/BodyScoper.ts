@@ -1,8 +1,9 @@
+import BlockElement from '../blockElements/BlockElement';
+import InlineElement from '../inlineElements/InlineElement';
 import TraversingScoper from './TraversingScoper';
-import { BlockElement, InlineElement } from 'roosterjs-editor-types';
-import { getFirstInlineElement } from '../blockElements/BlockElement';
-import { getFirstBlockElement } from '../blockElements/getFirstLastBlockElement';
 import contains from '../utils/contains';
+import { getFirstInlineElement } from '../inlineElements/getFirstLastInlineElement';
+import { getFirstBlockElement } from '../blockElements/getFirstLastBlockElement';
 
 /**
  * provides scoper for traversing the entire editor body starting from the beginning

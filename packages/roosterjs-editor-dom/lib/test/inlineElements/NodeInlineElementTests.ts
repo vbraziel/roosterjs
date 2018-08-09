@@ -1,9 +1,10 @@
 import * as DomTestHelper from '../DomTestHelper';
+import InlineElement from '../../inlineElements/InlineElement';
+import NodeBlockElement from '../../blockElements/NodeBlockElement';
 import PartialInlineElement from '../../inlineElements/PartialInlineElement';
 import TextInlineElement from '../../inlineElements/TextInlineElement';
-import resolveInlineElement from '../../inlineElements/resolveInlineElement';
-import { NodeBlockElement } from '../../blockElements/BlockElement';
-import { InlineElement, NodeBoundary } from 'roosterjs-editor-types';
+import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
+import { NodeBoundary } from 'roosterjs-editor-types';
 import { NodeInlineElement } from '../..';
 
 let testID = 'NodeInlineElement';
@@ -11,7 +12,7 @@ let testID = 'NodeInlineElement';
 function createNodeInlineElement(inlineElementContent: string): InlineElement {
     let testDiv = DomTestHelper.createElementFromContent(testID, inlineElementContent);
     let parentBlock = new NodeBlockElement(testDiv);
-    let inlineElement = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+    let inlineElement = getInlineElementAtNode(parentBlock, testDiv.firstChild);
 
     return inlineElement;
 }
@@ -143,8 +144,8 @@ describe('NodeInlineElement isAfter()', () => {
             '<span>node1</span><span>text</span><span>node2</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element1 = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
-        let element2 = resolveInlineElement(testDiv.lastChild, testDiv, parentBlock);
+        let element1 = getInlineElementAtNode(parentBlock, testDiv.firstChild);
+        let element2 = getInlineElementAtNode(parentBlock, testDiv.lastChild);
 
         // Act
         let isElement2AfterElement1 = element2.isAfter(element1);
@@ -167,8 +168,8 @@ describe('NodeInlineElement isAfter()', () => {
         div.insertBefore(testDiv1, testDiv2);
         let parentBlock1 = new NodeBlockElement(testDiv1);
         let parentBlock2 = new NodeBlockElement(testDiv2);
-        let element1 = resolveInlineElement(testDiv1.firstChild, testDiv1, parentBlock1);
-        let element2 = resolveInlineElement(testDiv2.firstChild, testDiv2, parentBlock2);
+        let element1 = getInlineElementAtNode(parentBlock1, testDiv1.firstChild);
+        let element2 = getInlineElementAtNode(parentBlock2, testDiv2.firstChild);
 
         // Act
         let isElement2AfterElement1 = element2.isAfter(element1);
@@ -192,7 +193,7 @@ describe('NodeInlineElement contains()', () => {
             '<span><a><span>part1</span>text</a>text<span>part2</span>part3</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let editorPoint = {
             containerNode: testDiv.firstChild.lastChild,
             offset: NodeBoundary.End,
@@ -212,7 +213,7 @@ describe('NodeInlineElement contains()', () => {
             '<span><a><span>part1</span>text</a>text<span>part2</span>part3</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild.firstChild);
         let editorPoint = {
             containerNode: testDiv.firstChild.lastChild,
             offset: NodeBoundary.End,
@@ -238,7 +239,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let mockColor = 'red';
 
         // Act
@@ -257,7 +258,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         let toPoint = { containerNode: testDiv.firstChild.lastChild, offset: 11 };
         element = new PartialInlineElement(element, fromPoint, toPoint);
@@ -279,7 +280,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         element = new PartialInlineElement(element, fromPoint, null);
         let mockColor = 'red';
@@ -300,7 +301,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 11 };
         element = new PartialInlineElement(element, null, toPoint);
         let mockColor = 'red';
@@ -321,7 +322,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         element = new PartialInlineElement(element, fromPoint, toPoint);
@@ -341,7 +342,7 @@ describe('NodeInlineElement applyStyle()', () => {
             '<span>www.example.com</span>'
         );
         let parentBlock = new NodeBlockElement(testDiv);
-        let element = resolveInlineElement(testDiv.firstChild, testDiv, parentBlock);
+        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
         let fromPoint = { containerNode: testDiv.firstChild.firstChild, offset: 4 };
         let toPoint = { containerNode: testDiv.firstChild.firstChild, offset: 3 };
         element = new PartialInlineElement(element, fromPoint, toPoint);

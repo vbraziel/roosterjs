@@ -1,9 +1,15 @@
+import BlockElement from '../blockElements/BlockElement';
+import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
+import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
-import { BlockElement, ContentPosition, InlineElement } from 'roosterjs-editor-types';
-import { getBlockElementAtNode } from '../blockElements/BlockElement';
+import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
+import { ContentPosition } from 'roosterjs-editor-types';
 import { getInlineElementAfter } from '../inlineElements/getInlineElementBeforeAfter';
-import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
+import {
+    getFirstInlineElement,
+    getLastInlineElement,
+} from '../inlineElements/getFirstLastInlineElement';
 
 /**
  * This provides traversing content in a selection start block
@@ -48,13 +54,13 @@ class SelectionBlockScoper implements TraversingScoper {
         if (this.block) {
             switch (this.startFrom) {
                 case ContentPosition.Begin:
-                    return this.block.getFirstInlineElement();
+                    return getFirstInlineElement(this.rootNode);
                 case ContentPosition.End:
-                    return this.block.getLastInlineElement();
+                    return getLastInlineElement(this.rootNode);
                 case ContentPosition.SelectionStart:
                     // Get the inline before selection start point, and ensure it falls in the selection block
                     let startInline = getInlineElementAfter(this.rootNode, this.position);
-                    return startInline && this.block.isInBlock(startInline)
+                    return startInline && this.block.contains(startInline.getContainerNode())
                         ? startInline
                         : new EmptyInlineElement(this.position, this.block);
             }
@@ -78,7 +84,7 @@ class SelectionBlockScoper implements TraversingScoper {
      * A block scoper does not cut an inline in half
      */
     public trimInlineElement(inlineElement: InlineElement): InlineElement {
-        return this.block && inlineElement && this.block.isInBlock(inlineElement)
+        return this.block && inlineElement && this.block.contains(inlineElement.getContainerNode())
             ? inlineElement
             : null;
     }

@@ -47,6 +47,4 @@ export { default as Rect } from './interface/Rect';
 export { default as TableFormat } from './interface/TableFormat';
 
 // Legacy
-export { default as BlockElement } from './legacy/BlockElement';
 export { default as EditorPoint, NodeBoundary } from './legacy/EditorPoint';
-export { default as InlineElement } from './legacy/InlineElement';
