@@ -1,6 +1,6 @@
 import { ChangeSource, NodeType, PositionType } from 'roosterjs-editor-types';
 import { Editor } from 'roosterjs-editor-core';
-import { applyTextStyle, getTagOfNode } from 'roosterjs-editor-dom'
+import { applyTextStyle, getTagOfNode } from 'roosterjs-editor-dom';
 
 /**
  * Apply inline style to current selection
@@ -12,8 +12,12 @@ export default function applyInlineStyle(editor: Editor, callback: (element: HTM
 
     if (range && range.collapsed) {
         let tempNode = range.startContainer;
-        let ZWS = '\u200B'
-        let isZWSNode = tempNode && tempNode.nodeType == NodeType.Text && tempNode.nodeValue == ZWS && getTagOfNode(tempNode.parentNode) == 'SPAN';
+        let ZWS = '\u200B';
+        let isZWSNode =
+            tempNode &&
+            tempNode.nodeType == NodeType.Text &&
+            tempNode.nodeValue == ZWS &&
+            getTagOfNode(tempNode.parentNode) == 'SPAN';
 
         if (!isZWSNode) {
             editor.addUndoSnapshot();

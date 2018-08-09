@@ -13,10 +13,7 @@ import { NodeType } from 'roosterjs-editor-types';
  * @param rootNode The root node of current scope
  * @param node The node to get InlineElement from
  */
-export default function getInlineElementAtNode(
-    rootNode: Node,
-    node: Node
-): InlineElement;
+export default function getInlineElementAtNode(rootNode: Node, node: Node): InlineElement;
 
 /**
  * Get the inline element at a node

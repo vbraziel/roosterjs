@@ -84,10 +84,7 @@ class NodeInlineElement implements InlineElement {
      * Apply inline style to an inline element
      */
     public applyStyle(styler: (element: HTMLElement) => any) {
-        applyTextStyle(
-            this.containerNode,
-            styler
-        );
+        applyTextStyle(this.containerNode, styler);
     }
 }
 
