@@ -58,7 +58,7 @@ class SelectionBlockScoper implements TraversingScoper {
                 case ContentPosition.End:
                     return getLastInlineElement(this.rootNode);
                 case ContentPosition.SelectionStart:
-                    // Get the inline before selection start point, and ensure it falls in the selection block
+                    // Get the inline before selection start position, and ensure it falls in the selection block
                     let startInline = getInlineElementAfter(this.rootNode, this.position);
                     return startInline && this.block.contains(startInline.getContainerNode())
                         ? startInline

@@ -55,12 +55,11 @@ export function getInlineElementBeforeAfter(root: Node, position: Position, isAf
     }
 
     let inlineElement = getInlineElementAtNode(root, node);
-    let editorPoint = position.toEditorPoint();
 
-    if (inlineElement && (isPartial || inlineElement.contains(editorPoint))) {
+    if (inlineElement && (isPartial || inlineElement.contains(position))) {
         inlineElement = isAfter
-            ? new PartialInlineElement(inlineElement, editorPoint, null)
-            : new PartialInlineElement(inlineElement, null, editorPoint);
+            ? new PartialInlineElement(inlineElement, position, null)
+            : new PartialInlineElement(inlineElement, null, position);
     }
 
     return inlineElement;

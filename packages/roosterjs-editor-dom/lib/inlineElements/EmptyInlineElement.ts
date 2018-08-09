@@ -1,8 +1,6 @@
 import BlockElement from '../blockElements/BlockElement';
 import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
-import isEditorPointAfter from '../utils/isEditorPointAfter';
-import { EditorPoint } from 'roosterjs-editor-types';
 
 /**
  * Represents an empty InlineElement.
@@ -36,15 +34,15 @@ export default class EmptyInlineElement implements InlineElement {
     /**
      * Get the start position of this inline element
      */
-    getStartPoint(): EditorPoint {
-        return this.position.toEditorPoint();
+    getStartPosition(): Position {
+        return this.position;
     }
 
     /**
      * Get the end position of this inline element
      */
-    getEndPoint(): EditorPoint {
-        return this.position.toEditorPoint();
+    getEndPosition(): Position {
+        return this.position;
     }
 
     /**
@@ -58,7 +56,7 @@ export default class EmptyInlineElement implements InlineElement {
      * Checks if the given inline element is after this inline element
      */
     isAfter(inlineElement: InlineElement): boolean {
-        return isEditorPointAfter(this.position.toEditorPoint(), inlineElement.getEndPoint());
+        return this.position.isAfter(inlineElement.getEndPosition());
     }
 
     /**
@@ -71,16 +69,12 @@ export default class EmptyInlineElement implements InlineElement {
     /**
      * Checks if the given editor position is contained in this inline element
      */
-    contains(position: EditorPoint): boolean {
+    contains(position: Position): boolean {
         return false;
     }
 
     /**
      * Apply inline style to a region of an inline element.
      */
-    applyStyle(
-        styler: (element: HTMLElement) => any,
-        fromPoint?: EditorPoint,
-        toPoint?: EditorPoint
-    ): void {}
+    applyStyle(styler: (element: HTMLElement) => any): void {}
 }

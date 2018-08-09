@@ -2,9 +2,8 @@ import BlockElement from '../blockElements/BlockElement';
 import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
-import isEditorPointAfter from '../utils/isEditorPointAfter';
 import isNodeAfter from '../utils/isNodeAfter';
-import { EditorPoint, NodeType, PositionType } from 'roosterjs-editor-types';
+import { NodeType, PositionType } from 'roosterjs-editor-types';
 
 /**
  * This presents an inline element that can be reprented by a single html node.
@@ -38,21 +37,21 @@ class NodeInlineElement implements InlineElement {
     }
 
     /**
-     * Get the start point of the inline element
+     * Get the start position of the inline element
      */
-    public getStartPoint(): EditorPoint {
-        // For an editor point, we always want it to point to a leaf node
+    public getStartPosition(): Position {
+        // For a position, we always want it to point to a leaf node
         // We should try to go get the lowest first child node from the container
-        return new Position(this.containerNode, 0).normalize().toEditorPoint();
+        return new Position(this.containerNode, 0).normalize();
     }
 
     /**
-     * Get the end point of the inline element
+     * Get the end position of the inline element
      */
-    public getEndPoint(): EditorPoint {
-        // For an editor point, we always want it to point to a leaf node
+    public getEndPosition(): Position {
+        // For a position, we always want it to point to a leaf node
         // We should try to go get the lowest last child node from the container
-        return new Position(this.containerNode, PositionType.End).normalize().toEditorPoint();
+        return new Position(this.containerNode, PositionType.End).normalize();
     }
 
     /**
@@ -70,14 +69,12 @@ class NodeInlineElement implements InlineElement {
     }
 
     /**
-     * Checks if an editor point is contained in the inline element
+     * Checks if a positiont is contained in the inline element
      */
-    public contains(editorPoint: EditorPoint): boolean {
-        let startPoint = this.getStartPoint();
-        let endPoint = this.getEndPoint();
-        return (
-            isEditorPointAfter(editorPoint, startPoint) && isEditorPointAfter(endPoint, editorPoint)
-        );
+    public contains(position: Position): boolean {
+        let start = this.getStartPosition();
+        let end = this.getEndPosition();
+        return position && position.isAfter(start) && end.isAfter(position);
     }
 
     /**

@@ -91,9 +91,8 @@ class SelectionScoper implements TraversingScoper {
             return null;
         }
 
-        // Temp code. Will be changed to using InlineElement.getStart/EndPosition() soon
-        let start = Position.FromEditorPoint(inline.getStartPoint());
-        let end = Position.FromEditorPoint(inline.getEndPoint());
+        let start = inline.getStartPosition();
+        let end = inline.getEndPosition();
 
         if (start.isAfter(this.end) || this.start.isAfter(end)) {
             return null;
@@ -115,11 +114,7 @@ class SelectionScoper implements TraversingScoper {
         return start.isAfter(end) || start.equalTo(end)
             ? null
             : startPartial || endPartial
-                ? new PartialInlineElement(
-                      inline,
-                      startPartial && start.toEditorPoint(),
-                      endPartial && end.toEditorPoint()
-                  )
+                ? new PartialInlineElement(inline, startPartial && start, endPartial && end)
                 : inline;
     }
 }

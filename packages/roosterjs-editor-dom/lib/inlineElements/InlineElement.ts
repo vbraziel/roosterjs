@@ -1,5 +1,5 @@
 import BlockElement from '../blockElements/BlockElement';
-import { EditorPoint } from 'roosterjs-editor-types';
+import Position from '../selection/Position';
 
 /**
  * This refers to an inline element (as opposed to block) in editor
@@ -31,12 +31,12 @@ interface InlineElement {
     /**
      * Get the start position of this inline element
      */
-    getStartPoint(): EditorPoint;
+    getStartPosition(): Position;
 
     /**
      * Get the end position of this inline element
      */
-    getEndPoint(): EditorPoint;
+    getEndPosition(): Position;
 
     /**
      * Checks if the given inline element is after this inline element
@@ -51,7 +51,7 @@ interface InlineElement {
     /**
      * Checks if the given editor position is contained in this inline element
      */
-    contains(position: EditorPoint): boolean;
+    contains(position: Position): boolean;
 
     /**
      * Apply inline style to a region of an inline element. The region is identified thorugh the from and to point

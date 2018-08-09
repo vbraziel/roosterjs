@@ -3,8 +3,6 @@ import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
-import isEditorPointAfter from '../utils/isEditorPointAfter';
-import { EditorPoint } from 'roosterjs-editor-types';
 import { PositionType } from 'roosterjs-editor-types';
 import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeafSibling';
 
@@ -18,8 +16,8 @@ import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeaf
 class PartialInlineElement implements InlineElement {
     constructor(
         private inlineElement: InlineElement,
-        private startPoint: EditorPoint = null,
-        private endPoint: EditorPoint = null
+        private start: Position = null,
+        private end: Position = null
     ) {}
 
     /**
@@ -47,50 +45,46 @@ class PartialInlineElement implements InlineElement {
      * Gets the text content
      */
     public getTextContent(): string {
-        let range = createRange(
-            Position.FromEditorPoint(this.getStartPoint()),
-            Position.FromEditorPoint(this.getEndPoint())
-        );
+        let range = createRange(this.getStartPosition(), this.getEndPosition());
         return range.toString();
     }
 
     /**
-     * Gets the start point
+     * Gets the start position
      */
-    public getStartPoint(): EditorPoint {
-        return this.startPoint || this.inlineElement.getStartPoint();
+    public getStartPosition(): Position {
+        return this.start || this.inlineElement.getStartPosition();
     }
 
     /**
-     * Gets the end point
+     * Gets the end position
      */
-    public getEndPoint(): EditorPoint {
-        return this.endPoint || this.inlineElement.getEndPoint();
+    public getEndPosition(): Position {
+        return this.end || this.inlineElement.getEndPosition();
     }
 
     /**
      * Get next partial inline element if it is not at the end boundary yet
      */
-    public get nextInlineElement(): PartialInlineElement {
-        return this.endPoint && new PartialInlineElement(this.inlineElement, this.endPoint, null);
+    public getNextInlineElement(): PartialInlineElement {
+        return this.end && new PartialInlineElement(this.inlineElement, this.end, null);
     }
 
     /**
      * Get previous partial inline element if it is not at the begin boundary yet
      */
-    public get previousInlineElement(): PartialInlineElement {
-        return (
-            this.startPoint && new PartialInlineElement(this.inlineElement, null, this.startPoint)
-        );
+    public getPreviousInlineElement(): PartialInlineElement {
+        return this.start && new PartialInlineElement(this.inlineElement, null, this.start);
     }
 
     /**
-     * Checks if it contains an editor point
+     * Checks if this inline element contains the given position
      */
-    public contains(editorPoint: EditorPoint): boolean {
+    public contains(position: Position): boolean {
         return (
-            isEditorPointAfter(editorPoint, this.getStartPoint()) &&
-            isEditorPointAfter(this.getEndPoint(), editorPoint)
+            position &&
+            position.isAfter(this.getStartPosition()) &&
+            this.getEndPosition().isAfter(position)
         );
     }
 
@@ -105,8 +99,8 @@ class PartialInlineElement implements InlineElement {
      * Check if this inline element is after the other inline element
      */
     public isAfter(inlineElement: InlineElement): boolean {
-        let thisStart = Position.FromEditorPoint(this.getStartPoint());
-        let otherEnd = inlineElement && Position.FromEditorPoint(inlineElement.getEndPoint());
+        let thisStart = this.getStartPosition();
+        let otherEnd = inlineElement && inlineElement.getEndPosition();
         return otherEnd && (thisStart.isAfter(otherEnd) || thisStart.equalTo(otherEnd));
     }
 
@@ -114,8 +108,8 @@ class PartialInlineElement implements InlineElement {
      * apply style
      */
     public applyStyle(styler: (element: HTMLElement) => any) {
-        let from = Position.FromEditorPoint(this.getStartPoint()).normalize();
-        let to = Position.FromEditorPoint(this.getEndPoint()).normalize();
+        let from = this.getStartPosition().normalize();
+        let to = this.getEndPosition().normalize();
         let container = this.getContainerNode();
 
         if (from.isAtEnd) {
