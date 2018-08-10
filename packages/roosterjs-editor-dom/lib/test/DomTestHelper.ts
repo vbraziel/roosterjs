@@ -88,7 +88,7 @@ export function createInlineElementFromNode(node: Node, rootNode: Node): InlineE
 
 // Create range from child nodes of given node
 export function createRangeFromChildNodes(node: Node): Range {
-    let selectionRange = new Range();
+    let selectionRange = document.createRange();
     selectionRange.setStartBefore(node.firstChild);
     selectionRange.setEndAfter(node.lastChild);
     return selectionRange;
@@ -96,7 +96,7 @@ export function createRangeFromChildNodes(node: Node): Range {
 
 // Create range from start and end position
 export function createRangeWithStartEndNode(start: Position, end: Position): Range {
-    let selectionRange = new Range();
+    let selectionRange = document.createRange();
     selectionRange.setStart(start.node, start.offset);
     selectionRange.setEnd(end.node, end.offset);
     return selectionRange;
@@ -104,7 +104,7 @@ export function createRangeWithStartEndNode(start: Position, end: Position): Ran
 
 // Create range from given HTMLElement
 export function createRangeWithDiv(testDiv: HTMLElement): Range {
-    let selectionRange = new Range();
+    let selectionRange = document.createRange();
     selectionRange.setStartBefore(testDiv);
     selectionRange.setEndAfter(testDiv);
     return selectionRange;
