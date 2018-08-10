@@ -3,11 +3,7 @@ export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
 export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
 
-export {
-    getFirstBlockElement,
-    getFirstLastBlockElement,
-    getLastBlockElement,
-} from './blockElements/getFirstLastBlockElement';
+export { getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
 
 export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
 export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
@@ -21,7 +17,6 @@ export { default as ImageInlineElement } from './inlineElements/ImageInlineEleme
 export { default as LinkInlineElement } from './inlineElements/LinkInlineElement';
 export { default as NodeInlineElement } from './inlineElements/NodeInlineElement';
 export { default as PartialInlineElement } from './inlineElements/PartialInlineElement';
-export { default as TextInlineElement } from './inlineElements/TextInlineElement';
 export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
 export {
     getInlineElementBefore,

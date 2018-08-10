@@ -3,7 +3,6 @@ import InlineElement from '../../inlineElements/InlineElement';
 import NodeBlockElement from '../../blockElements/NodeBlockElement';
 import PartialInlineElement from '../../inlineElements/PartialInlineElement';
 import Position from '../../selection/Position';
-import TextInlineElement from '../../inlineElements/TextInlineElement';
 import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import { PositionType } from 'roosterjs-editor-types';
 import { NodeInlineElement } from '../..';
@@ -353,8 +352,8 @@ describe('NodeInlineElement applyStyle()', () => {
 });
 
 describe('isTextualInlineElement()', () => {
-    it('input = <TextInlineElement>', () => {
-        runTest(new TextInlineElement(document.createTextNode('test'), null), true);
+    it('input = <Text NodeInlineElement>', () => {
+        runTest(new NodeInlineElement(document.createTextNode('test'), null), true);
     });
 
     it('input = <PartialInlineElement>{}', () => {
@@ -364,9 +363,9 @@ describe('isTextualInlineElement()', () => {
         );
     });
 
-    it('input = PartialInlineElement with TextInlineElement as decoratedInline', () => {
+    it('input = PartialInlineElement with Text NodeInlineElement as decoratedInline', () => {
         let mockInlineElement = new PartialInlineElement(
-            new TextInlineElement(document.createTextNode('test'), null)
+            new NodeInlineElement(document.createTextNode('test'), null)
         );
         runTest(mockInlineElement, true);
     });

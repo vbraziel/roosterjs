@@ -1,9 +1,6 @@
 import BlockElement from '../../blockElements/BlockElement';
 import * as DomTestHelper from '../DomTestHelper';
-import {
-    getFirstBlockElement,
-    getLastBlockElement,
-} from '../../blockElements/getFirstLastBlockElement';
+import { getFirstLastBlockElement } from '../../blockElements/getFirstLastBlockElement';
 
 let testID = 'getFirstLastBlockElement';
 
@@ -14,7 +11,7 @@ describe('getBlockElement getFirstBlockElement', () => {
 
     function runTest(rootNode: Node, testBlockElement: BlockElement) {
         // Act
-        let blockElement = getFirstBlockElement(rootNode);
+        let blockElement = getFirstLastBlockElement(rootNode, true);
 
         // Assert
         let isBlockElementEqual = blockElement.equals(testBlockElement);
@@ -72,7 +69,7 @@ describe('getBlockElement getLastBlockElement', () => {
 
     function runTest(rootNode: Node, testBlockElement: BlockElement) {
         // Act
-        let blockElement = getLastBlockElement(rootNode);
+        let blockElement = getFirstLastBlockElement(rootNode, false);
 
         // Assert
         let isBlockElementEqual = blockElement.equals(testBlockElement);

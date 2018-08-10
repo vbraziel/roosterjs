@@ -3,7 +3,7 @@ import InlineElement from '../inlineElements/InlineElement';
 import TraversingScoper from './TraversingScoper';
 import contains from '../utils/contains';
 import { getFirstInlineElement } from '../inlineElements/getFirstLastInlineElement';
-import { getFirstBlockElement } from '../blockElements/getFirstLastBlockElement';
+import { getFirstLastBlockElement } from '../blockElements/getFirstLastBlockElement';
 
 /**
  * provides scoper for traversing the entire editor body starting from the beginning
@@ -19,7 +19,7 @@ class BodyScoper implements TraversingScoper {
      * Get the start block element
      */
     public getStartBlockElement(): BlockElement {
-        return getFirstBlockElement(this.rootNode);
+        return getFirstLastBlockElement(this.rootNode, true /*isFirst*/);
     }
 
     /**

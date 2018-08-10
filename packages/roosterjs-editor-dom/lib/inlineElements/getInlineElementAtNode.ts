@@ -3,10 +3,8 @@ import ImageInlineElement from './ImageInlineElement';
 import InlineElement from '../inlineElements/InlineElement';
 import LinkInlineElement from './LinkInlineElement';
 import NodeInlineElement from './NodeInlineElement';
-import TextInlineElement from './TextInlineElement';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getTagOfNode from '../utils/getTagOfNode';
-import { NodeType } from 'roosterjs-editor-types';
 
 /**
  * Get the inline element at a node
@@ -63,8 +61,6 @@ function resolveInlineElement(node: Node, parentBlock: BlockElement): InlineElem
             inlineElement = new LinkInlineElement(currentNode, parentBlock);
         } else if (tag == 'IMG') {
             inlineElement = new ImageInlineElement(currentNode, parentBlock);
-        } else if (currentNode.nodeType == NodeType.Text) {
-            inlineElement = new TextInlineElement(currentNode, parentBlock);
         }
     }
 
