@@ -1,4 +1,9 @@
-import { ElementCallbackMap, AttributeCallbackMap, StringMap, StyleCallbackMap } from '../types/maps';
+import {
+    ElementCallbackMap,
+    AttributeCallbackMap,
+    StringMap,
+    StyleCallbackMap,
+} from '../types/maps';
 
 /**
  * Options for HtmlSanitizer

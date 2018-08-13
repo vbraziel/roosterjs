@@ -1,7 +1,12 @@
 import HtmlSanitizerOptions from '../types/HtmlSanitizerOptions';
 import cloneObject from '../utils/cloneObject';
 import htmlToDom from '../utils/htmlToDom';
-import { StringMap, StyleCallbackMap, ElementCallbackMap, AttributeCallbackMap } from '../types/maps';
+import {
+    StringMap,
+    StyleCallbackMap,
+    ElementCallbackMap,
+    AttributeCallbackMap,
+} from '../types/maps';
 import {
     getAllowedAttributes,
     getAllowedTags,
@@ -117,7 +122,11 @@ export default class HtmlSanitizer {
             (!isElement && !isText)
         ) {
             node.parentNode.removeChild(node);
-        } else if (isText && !this.allowPreserveWhiteSpace && currentStyle['white-space'] == 'pre') {
+        } else if (
+            isText &&
+            !this.allowPreserveWhiteSpace &&
+            currentStyle['white-space'] == 'pre'
+        ) {
             node.nodeValue = node.nodeValue.replace(/^ /gm, '\u00A0').replace(/ {2}/g, ' \u00A0');
         } else if (isElement) {
             let thisStyle = cloneObject(currentStyle);
