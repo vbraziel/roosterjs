@@ -3,7 +3,7 @@ export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
 export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
 
-export { getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
+export { default as getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
 
 export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
 export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
@@ -23,18 +23,12 @@ export {
     getInlineElementAfter,
 } from './inlineElements/getInlineElementBeforeAfter';
 
-export { default as Browser, getBrowserInfo } from './utils/Browser';
+export { default as Browser } from './utils/Browser';
 export { default as applyFormat } from './utils/applyFormat';
 export { default as applyTextStyle } from './utils/applyTextStyle';
 export { default as changeElementTag } from './utils/changeElementTag';
 export { default as collapseNodes } from './utils/collapseNodes';
 export { default as contains } from './utils/contains';
-export { default as convertInlineCss } from './utils/convertInlineCss';
-export {
-    default as sanitizeHtml,
-    SanitizeHtmlPropertyCallback,
-    StyleMap,
-} from './utils/sanitizeHtml';
 export { default as fromHtml } from './utils/fromHtml';
 export { default as getComputedStyles, getComputedStyle } from './utils/getComputedStyles';
 export { default as getElementOrParentElement } from './utils/getElementOrParentElement';

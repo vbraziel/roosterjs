@@ -20,7 +20,7 @@
     "start": "webpack-dev-server",
     "test": "karma start",
     "test:debug": "karma start --no-single-run",
-    "prettier": "node node_modules/prettier/bin-prettier --tab-width 4 --print-width 100 --write --trailing-comma es5 --jsx-bracket-same-line --single-quote \"packages/**/*.ts\"",
+    "prettier": "node tools/prettier.js",
     "publish": "node tools/publish-all.js"
   },
   "devDependencies": {

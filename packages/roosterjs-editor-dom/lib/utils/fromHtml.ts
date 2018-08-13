@@ -1,4 +1,4 @@
-import sanitizeHtml from './sanitizeHtml';
+import { sanitizeHtml } from 'roosterjs-html-sanitizer';
 
 /**
  * Creates an HTML node array from html

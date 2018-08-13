@@ -2,8 +2,8 @@ import BlockElement from '../blockElements/BlockElement';
 import InlineElement from '../inlineElements/InlineElement';
 import TraversingScoper from './TraversingScoper';
 import contains from '../utils/contains';
+import getFirstLastBlockElement from '../blockElements/getFirstLastBlockElement';
 import { getFirstInlineElement } from '../inlineElements/getFirstLastInlineElement';
-import { getFirstLastBlockElement } from '../blockElements/getFirstLastBlockElement';
 
 /**
  * provides scoper for traversing the entire editor body starting from the beginning

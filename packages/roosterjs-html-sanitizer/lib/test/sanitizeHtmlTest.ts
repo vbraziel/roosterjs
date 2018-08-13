@@ -1,8 +1,18 @@
-import sanitizeHtml from '../../utils/sanitizeHtml';
+import HtmlSanitizer from '../sanitizer/HtmlSanitizer';
 
 describe('sanitizeHtml', () => {
+    let sanitizer: HtmlSanitizer;
+
+    beforeAll(() => {
+        sanitizer = new HtmlSanitizer();
+    });
+
+    afterAll(() => {
+        sanitizer = null;
+    });
+
     function runTest(source: string, exp: string) {
-        let result = sanitizeHtml(source, null, false, null, false, { color: '' });
+        let result = sanitizer.exec(source, false, false, { color: '' });
         expect(result).toBe(exp);
     }
 

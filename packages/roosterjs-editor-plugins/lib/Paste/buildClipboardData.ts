@@ -31,6 +31,7 @@ export default function buildClipboardData(
         image: getImage(dataTransfer),
         text: dataTransfer.getData('text'),
         html: null,
+        htmlAttributes: {},
     };
 
     if (event.clipboardData && event.clipboardData.items) {

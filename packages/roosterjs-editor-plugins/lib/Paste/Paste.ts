@@ -9,19 +9,23 @@ import {
     PluginEventType,
 } from 'roosterjs-editor-types';
 import {
-    SanitizeHtmlPropertyCallback,
+    Position,
     applyFormat,
     fromHtml,
     getFirstLeafNode,
     getNextLeafSibling,
-    sanitizeHtml,
 } from 'roosterjs-editor-dom';
 import { Editor, EditorPlugin } from 'roosterjs-editor-core';
 import { insertImage } from 'roosterjs-editor-api';
 import buildClipboardData from './buildClipboardData';
 import convertPastedContentFromWord from './wordConverter/convertPastedContentFromWord';
 import textToHtml from './textToHtml';
-import getInheritableStyles from './getInheritableStyles';
+import {
+    HtmlSanitizer,
+    AttributeCallbackMap,
+    getInheritableStyles,
+    htmlToDom,
+} from 'roosterjs-html-sanitizer';
 
 /**
  * Paste plugin, handles onPaste event and paste content into editor
@@ -29,6 +33,7 @@ import getInheritableStyles from './getInheritableStyles';
 export default class Paste implements EditorPlugin {
     private editor: Editor;
     private pasteDisposer: () => void;
+    private sanitizer: HtmlSanitizer;
     public name: 'Paste';
 
     /**
@@ -36,10 +41,11 @@ export default class Paste implements EditorPlugin {
      * @param deprecated Deprecated parameter only used for compatibility with old code
      * @param htmlPropertyCallbacks A callback to help handle html sanitization
      */
-    constructor(
-        deprecated?: boolean,
-        private htmlPropertyCallbacks?: SanitizeHtmlPropertyCallback
-    ) {}
+    constructor(deprecated?: boolean, htmlPropertyCallbacks?: AttributeCallbackMap) {
+        this.sanitizer = new HtmlSanitizer({
+            attributeCallbacks: htmlPropertyCallbacks,
+        });
+    }
 
     public initialize(editor: Editor) {
         this.editor = editor;
@@ -64,18 +70,7 @@ export default class Paste implements EditorPlugin {
 
     private onPaste = (event: Event) => {
         buildClipboardData(<ClipboardEvent>event, this.editor, clipboardData => {
-            if (!clipboardData.html && clipboardData.text) {
-                clipboardData.html = textToHtml(clipboardData.text);
-            }
-            let currentStyles = getInheritableStyles(this.editor);
-            clipboardData.html = sanitizeHtml(
-                clipboardData.html,
-                null /*additionalStyleNodes*/,
-                false /*convertInlineCssOnly*/,
-                this.htmlPropertyCallbacks,
-                true /*preserveFragmentOnly*/,
-                currentStyles
-            );
+            this.preprocessHtml(clipboardData);
             this.pasteOriginal(clipboardData);
         });
     };
@@ -188,6 +183,31 @@ export default class Paste implements EditorPlugin {
         }
         for (let parent of parents) {
             applyFormat(parent, format);
+        }
+    }
+
+    private preprocessHtml(clipboardData: ClipboardData) {
+        if (clipboardData.html) {
+            let range = this.editor.getSelectionRange();
+            let element = range && Position.getStart(range).normalize().element;
+            let currentStyles = getInheritableStyles(element);
+            let doc = htmlToDom(clipboardData.html, true /*preserveFragmentOnly*/);
+            if (doc) {
+                if (doc.firstChild.nodeType == NodeType.Element) {
+                    let attributes = (doc.firstChild as HTMLElement).attributes;
+                    for (let i = 0; i < attributes.length; i++) {
+                        let attribute = attributes[i];
+                        clipboardData.htmlAttributes[attribute.name] = attribute.value;
+                    }
+                }
+
+                this.sanitizer.convertGlobalCssToInlineCss(doc);
+                this.sanitizer.sanitize(doc.body, currentStyles);
+            }
+
+            clipboardData.html = (doc && doc.body && doc.body.innerHTML) || '';
+        } else {
+            clipboardData.html = clipboardData.text ? textToHtml(clipboardData.text) : '';
         }
     }
 }

@@ -1,6 +1,6 @@
-import BlockElement from '../../blockElements/BlockElement';
 import * as DomTestHelper from '../DomTestHelper';
-import { getFirstLastBlockElement } from '../../blockElements/getFirstLastBlockElement';
+import BlockElement from '../../blockElements/BlockElement';
+import getFirstLastBlockElement from '../../blockElements/getFirstLastBlockElement';
 
 let testID = 'getFirstLastBlockElement';
 

@@ -1,4 +1,4 @@
-import convertInlineCss from '../../utils/convertInlineCss';
+import convertInlineCss from '../exports/convertInlineCss';
 
 describe('convertInlineCss', () => {
     it('input = "" ', () => {
