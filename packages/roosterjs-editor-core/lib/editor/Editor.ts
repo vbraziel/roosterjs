@@ -383,6 +383,14 @@ export default class Editor {
     //#region Focus and Selection
 
     /**
+     * Get current selection
+     * @return current selection object
+     */
+    public getSelection(): Selection {
+        return this.core.document.defaultView.getSelection();
+    }
+
+    /**
      * Get current selection range from Editor.
      * It does a live pull on the selection, if nothing retrieved, return whatever we have in cache.
      * @returns current selection range, or null if editor never got focus before
@@ -512,7 +520,7 @@ export default class Editor {
      * @returns a Rect object representing cursor location
      */
     public getCursorRect(): Rect {
-        let selection = this.core.document.defaultView.getSelection();
+        let selection = this.getSelection();
 
         if (!selection || !selection.focusNode) {
             return null;
