@@ -3,7 +3,6 @@ import NodeBlockElement from './NodeBlockElement';
 import StartEndBlockElement from './StartEndBlockElement';
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
-import getBlockContext from './getBlockContext';
 import getTagOfNode from '../utils/getTagOfNode';
 import isBlockElement from '../utils/isBlockElement';
 
@@ -38,7 +37,7 @@ export default function getBlockElementAtNode(rootNode: Node, node: Node): Block
     // Identify the containing block. This serves as ceiling for traversing down below
     // NOTE: this container block could be just the rootNode,
     // which cannot be used to create block element. We will special case handle it later on
-    let containerBlockNode = getBlockContext(node);
+    let containerBlockNode = StartEndBlockElement.getBlockContext(node);
     if (containerBlockNode == node) {
         return new NodeBlockElement(containerBlockNode);
     }

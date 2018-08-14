@@ -17,7 +17,7 @@ import {
  * they want to know text being typed at cursor
  * This provides a scope for parsing from cursor position up to begin of the selection block
  */
-class SelectionBlockScoper implements TraversingScoper {
+export default class SelectionBlockScoper implements TraversingScoper {
     private block: BlockElement;
     private position: Position;
 
@@ -89,5 +89,3 @@ class SelectionBlockScoper implements TraversingScoper {
             : null;
     }
 }
-
-export default SelectionBlockScoper;

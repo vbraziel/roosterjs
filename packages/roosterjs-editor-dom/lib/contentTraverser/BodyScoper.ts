@@ -8,7 +8,7 @@ import { getFirstInlineElement } from '../inlineElements/getFirstLastInlineEleme
 /**
  * provides scoper for traversing the entire editor body starting from the beginning
  */
-class BodyScoper implements TraversingScoper {
+export default class BodyScoper implements TraversingScoper {
     /**
      * Construct a new instance of BodyScoper class
      * @param rootNode Root node of the body
@@ -43,5 +43,3 @@ class BodyScoper implements TraversingScoper {
         return inlineElement;
     }
 }
-
-export default BodyScoper;

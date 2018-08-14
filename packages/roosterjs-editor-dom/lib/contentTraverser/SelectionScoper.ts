@@ -11,7 +11,7 @@ import PartialInlineElement from '../inlineElements/PartialInlineElement';
  * and checks if a block falls in the selection (isBlockInScope)
  * last trimInlineElement to trim any inline element to return a partial that falls in the selection
  */
-class SelectionScoper implements TraversingScoper {
+export default class SelectionScoper implements TraversingScoper {
     private start: Position;
     private end: Position;
     private startBlock: BlockElement;
@@ -118,5 +118,3 @@ class SelectionScoper implements TraversingScoper {
                 : inline;
     }
 }
-
-export default SelectionScoper;

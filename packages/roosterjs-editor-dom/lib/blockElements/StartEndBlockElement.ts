@@ -2,7 +2,6 @@ import BlockElement from './BlockElement';
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
 import createRange from '../selection/createRange';
-import getBlockContext from './getBlockContext';
 import isBlockElement from '../utils/isBlockElement';
 import isNodeAfter from '../utils/isNodeAfter';
 import wrap from '../utils/wrap';
@@ -19,6 +18,13 @@ import { splitBalancedNodeRange } from '../utils/splitParentNode';
 export default class StartEndBlockElement implements BlockElement {
     constructor(private rootNode: Node, private startNode: Node, private endNode: Node) {}
 
+    static getBlockContext(node: Node): HTMLElement {
+        while (node && !isBlockElement(node)) {
+            node = node.parentNode;
+        }
+        return node as HTMLElement;
+    }
+
     /**
      * Gets the text content
      */
@@ -34,12 +40,12 @@ export default class StartEndBlockElement implements BlockElement {
      */
     public collapseToSingleElement(): HTMLElement {
         let nodes = collapseNodes(
-            getBlockContext(this.startNode),
+            StartEndBlockElement.getBlockContext(this.startNode),
             this.startNode,
             this.endNode,
             true /*canSplitParent*/
         );
-        let blockContext = getBlockContext(this.startNode);
+        let blockContext = StartEndBlockElement.getBlockContext(this.startNode);
         while (nodes[0] && nodes[0] != blockContext && nodes[0].parentNode != this.rootNode) {
             nodes = [splitBalancedNodeRange(nodes)];
         }
