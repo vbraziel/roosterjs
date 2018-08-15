@@ -2,6 +2,8 @@ import { ChangeSource, NodeType, PositionType } from 'roosterjs-editor-types';
 import { Editor } from 'roosterjs-editor-core';
 import { applyTextStyle, getTagOfNode } from 'roosterjs-editor-dom';
 
+const ZERO_WIDTH_SPACE = '\u200B';
+
 /**
  * Apply inline style to current selection
  * @param callback The callback function to apply style
@@ -11,25 +13,24 @@ export default function applyInlineStyle(editor: Editor, callback: (element: HTM
     let range = editor.getSelectionRange();
 
     if (range && range.collapsed) {
-        let tempNode = range.startContainer;
-        let ZWS = '\u200B';
+        let node = range.startContainer;
         let isZWSNode =
-            tempNode &&
-            tempNode.nodeType == NodeType.Text &&
-            tempNode.nodeValue == ZWS &&
-            getTagOfNode(tempNode.parentNode) == 'SPAN';
+            node &&
+            node.nodeType == NodeType.Text &&
+            node.nodeValue == ZERO_WIDTH_SPACE &&
+            getTagOfNode(node.parentNode) == 'SPAN';
 
         if (!isZWSNode) {
             editor.addUndoSnapshot();
             // Create a new text node to hold the selection.
             // Some content is needed to position selection into the span
             // for here, we inject ZWS - zero width space
-            tempNode = editor.getDocument().createTextNode(ZWS);
-            range.insertNode(tempNode);
+            node = editor.getDocument().createTextNode(ZERO_WIDTH_SPACE);
+            range.insertNode(node);
         }
 
-        applyTextStyle(tempNode, callback);
-        editor.select(tempNode, PositionType.End);
+        applyTextStyle(node, callback);
+        editor.select(node, PositionType.End);
     } else {
         // This is start and end node that get the style. The start and end needs to be recorded so that selection
         // can be re-applied post-applying style
