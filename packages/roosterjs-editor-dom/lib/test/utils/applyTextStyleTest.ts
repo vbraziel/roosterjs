@@ -10,7 +10,8 @@ describe('applyTextStyle()', () => {
         endNodeOffset: number,
         result: string
     ) {
-        runTest(caseIndex,
+        runTest(
+            caseIndex,
             ['test'],
             startNodeIndex,
             startNodeOffset,
@@ -28,7 +29,8 @@ describe('applyTextStyle()', () => {
         endNodeOffset: number,
         result: string
     ) {
-        runTest(caseIndex,
+        runTest(
+            caseIndex,
             ['test1', 'test2'],
             startNodeIndex,
             startNodeOffset,
@@ -46,7 +48,8 @@ describe('applyTextStyle()', () => {
         endNodeOffset: number,
         result: string
     ) {
-        runTest(caseIndex,
+        runTest(
+            caseIndex,
             ['test1', 'test2', 'test3'],
             startNodeIndex,
             startNodeOffset,
@@ -71,8 +74,12 @@ describe('applyTextStyle()', () => {
         for (let text of texts) {
             span.appendChild(document.createTextNode(text));
         }
-        let start = span.childNodes[startNodeIndex] && new Position(span.childNodes[startNodeIndex], startNodeOffset);
-        let end = span.childNodes[endNodeIndex] && new Position(span.childNodes[endNodeIndex], endNodeOffset);
+        let start =
+            span.childNodes[startNodeIndex] &&
+            new Position(span.childNodes[startNodeIndex], startNodeOffset);
+        let end =
+            span.childNodes[endNodeIndex] &&
+            new Position(span.childNodes[endNodeIndex], endNodeOffset);
         applyTextStyle(span, node => (node.style.color = 'red'), start, end);
         expect(div.innerHTML).toBe(result, `Index: ${caseIndex}`);
     }
@@ -96,27 +103,69 @@ describe('applyTextStyle()', () => {
     it('applyTextStyle() two text nodes', () => {
         runTest2(0, 0, 0, 0, 0, '<span>test1test2</span>');
         runTest2(1, 1, 0, 1, 0, '<span>test1test2</span>');
-        runTest2(2, 1, 0, 1, 2, '<span>test1</span><span style="color: red;">te</span><span>st2</span>');
+        runTest2(
+            2,
+            1,
+            0,
+            1,
+            2,
+            '<span>test1</span><span style="color: red;">te</span><span>st2</span>'
+        );
         runTest2(3, 1, 2, -1, 0, '<span>test1te</span><span style="color: red;">st2</span>');
-        runTest2(4, 1, 1, 1, 3, '<span>test1t</span><span style="color: red;">es</span><span>t2</span>');
+        runTest2(
+            4,
+            1,
+            1,
+            1,
+            3,
+            '<span>test1t</span><span style="color: red;">es</span><span>t2</span>'
+        );
         runTest2(5, -1, 0, 1, 2, '<span style="color: red;">test1te</span><span>st2</span>');
         runTest2(6, -1, 0, 1, 6, '<span style="color: red;">test1test2</span>');
         runTest2(7, -1, 0, -1, 0, '<span style="color: red;">test1test2</span>');
         runTest2(8, 0, 2, -1, 0, '<span>te</span><span style="color: red;">st1test2</span>');
-        runTest2(9, 0, 2, 1, 2, '<span>te</span><span style="color: red;">st1te</span><span>st2</span>');
+        runTest2(
+            9,
+            0,
+            2,
+            1,
+            2,
+            '<span>te</span><span style="color: red;">st1te</span><span>st2</span>'
+        );
         runTest2(10, 0, 6, -1, 0, '<span>test1</span><span style="color: red;">test2</span>');
         runTest2(11, 0, 0, -1, 0, '<span style="color: red;">test1test2</span>');
-        runTest2(12, 0, 2, 1, 0, '<span>te</span><span style="color: red;">st1</span><span>test2</span>');
+        runTest2(
+            12,
+            0,
+            2,
+            1,
+            0,
+            '<span>te</span><span style="color: red;">st1</span><span>test2</span>'
+        );
         runTest2(13, 0, 2, 1, 6, '<span>te</span><span style="color: red;">st1test2</span>');
     });
 
     it('applyTextStyle() three text nodes', () => {
         runTest3(0, 0, 0, 0, 0, '<span>test1test2test3</span>');
         runTest3(1, 0, 0, -1, 0, '<span style="color: red;">test1test2test3</span>');
-        runTest3(2, 0, 2, 0, 4, '<span>te</span><span style="color: red;">st</span><span>1test2test3</span>');
+        runTest3(
+            2,
+            0,
+            2,
+            0,
+            4,
+            '<span>te</span><span style="color: red;">st</span><span>1test2test3</span>'
+        );
         runTest3(3, 2, 0, 0, 0, '<span>test1test2test3</span>');
         runTest3(4, 0, 0, 2, 0, '<span style="color: red;">test1test2</span><span>test3</span>');
-        runTest3(5, 0, 2, 2, 2, '<span>te</span><span style="color: red;">st1test2te</span><span>st3</span>');
+        runTest3(
+            5,
+            0,
+            2,
+            2,
+            2,
+            '<span>te</span><span style="color: red;">st1test2te</span><span>st3</span>'
+        );
         runTest3(6, -1, 0, -1, 0, '<span style="color: red;">test1test2test3</span>');
     });
 });
