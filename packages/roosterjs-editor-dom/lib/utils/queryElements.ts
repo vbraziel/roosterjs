@@ -2,7 +2,7 @@ import { DocumentPosition } from 'roosterjs-editor-types';
 import { QueryScope } from 'roosterjs-editor-types';
 
 /**
- * Query HTML elements in teh container by a selector string
+ * Query HTML elements in the container by a selector string
  * @param container Container element to query from
  * @param selector Selector string to query
  * @param forEachCallback An optional callback to be invoked on each node in query result
@@ -16,7 +16,11 @@ export default function queryElements(
     forEachCallback?: (node: HTMLElement) => any,
     scope: QueryScope = QueryScope.Body,
     range?: Range
-) {
+): HTMLElement[] {
+    if (!container || !selector) {
+        return [];
+    }
+
     let elements = [].slice.call(container.querySelectorAll(selector)) as HTMLElement[];
 
     if (scope != QueryScope.Body && range) {
@@ -54,5 +58,10 @@ function isIntersectWithNodeRange(
 }
 
 function checkPosition(position: DocumentPosition, targets: DocumentPosition[]): boolean {
-    return targets.some(target => (position & target) == target);
+    return targets.some(
+        target =>
+            target == DocumentPosition.Same
+                ? position == DocumentPosition.Same
+                : (position & target) == target
+    );
 }
