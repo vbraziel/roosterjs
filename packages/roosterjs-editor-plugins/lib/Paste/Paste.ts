@@ -12,6 +12,7 @@ import {
     Position,
     applyFormat,
     fromHtml,
+    getElementOrParentElement,
     getFirstLeafNode,
     getNextLeafSibling,
 } from 'roosterjs-editor-dom';
@@ -189,7 +190,8 @@ export default class Paste implements EditorPlugin {
     private preprocessHtml(clipboardData: ClipboardData) {
         if (clipboardData.html) {
             let range = this.editor.getSelectionRange();
-            let element = range && Position.getStart(range).normalize().element;
+            let element =
+                range && getElementOrParentElement(Position.getStart(range).normalize().node);
             let currentStyles = getInheritableStyles(element);
             let doc = htmlToDom(clipboardData.html, true /*preserveFragmentOnly*/);
             if (doc) {

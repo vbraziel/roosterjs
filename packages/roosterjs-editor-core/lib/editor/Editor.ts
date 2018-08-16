@@ -23,6 +23,7 @@ import {
     contains,
     fromHtml,
     getBlockElementAtNode,
+    getPositionRect,
     getTagOfNode,
     isNodeEmpty,
     markSelection,
@@ -527,7 +528,7 @@ export default class Editor {
         }
 
         let position = new Position(selection.focusNode, selection.focusOffset);
-        return position.getRect();
+        return getPositionRect(position);
     }
 
     //#endregion

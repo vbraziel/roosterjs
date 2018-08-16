@@ -1,4 +1,4 @@
-import { TableFormat } from 'roosterjs-editor-types';
+import { TableFormat, TableOperation } from 'roosterjs-editor-types';
 
 /**
  * Represent a virtual cell of a virtual table
@@ -87,10 +87,10 @@ export default class VTable {
      */
     writeBack() {
         if (this.cells) {
-            VTable.moveChildren(this.table);
+            moveChildren(this.table);
             this.table.style.borderCollapse = 'collapse';
             this.cells.forEach((row, r) => {
-                let tr = VTable.cloneNode(this.trs[r % 2] || this.trs[0]);
+                let tr = cloneNode(this.trs[r % 2] || this.trs[0]);
                 this.table.appendChild(tr);
                 row.forEach((cell, c) => {
                     if (cell.td) {
@@ -121,6 +121,128 @@ export default class VTable {
                 cell.td.style.borderRight = getBorderStyle(format.verticalBorderColor);
             })
         );
+    }
+
+    /**
+     * Edit table with given operation.
+     * @param operation Table operation
+     */
+    edit(operation: TableOperation) {
+        let currentRow = this.cells[this.row];
+        let currentCell = currentRow[this.col];
+        switch (operation) {
+            case TableOperation.InsertAbove:
+            case TableOperation.InsertBelow:
+                let newRow = this.row + (operation == TableOperation.InsertAbove ? 0 : 1);
+                this.cells.splice(newRow, 0, currentRow.map(cell => cloneCell(cell)));
+                break;
+
+            case TableOperation.InsertLeft:
+            case TableOperation.InsertRight:
+                let newCol = this.col + (operation == TableOperation.InsertLeft ? 0 : 1);
+                this.forEachCellOfCurrentColumn((cell, row) => {
+                    row.splice(newCol, 0, cloneCell(cell));
+                });
+                break;
+
+            case TableOperation.DeleteRow:
+                this.forEachCellOfCurrentRow((cell, i) => {
+                    let nextCell = this.getCell(this.row + 1, i);
+                    if (cell.td && cell.td.rowSpan > 1 && nextCell.spanAbove) {
+                        nextCell.td = cell.td;
+                    }
+                });
+                this.cells.splice(this.row, 1);
+                break;
+
+            case TableOperation.DeleteColumn:
+                this.forEachCellOfCurrentColumn((cell, row, i) => {
+                    let nextCell = this.getCell(i, this.col + 1);
+                    if (cell.td && cell.td.colSpan > 1 && nextCell.spanLeft) {
+                        nextCell.td = cell.td;
+                    }
+                    row.splice(this.col, 1);
+                });
+                break;
+
+            case TableOperation.MergeAbove:
+            case TableOperation.MergeBelow:
+                let rowStep = operation == TableOperation.MergeAbove ? -1 : 1;
+                for (
+                    let rowIndex = this.row + rowStep;
+                    rowIndex >= 0 && rowIndex < this.cells.length;
+                    rowIndex += rowStep
+                ) {
+                    let cell = this.getCell(rowIndex, this.col);
+                    if (cell.td && !cell.spanAbove) {
+                        let aboveCell = rowIndex < this.row ? cell : currentCell;
+                        let belowCell = rowIndex < this.row ? currentCell : cell;
+                        if (aboveCell.td.colSpan == belowCell.td.colSpan) {
+                            moveChildren(belowCell.td, aboveCell.td);
+                            belowCell.td = null;
+                            belowCell.spanAbove = true;
+                        }
+                        break;
+                    }
+                }
+                break;
+
+            case TableOperation.MergeLeft:
+            case TableOperation.MergeRight:
+                let colStep = operation == TableOperation.MergeLeft ? -1 : 1;
+                for (
+                    let colIndex = this.col + colStep;
+                    colIndex >= 0 && colIndex < this.cells[this.row].length;
+                    colIndex += colStep
+                ) {
+                    let cell = this.getCell(this.row, colIndex);
+                    if (cell.td && !cell.spanLeft) {
+                        let leftCell = colIndex < this.col ? cell : currentCell;
+                        let rightCell = colIndex < this.col ? currentCell : cell;
+                        if (leftCell.td.rowSpan == rightCell.td.rowSpan) {
+                            moveChildren(rightCell.td, leftCell.td);
+                            rightCell.td = null;
+                            rightCell.spanLeft = true;
+                        }
+                        break;
+                    }
+                }
+                break;
+
+            case TableOperation.DeleteTable:
+                this.cells = null;
+                break;
+
+            case TableOperation.SplitVertically:
+                if (currentCell.td.rowSpan > 1) {
+                    this.getCell(this.row + 1, this.col).td = cloneNode(currentCell.td);
+                } else {
+                    let splitRow = currentRow.map(cell => {
+                        return {
+                            td: cell == currentCell ? cloneNode(cell.td) : null,
+                            spanAbove: cell != currentCell,
+                            spanLeft: cell.spanLeft,
+                        };
+                    });
+                    this.cells.splice(this.row + 1, 0, splitRow);
+                }
+                break;
+
+            case TableOperation.SplitHorizontally:
+                if (currentCell.td.colSpan > 1) {
+                    this.getCell(this.row, this.col + 1).td = cloneNode(currentCell.td);
+                } else {
+                    this.forEachCellOfCurrentColumn((cell, row) => {
+                        row.splice(this.col + 1, 0, {
+                            td: row == currentRow ? cloneNode(cell.td) : null,
+                            spanAbove: cell.spanAbove,
+                            spanLeft: row != currentRow,
+                        });
+                    });
+                }
+                break;
+        }
+        this.writeBack();
     }
 
     /**
@@ -177,45 +299,6 @@ export default class VTable {
         return null;
     }
 
-    /**
-     * Move all children from one node to another
-     * @param fromNode The source node to move children from
-     * @param toNode Target node. If not passed, children nodes of source node will be removed
-     */
-    static moveChildren(fromNode: Node, toNode?: Node) {
-        while (fromNode.firstChild) {
-            if (toNode) {
-                toNode.appendChild(fromNode.firstChild);
-            } else {
-                fromNode.removeChild(fromNode.firstChild);
-            }
-        }
-    }
-
-    /**
-     * Clone a node without its children.
-     * @param node The node to clone
-     */
-    static cloneNode<T extends Node>(node: T): T {
-        let newNode = node ? <T>node.cloneNode(false /*deep*/) : null;
-        if (newNode && newNode instanceof HTMLTableCellElement && !newNode.firstChild) {
-            newNode.appendChild(node.ownerDocument.createElement('br'));
-        }
-        return newNode;
-    }
-
-    /**
-     * Clone a table cell
-     * @param cell The cell to clone
-     */
-    static cloneCell(cell: VCell): VCell {
-        return {
-            td: VTable.cloneNode(cell.td),
-            spanAbove: cell.spanAbove,
-            spanLeft: cell.spanLeft,
-        };
-    }
-
     private recalcSpans(row: number, col: number) {
         let td = this.getCell(row, col).td;
         if (td) {
@@ -247,4 +330,43 @@ function getTableFromTd(td: HTMLTableCellElement) {
 
 function getBorderStyle(style: string): string {
     return 'solid 1px ' + (style || 'transparent');
+}
+
+/**
+ * Clone a table cell
+ * @param cell The cell to clone
+ */
+function cloneCell(cell: VCell): VCell {
+    return {
+        td: cloneNode(cell.td),
+        spanAbove: cell.spanAbove,
+        spanLeft: cell.spanLeft,
+    };
+}
+
+/**
+ * Clone a node without its children.
+ * @param node The node to clone
+ */
+function cloneNode<T extends Node>(node: T): T {
+    let newNode = node ? <T>node.cloneNode(false /*deep*/) : null;
+    if (newNode && newNode instanceof HTMLTableCellElement && !newNode.firstChild) {
+        newNode.appendChild(node.ownerDocument.createElement('br'));
+    }
+    return newNode;
+}
+
+/**
+ * Move all children from one node to another
+ * @param fromNode The source node to move children from
+ * @param toNode Target node. If not passed, children nodes of source node will be removed
+ */
+function moveChildren(fromNode: Node, toNode?: Node) {
+    while (fromNode.firstChild) {
+        if (toNode) {
+            toNode.appendChild(fromNode.firstChild);
+        } else {
+            fromNode.removeChild(fromNode.firstChild);
+        }
+    }
 }

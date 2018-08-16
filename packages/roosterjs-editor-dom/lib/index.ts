@@ -47,4 +47,6 @@ export { default as VTable, VCell } from './table/VTable';
 
 export { default as Position } from './selection/Position';
 export { default as createRange } from './selection/createRange';
+export { default as getPositionRect } from './selection/getPositionRect';
+export { default as isPositionAtBeginningOf } from './selection/isPositionAtBeginningOf';
 export { markSelection, removeMarker } from './selection/selectionMarker';

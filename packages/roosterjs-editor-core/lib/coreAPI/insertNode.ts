@@ -9,6 +9,7 @@ import {
     getTagOfNode,
     isBlockElement,
     isNodeEmpty,
+    isPositionAtBeginningOf,
     isVoidHtmlElement,
     unwrap,
     wrap,
@@ -153,7 +154,10 @@ function preprocessNode(
             }
 
             if (getTagOfNode(listNode.parentNode) == tag) {
-                if (isNodeEmpty(listNode) || Position.getStart(range).isAtBeginningOf(listNode)) {
+                if (
+                    isNodeEmpty(listNode) ||
+                    isPositionAtBeginningOf(Position.getStart(range), listNode)
+                ) {
                     range.setEndBefore(listNode);
                 } else {
                     range.setEndAfter(listNode);
@@ -176,7 +180,7 @@ function preprocessNode(
         }
     }
 
-    if (isVoidHtmlElement(range.endContainer as HTMLElement)) {
+    if (isVoidHtmlElement(range.endContainer)) {
         range.setEndBefore(range.endContainer);
     }
 
