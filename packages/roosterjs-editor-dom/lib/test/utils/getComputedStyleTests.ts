@@ -112,6 +112,7 @@ describe('getComputedStyles()', () => {
         expectResult: string[]
     ) {
         let div = document.createElement('div');
+        div.style.fontFamily = 'times new roman';
         document.body.appendChild(div);
         div.innerHTML = input;
         let element = document.getElementById(id);

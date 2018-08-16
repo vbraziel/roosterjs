@@ -16,8 +16,13 @@ export default function splitParentNode(
     splitBefore: boolean,
     removeEmptyNewNode?: boolean
 ): Node {
+    if (!node || !node.parentNode) {
+        return null;
+    }
+
     let parentNode = node.parentNode;
-    let newParent = parentNode.cloneNode(false /*deep*/);
+    let newParent = parentNode.cloneNode(false /*deep*/) as HTMLElement;
+    newParent.removeAttribute('id');
     if (splitBefore) {
         while (parentNode.firstChild && parentNode.firstChild != node) {
             newParent.appendChild(parentNode.firstChild);
