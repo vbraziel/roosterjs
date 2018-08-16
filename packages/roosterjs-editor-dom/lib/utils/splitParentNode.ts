@@ -1,3 +1,4 @@
+import isNodeAfter from './isNodeAfter';
 import isNodeEmpty from './isNodeEmpty';
 
 /**
@@ -48,8 +49,8 @@ export default function splitParentNode(
 
 /**
  * Split parent node by a balanced node range
- * @param start Start node
- * @param end End node
+ * @param nodes The nodes to split from. If only one node is passed, split it from all its siblings.
+ * If two or nodes are passed, will split before the first one and after the last one, all other nodes will be ignored
  * @returns The parent node of the given node range if the given nodes are balanced, otherwise null
  */
 export function splitBalancedNodeRange(nodes: Node | Node[]): HTMLElement {
@@ -57,6 +58,11 @@ export function splitBalancedNodeRange(nodes: Node | Node[]): HTMLElement {
     let end = nodes instanceof Array ? nodes[nodes.length - 1] : nodes;
     let parentNode = start && end && start.parentNode == end.parentNode ? start.parentNode : null;
     if (parentNode) {
+        if (isNodeAfter(start, end)) {
+            let temp = end;
+            end = start;
+            start = temp;
+        }
         splitParentNode(start, true /*splitBefore*/);
         splitParentNode(end, false /*splitBefore*/);
     }
