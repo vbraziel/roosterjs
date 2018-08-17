@@ -19,7 +19,7 @@ export default function getPositionRect(position: Position): Rect {
     let rect = normalizeRect(range.getBoundingClientRect());
 
     if (!rect) {
-        let { node, offset } = position.normalize();
+        let normalizedPosition = position.normalize();
 
         // 2) if current cursor is inside text node, use range.getClientRects() for safari
         // or insert a SPAN and get the rect of SPAN for others
@@ -29,22 +29,21 @@ export default function getPositionRect(position: Position): Rect {
                 rect = normalizeRect(rects[0]);
             }
         } else {
-            if (node.nodeType == NodeType.Text) {
+            if (normalizedPosition.node.nodeType == NodeType.Text) {
                 let span = document.createElement('SPAN');
-                range.setStart(node, offset);
-                range.collapse(true /*toStart*/);
+                span.innerHTML = '\u200b';
+                range = createRange(normalizedPosition);
                 range.insertNode(span);
                 rect = normalizeRect(span.getBoundingClientRect());
                 span.parentNode.removeChild(span);
             }
         }
-    }
-
-    // 3) fallback to element.getBoundingClientRect()
-    if (!rect) {
-        let element = getElementOrParentElement(position.node);
-        if (element) {
-            rect = normalizeRect(element.getBoundingClientRect());
+        // 3) fallback to element.getBoundingClientRect()
+        if (!rect) {
+            let element = getElementOrParentElement(normalizedPosition.node);
+            if (element) {
+                rect = normalizeRect(element.getBoundingClientRect());
+            }
         }
     }
 
