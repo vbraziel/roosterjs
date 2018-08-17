@@ -2,15 +2,7 @@ export { default as BlockElement } from './blockElements/BlockElement';
 export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
 export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
-
 export { default as getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
-
-export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
-export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
-export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
-
-export { getNextLeafSibling, getPreviousLeafSibling } from './domWalker/getLeafSibling';
-export { getFirstLeafNode, getLastLeafNode } from './domWalker/getLeafNode';
 
 export { default as InlineElement } from './inlineElements/InlineElement';
 export { default as ImageInlineElement } from './inlineElements/ImageInlineElement';
@@ -22,6 +14,13 @@ export {
     getInlineElementBefore,
     getInlineElementAfter,
 } from './inlineElements/getInlineElementBeforeAfter';
+
+export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
+export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
+export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
+
+export { getNextLeafSibling, getPreviousLeafSibling } from './domWalker/getLeafSibling';
+export { getFirstLeafNode, getLastLeafNode } from './domWalker/getLeafNode';
 
 export { default as Browser } from './utils/Browser';
 export { default as applyFormat } from './utils/applyFormat';
