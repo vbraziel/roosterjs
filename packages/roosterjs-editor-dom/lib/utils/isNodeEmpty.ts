@@ -13,12 +13,18 @@ const ZERO_WIDTH_SPACE = /\u200b/g;
  * @returns True if there isn't any visible element inside node, otherwise false
  */
 export default function isNodeEmpty(node: Node, trimContent?: boolean) {
-    if (node.nodeType == NodeType.Text) {
+    if (!node) {
+        return false;
+    } else if (node.nodeType == NodeType.Text) {
         return trim(node.nodeValue, trimContent) == '';
     } else if (node.nodeType == NodeType.Element) {
         let element = node as Element;
         let textContent = trim(element.textContent, trimContent);
-        if (textContent != '' || VISIBLE_ELEMENT_TAGS.indexOf(getTagOfNode(element)) >= 0 || element.querySelectorAll(VISIBLE_ELEMENT_SELECTOR)[0]) {
+        if (
+            textContent != '' ||
+            VISIBLE_ELEMENT_TAGS.indexOf(getTagOfNode(element)) >= 0 ||
+            element.querySelectorAll(VISIBLE_ELEMENT_SELECTOR)[0]
+        ) {
             return false;
         }
     }
