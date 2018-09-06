@@ -70,7 +70,6 @@ export default class Editor {
             this.core.api.attachDomEvent(this.core, 'keydown', PluginEventType.KeyDown),
             this.core.api.attachDomEvent(this.core, 'keyup', PluginEventType.KeyUp),
             this.core.api.attachDomEvent(this.core, 'mousedown', PluginEventType.MouseDown),
-            this.core.api.attachDomEvent(this.core, 'mouseup', PluginEventType.MouseUp),
         ];
 
         // 6. Make the container editable and set its selection styles
@@ -607,15 +606,10 @@ export default class Editor {
      * a ContentChangedEvent will be fired with change source equal to this value
      */
     public addUndoSnapshot(
-        callback?: (start: Position, end: Position) => any,
+        callback?: (start: Position, end: Position, snapshotBeforeCallback: string) => any,
         changeSource?: ChangeSource | string
     ) {
-        this.core.api.editWithUndo(
-            this.core,
-            callback,
-            changeSource,
-            true /*addUndoSnapshotBeforeAction*/
-        );
+        this.core.api.editWithUndo(this.core, callback, changeSource);
     }
 
     /**

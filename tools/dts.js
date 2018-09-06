@@ -264,10 +264,6 @@ function output(filename, library, queue) {
                     }
                 }
 
-                if (alias == 'BasePluginEvent<T extends PluginEventType>') {
-                    console.log(name + '; ' + alias + '; ' + texts[0]);
-                }
-
                 for (var text of texts) {
                     text = text.replace(namePlaceholder, alias);
 
