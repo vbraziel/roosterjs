@@ -34,8 +34,12 @@ function runTestGlobal(
     if (node1) {
         position1 = Position.getStart(range);
         position2 = Position.getEnd(range);
-        expect(getPositionRect(position1).left).toEqual(expectStartLeft, 'Start Left');
-        expect(getPositionRect(position2).left).toEqual(expectEndLeft, 'End Left');
+        let startLeft = getPositionRect(position1).left;
+        let endLeft = getPositionRect(position2).left;
+        expect(startLeft).toBeGreaterThanOrEqual(expectStartLeft - 1, 'Start Left');
+        expect(endLeft).toBeGreaterThanOrEqual(expectEndLeft - 1, 'End Left');
+        expect(startLeft).toBeLessThanOrEqual(expectStartLeft + 1, 'Start Left');
+        expect(endLeft).toBeLessThanOrEqual(expectEndLeft + 1, 'End Left');
     } else {
         expect(range).toBeUndefined('Range');
     }
