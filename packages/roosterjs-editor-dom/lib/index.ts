@@ -19,9 +19,6 @@ export { default as ContentTraverser } from './contentTraverser/ContentTraverser
 export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
 export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
 
-export { getNextLeafSibling, getPreviousLeafSibling } from './domWalker/getLeafSibling';
-export { getFirstLeafNode, getLastLeafNode } from './domWalker/getLeafNode';
-
 export { default as Browser } from './utils/Browser';
 export { default as applyFormat } from './utils/applyFormat';
 export { default as applyTextStyle } from './utils/applyTextStyle';
@@ -41,6 +38,9 @@ export { default as queryElements } from './utils/queryElements';
 export { default as splitParentNode, splitBalancedNodeRange } from './utils/splitParentNode';
 export { default as unwrap } from './utils/unwrap';
 export { default as wrap } from './utils/wrap';
+export { getNextLeafSibling, getPreviousLeafSibling } from './utils/getLeafSibling';
+export { getFirstLeafNode, getLastLeafNode } from './utils/getLeafNode';
+
 
 export { default as VTable, VCell } from './table/VTable';
 

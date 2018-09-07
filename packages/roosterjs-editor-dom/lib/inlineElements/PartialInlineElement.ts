@@ -4,7 +4,7 @@ import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
 import { PositionType } from 'roosterjs-editor-types';
-import { getNextLeafSibling, getPreviousLeafSibling } from '../domWalker/getLeafSibling';
+import { getNextLeafSibling, getPreviousLeafSibling } from '../utils/getLeafSibling';
 
 /**
  * This is a special version of inline element that identifies a section of an inline element

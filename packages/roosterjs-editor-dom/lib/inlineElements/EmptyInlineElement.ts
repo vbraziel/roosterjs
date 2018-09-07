@@ -46,13 +46,6 @@ export default class EmptyInlineElement implements InlineElement {
     }
 
     /**
-     * Get the position of this inline element
-     */
-    getPosition(): Position {
-        return this.position;
-    }
-
-    /**
      * Checks if the given inline element is after this inline element
      */
     isAfter(inlineElement: InlineElement): boolean {

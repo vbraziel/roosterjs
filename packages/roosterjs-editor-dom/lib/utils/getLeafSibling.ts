@@ -1,4 +1,4 @@
-import contains from '../utils/contains';
+import contains from './contains';
 import shouldSkipNode from './shouldSkipNode';
 
 export function getLeafSibling(rootNode: Node, startNode: Node, isNext: boolean): Node {

@@ -2,7 +2,7 @@ import Position from '../selection/Position';
 import getTagOfNode from './getTagOfNode';
 import wrap from './wrap';
 import { NodeType, PositionType } from 'roosterjs-editor-types';
-import { getNextLeafSibling } from '../domWalker/getLeafSibling';
+import { getNextLeafSibling } from './getLeafSibling';
 import { splitBalancedNodeRange } from './splitParentNode';
 
 export default function applyTextStyle(

@@ -1,6 +1,6 @@
 import InlineElement from './InlineElement';
 import getInlineElementAtNode from './getInlineElementAtNode';
-import { getFirstLeafNode, getLastLeafNode } from '../domWalker/getLeafNode';
+import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
 
 /**
  * Get first inline element
