@@ -4,12 +4,10 @@ import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
+import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
+import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
+import getLeafNode from '../utils/getLeafNode';
 import { ContentPosition } from 'roosterjs-editor-types';
-import { getInlineElementAfter } from '../inlineElements/getInlineElementBeforeAfter';
-import {
-    getFirstInlineElement,
-    getLastInlineElement,
-} from '../inlineElements/getFirstLastInlineElement';
 
 /**
  * This provides traversing content in a selection start block
@@ -54,12 +52,18 @@ export default class SelectionBlockScoper implements TraversingScoper {
         if (this.block) {
             switch (this.startFrom) {
                 case ContentPosition.Begin:
-                    return getFirstInlineElement(this.rootNode);
                 case ContentPosition.End:
-                    return getLastInlineElement(this.rootNode);
+                    return getInlineElementAtNode(
+                        this.rootNode,
+                        getLeafNode(this.rootNode, this.startFrom == ContentPosition.Begin)
+                    );
                 case ContentPosition.SelectionStart:
                     // Get the inline before selection start position, and ensure it falls in the selection block
-                    let startInline = getInlineElementAfter(this.rootNode, this.position);
+                    let startInline = getInlineElementBeforeAfter(
+                        this.rootNode,
+                        this.position,
+                        true /*isAfter*/
+                    );
                     return startInline && this.block.contains(startInline.getContainerNode())
                         ? startInline
                         : new EmptyInlineElement(this.position, this.block);

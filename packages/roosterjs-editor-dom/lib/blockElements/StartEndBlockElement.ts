@@ -1,7 +1,6 @@
 import BlockElement from './BlockElement';
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
-import createRange from '../selection/createRange';
 import isBlockElement from '../utils/isBlockElement';
 import isNodeAfter from '../utils/isNodeAfter';
 import wrap from '../utils/wrap';
@@ -23,14 +22,6 @@ export default class StartEndBlockElement implements BlockElement {
             node = node.parentNode;
         }
         return node as HTMLElement;
-    }
-
-    /**
-     * Gets the text content
-     */
-    public getTextContent(): string {
-        let range = createRange(this.startNode, this.endNode);
-        return range.toString();
     }
 
     /**

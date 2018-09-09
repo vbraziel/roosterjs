@@ -1,16 +1,16 @@
 import * as DomTestHelper from '../DomTestHelper';
-import { getFirstLeafNode, getLastLeafNode } from '../../utils/getLeafNode';
+import getLeafNode from '../../utils/getLeafNode';
 
 let testID = 'getLeafNode';
 
-describe('getLeafNode getFirstLeafNode()', () => {
+describe('getLeafNode getLeafNode(), isFirst=true', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });
 
     function runTest(rootNode: Node, testNode: Node) {
         // Act
-        let leafNode = getFirstLeafNode(rootNode);
+        let leafNode = getLeafNode(rootNode, true);
 
         // Assert
         expect(leafNode).toBe(testNode);
@@ -55,14 +55,14 @@ describe('getLeafNode getFirstLeafNode()', () => {
     });
 });
 
-describe('getLeafNode getLastLeafNode()', () => {
+describe('getLeafNode getLeafNode(), isFirst=false', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });
 
     function runTest(rootNode: Node, testNode: Node) {
         // Act
-        let leafNode = getLastLeafNode(rootNode);
+        let leafNode = getLeafNode(rootNode, false);
 
         // Assert
         expect(leafNode).toBe(testNode);

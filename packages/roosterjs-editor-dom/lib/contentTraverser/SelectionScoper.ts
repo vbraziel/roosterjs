@@ -3,7 +3,7 @@ import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
-import { getInlineElementAfter } from '../inlineElements/getInlineElementBeforeAfter';
+import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import PartialInlineElement from '../inlineElements/PartialInlineElement';
 
 /**
@@ -44,7 +44,7 @@ export default class SelectionScoper implements TraversingScoper {
     public getStartInlineElement(): InlineElement {
         if (!this.startInline) {
             this.startInline = this.trimInlineElement(
-                getInlineElementAfter(this.rootNode, this.start)
+                getInlineElementBeforeAfter(this.rootNode, this.start, true /*isAfter*/)
             );
         }
 

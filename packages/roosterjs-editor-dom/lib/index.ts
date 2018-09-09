@@ -11,8 +11,7 @@ export { default as NodeInlineElement } from './inlineElements/NodeInlineElement
 export { default as PartialInlineElement } from './inlineElements/PartialInlineElement';
 export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
 export {
-    getInlineElementBefore,
-    getInlineElementAfter,
+    default as getInlineElementBeforeAfter,
 } from './inlineElements/getInlineElementBeforeAfter';
 
 export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
@@ -28,6 +27,8 @@ export { default as contains } from './utils/contains';
 export { default as fromHtml } from './utils/fromHtml';
 export { default as getComputedStyles, getComputedStyle } from './utils/getComputedStyles';
 export { default as getElementOrParentElement } from './utils/getElementOrParentElement';
+export { default as getLeafNode } from './utils/getLeafNode';
+export { default as getLeafSibling } from './utils/getLeafSibling';
 export { default as getTagOfNode } from './utils/getTagOfNode';
 export { default as isBlockElement } from './utils/isBlockElement';
 export { default as isNodeEmpty } from './utils/isNodeEmpty';
@@ -38,9 +39,6 @@ export { default as queryElements } from './utils/queryElements';
 export { default as splitParentNode, splitBalancedNodeRange } from './utils/splitParentNode';
 export { default as unwrap } from './utils/unwrap';
 export { default as wrap } from './utils/wrap';
-export { getNextLeafSibling, getPreviousLeafSibling } from './utils/getLeafSibling';
-export { getFirstLeafNode, getLastLeafNode } from './utils/getLeafNode';
-
 
 export { default as VTable, VCell } from './table/VTable';
 

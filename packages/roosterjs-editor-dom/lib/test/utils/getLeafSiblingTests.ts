@@ -1,9 +1,5 @@
 import * as DomTestHelper from '../DomTestHelper';
-import {
-    getNextLeafSibling,
-    getPreviousLeafSibling,
-    getLeafSibling,
-} from '../../utils/getLeafSibling';
+import getLeafSibling from '../../utils/getLeafSibling';
 
 let testID = 'getLeafSibling';
 
@@ -76,7 +72,7 @@ describe('getLeafSibling getNextLeafSibling()', () => {
 
     function runTest(rootNode: Node, startNode: Node, testNode: Node) {
         // Act
-        let leafNode = getNextLeafSibling(rootNode, startNode);
+        let leafNode = getLeafSibling(rootNode, startNode, true);
 
         // Assert
         expect(leafNode).toBe(testNode);
@@ -129,7 +125,7 @@ describe('getLeafSibling getPreviousLeafSibling()', () => {
 
     function runTest(rootNode: Node, startNode: Node, testNode: Node) {
         // Act
-        let leafNode = getPreviousLeafSibling(rootNode, startNode);
+        let leafNode = getLeafSibling(rootNode, startNode, false);
 
         // Assert
         expect(leafNode).toBe(testNode);

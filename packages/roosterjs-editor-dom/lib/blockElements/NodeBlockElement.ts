@@ -10,13 +10,6 @@ export default class NodeBlockElement implements BlockElement {
     constructor(private element: HTMLElement) {}
 
     /**
-     * Get the text content in the block
-     */
-    public getTextContent(): string {
-        return this.element.textContent;
-    }
-
-    /**
      * Collapse this element to a single DOM element.
      * If the content nodes are separated in different root nodes, wrap them to a single node
      * If the content nodes are included in root node with other nodes, split root node

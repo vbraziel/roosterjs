@@ -1,8 +1,8 @@
 import Position from '../selection/Position';
+import getLeafSibling from './getLeafSibling';
 import getTagOfNode from './getTagOfNode';
 import wrap from './wrap';
 import { NodeType, PositionType } from 'roosterjs-editor-types';
-import { getNextLeafSibling } from './getLeafSibling';
 import { splitBalancedNodeRange } from './splitParentNode';
 
 export default function applyTextStyle(
@@ -18,7 +18,7 @@ export default function applyTextStyle(
         let parentTag = getTagOfNode(formatNode.parentNode);
 
         // The code below modifies DOM. Need to get the next sibling first otherwise you won't be able to reliably get a good next sibling node
-        let nextNode = getNextLeafSibling(container, formatNode);
+        let nextNode = getLeafSibling(container, formatNode, true /*isNext*/);
 
         if (formatNode.nodeType == NodeType.Text && ['TR', 'TABLE'].indexOf(parentTag) < 0) {
             if (formatNode == to.node && !to.isAtEnd) {

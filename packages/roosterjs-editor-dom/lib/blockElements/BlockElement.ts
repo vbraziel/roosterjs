@@ -6,11 +6,6 @@
  */
 export interface BlockElement {
     /**
-     * Get text content of this block element
-     */
-    getTextContent(): string;
-
-    /**
      * Collapse this block element to a single DOM element.
      */
     collapseToSingleElement(): HTMLElement;
