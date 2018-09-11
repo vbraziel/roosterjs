@@ -14,6 +14,7 @@ export default function editTable(editor: Editor, operation: TableOperation) {
         editor.addUndoSnapshot((start, end) => {
             let vtable = new VTable(td);
             vtable.edit(operation);
+            vtable.writeBack();
             editor.focus();
 
             if (!editor.select(start, end)) {

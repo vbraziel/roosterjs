@@ -88,7 +88,6 @@ export default class VTable {
     writeBack() {
         if (this.cells) {
             moveChildren(this.table);
-            this.table.style.borderCollapse = 'collapse';
             this.cells.forEach((row, r) => {
                 let tr = cloneNode(this.trs[r % 2] || this.trs[0]);
                 this.table.appendChild(tr);
@@ -99,7 +98,7 @@ export default class VTable {
                     }
                 });
             });
-        } else {
+        } else if (this.table) {
             this.table.parentNode.removeChild(this.table);
         }
     }
@@ -108,7 +107,11 @@ export default class VTable {
      * Apply the given table format to this virtual table
      * @param format Table format to apply
      */
-    applyFormat(format: TableFormat) {
+    applyFormat(format: Partial<TableFormat>) {
+        if (!format || !this.table) {
+            return;
+        }
+        this.table.style.borderCollapse = 'collapse';
         this.trs[0].style.backgroundColor = format.bgColorOdd || 'transparent';
         if (this.trs[1]) {
             this.trs[1].style.backgroundColor = format.bgColorEven || 'transparent';
@@ -128,20 +131,60 @@ export default class VTable {
      * @param operation Table operation
      */
     edit(operation: TableOperation) {
+        if (!this.table) {
+            return;
+        }
+
         let currentRow = this.cells[this.row];
         let currentCell = currentRow[this.col];
         switch (operation) {
             case TableOperation.InsertAbove:
+                this.cells.splice(this.row, 0, currentRow.map(cloneCell));
+                break;
             case TableOperation.InsertBelow:
-                let newRow = this.row + (operation == TableOperation.InsertAbove ? 0 : 1);
-                this.cells.splice(newRow, 0, currentRow.map(cell => cloneCell(cell)));
+                let newRow = this.row + this.countSpanAbove(this.row, this.col);
+                this.cells.splice(
+                    newRow,
+                    0,
+                    this.cells[newRow - 1].map((cell, colIndex) => {
+                        let nextCell = this.getCell(newRow, colIndex);
+                        if (nextCell.spanAbove) {
+                            return cloneCell(nextCell);
+                        } else if (cell.spanLeft) {
+                            let newCell = cloneCell(cell);
+                            newCell.spanAbove = false;
+                            return newCell;
+                        } else {
+                            return {
+                                td: cloneNode(this.getTd(this.row, colIndex)),
+                            };
+                        }
+                    })
+                );
                 break;
 
             case TableOperation.InsertLeft:
-            case TableOperation.InsertRight:
-                let newCol = this.col + (operation == TableOperation.InsertLeft ? 0 : 1);
                 this.forEachCellOfCurrentColumn((cell, row) => {
-                    row.splice(newCol, 0, cloneCell(cell));
+                    row.splice(this.col, 0, cloneCell(cell));
+                });
+                break;
+            case TableOperation.InsertRight:
+                let newCol = this.col + this.countSpanLeft(this.row, this.col);
+                this.forEachCellOfColumn(newCol - 1, (cell, row, i) => {
+                    let nextCell = this.getCell(i, newCol);
+                    let newCell: VCell;
+                    if (nextCell.spanLeft) {
+                        newCell = cloneCell(nextCell);
+                    } else if (cell.spanAbove) {
+                        newCell = cloneCell(cell);
+                        newCell.spanLeft = false;
+                    } else {
+                        newCell = {
+                            td: cloneNode(this.getTd(i, this.col)),
+                        };
+                    }
+
+                    row.splice(newCol, 0, newCell);
                 });
                 break;
 
@@ -242,27 +285,22 @@ export default class VTable {
                 }
                 break;
         }
-        this.writeBack();
     }
 
     /**
      * Loop each cell of current column and invoke a callback function
      * @param callback The callback function to invoke
      */
-    forEachCellOfCurrentColumn(callback: (cell: VCell, row: VCell[], i: number) => void) {
-        for (let i = 0; i < this.cells.length; i++) {
-            callback(this.getCell(i, this.col), this.cells[i], i);
-        }
+    forEachCellOfCurrentColumn(callback: (cell: VCell, row: VCell[], i: number) => any) {
+        this.forEachCellOfColumn(this.col, callback);
     }
 
     /**
      * Loop each cell of current row and invoke a callback function
      * @param callback The callback function to invoke
      */
-    forEachCellOfCurrentRow(callback: (cell: VCell, i: number) => void) {
-        for (let i = 0; i < this.cells[this.row].length; i++) {
-            callback(this.getCell(this.row, i), i);
-        }
+    forEachCellOfCurrentRow(callback: (cell: VCell, i: number) => any) {
+        this.forEachCellOfRow(this.row, callback);
     }
 
     /**
@@ -279,9 +317,13 @@ export default class VTable {
      * Get current HTML table cell object. If the current table cell is a virtual expanded cell, return its root cell
      */
     getCurrentTd(): HTMLTableCellElement {
+        return this.getTd(this.row, this.col);
+    }
+
+    private getTd(row: number, col: number) {
         if (this.cells) {
-            let row = Math.min(this.cells.length - 1, this.row);
-            let col = Math.min(this.cells[row].length - 1, this.col);
+            row = Math.min(this.cells.length - 1, row);
+            col = Math.min(this.cells[row].length - 1, col);
             while (row >= 0 && col >= 0) {
                 let cell = this.getCell(row, col);
                 if (cell.td) {
@@ -295,30 +337,60 @@ export default class VTable {
                 }
             }
         }
-
         return null;
+    }
+
+    private forEachCellOfColumn(
+        col: number,
+        callback: (cell: VCell, row: VCell[], i: number) => any
+    ) {
+        for (let i = 0; i < this.cells.length; i++) {
+            callback(this.getCell(i, col), this.cells[i], i);
+        }
+    }
+
+    private forEachCellOfRow(row: number, callback: (cell: VCell, i: number) => any) {
+        for (let i = 0; i < this.cells[row].length; i++) {
+            callback(this.getCell(row, i), i);
+        }
     }
 
     private recalcSpans(row: number, col: number) {
         let td = this.getCell(row, col).td;
         if (td) {
-            td.colSpan = 1;
-            td.rowSpan = 1;
-            for (let i = col + 1; i < this.cells[row].length; i++) {
-                let cell = this.getCell(row, i);
-                if (cell.td || !cell.spanLeft) {
-                    break;
-                }
-                td.colSpan = i + 1 - col;
+            td.colSpan = this.countSpanLeft(row, col);
+            td.rowSpan = this.countSpanAbove(row, col);
+            if (td.colSpan == 1) {
+                td.removeAttribute('colSpan');
             }
-            for (let i = row + 1; i < this.cells.length; i++) {
-                let cell = this.getCell(i, col);
-                if (cell.td || !cell.spanAbove) {
-                    break;
-                }
-                td.rowSpan = i + 1 - row;
+            if (td.rowSpan == 1) {
+                td.removeAttribute('rowSpan');
             }
         }
+    }
+
+    private countSpanLeft(row: number, col: number) {
+        let result = 1;
+        for (let i = col + 1; i < this.cells[row].length; i++) {
+            let cell = this.getCell(row, i);
+            if (cell.td || !cell.spanLeft) {
+                break;
+            }
+            result++;
+        }
+        return result;
+    }
+
+    private countSpanAbove(row: number, col: number) {
+        let result = 1;
+        for (let i = row + 1; i < this.cells.length; i++) {
+            let cell = this.getCell(i, col);
+            if (cell.td || !cell.spanAbove) {
+                break;
+            }
+            result++;
+        }
+        return result;
     }
 }
 
@@ -350,8 +422,11 @@ function cloneCell(cell: VCell): VCell {
  */
 function cloneNode<T extends Node>(node: T): T {
     let newNode = node ? <T>node.cloneNode(false /*deep*/) : null;
-    if (newNode && newNode instanceof HTMLTableCellElement && !newNode.firstChild) {
-        newNode.appendChild(node.ownerDocument.createElement('br'));
+    if (newNode && newNode instanceof HTMLTableCellElement) {
+        newNode.removeAttribute('id');
+        if (!newNode.firstChild) {
+            newNode.appendChild(node.ownerDocument.createElement('br'));
+        }
     }
     return newNode;
 }
