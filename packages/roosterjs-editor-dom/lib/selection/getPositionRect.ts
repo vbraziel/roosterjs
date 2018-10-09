@@ -1,4 +1,3 @@
-import Browser from '../utils/Browser';
 import Position from './Position';
 import createRange from './createRange';
 import getElementOrParentElement from '../utils/getElementOrParentElement';
@@ -16,38 +15,43 @@ export default function getPositionRect(position: Position): Rect {
     let range = createRange(position);
 
     // 1) try to get rect using range.getBoundingClientRect()
-    let rect = normalizeRect(range.getBoundingClientRect());
+    let rect = range.getBoundingClientRect && normalizeRect(range.getBoundingClientRect());
 
-    if (!rect) {
-        let normalizedPosition = position.normalize();
+    if (rect) {
+        return rect;
+    }
 
-        // 2) if current cursor is inside text node, use range.getClientRects() for safari
-        // or insert a SPAN and get the rect of SPAN for others
-        if (Browser.isSafari) {
-            let rects = range.getClientRects();
-            if (rects && rects.length == 1) {
-                rect = normalizeRect(rects[0]);
-            }
-        } else {
-            if (normalizedPosition.node.nodeType == NodeType.Text) {
-                let span = document.createElement('SPAN');
-                span.innerHTML = '\u200b';
-                range = createRange(normalizedPosition);
-                range.insertNode(span);
-                rect = normalizeRect(span.getBoundingClientRect());
-                span.parentNode.removeChild(span);
-            }
-        }
-        // 3) fallback to element.getBoundingClientRect()
-        if (!rect) {
-            let element = getElementOrParentElement(normalizedPosition.node);
-            if (element) {
-                rect = normalizeRect(element.getBoundingClientRect());
-            }
+    // 2) try to get rect using range.getClientRects
+    position = position.normalize();
+    const rects = range.getClientRects && range.getClientRects();
+    rect = rects && rects.length == 1 && normalizeRect(rects[0]);
+    if (rect) {
+        return rect;
+    }
+
+    // 3) if node is text node, try inserting a SPAN and get the rect of SPAN for others
+    if (position.node.nodeType == NodeType.Text) {
+        let span = document.createElement('SPAN');
+        span.innerHTML = '\u200b';
+        range = createRange(position);
+        range.insertNode(span);
+        rect = span.getBoundingClientRect && normalizeRect(span.getBoundingClientRect());
+        span.parentNode.removeChild(span);
+        if (rect) {
+            return rect;
         }
     }
 
-    return rect;
+    // 4) try getBoundingClientRect on element
+    let element = getElementOrParentElement(position.node);
+    if (element && element.getBoundingClientRect) {
+        rect = normalizeRect(element.getBoundingClientRect());
+        if (rect) {
+            return rect;
+        }
+    }
+
+    return null;
 }
 
 function normalizeRect(clientRect: ClientRect): Rect {

@@ -1,0 +1,14 @@
+language: node_js
+sudo: required
+addons:
+  chrome: stable
+node_js:
+  - 9
+before_install:
+  - yarn
+install:
+  - npm run build
+script:
+  - xvfb-run npm run test
+cache:
+  yarn: true
