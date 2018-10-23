@@ -20,6 +20,11 @@ import {
 
 const KEY_BACKSPACE = 8;
 
+interface AutoCompleteInfo {
+    snapshot: string;
+    changeSource: string;
+}
+
 /**
  * Provides core editing feature for editor:
  * 1. AutoComplete
@@ -29,7 +34,7 @@ const KEY_BACKSPACE = 8;
 export default class CorePlugin implements EditorPlugin {
     public name = 'CorePlugin';
     private editor: Editor;
-    private snapshotBeforeAutoComplete: string;
+    private autoCompleteInfo: AutoCompleteInfo;
     private inIME: boolean;
     private disposers: (() => void)[] = null;
     private mouseUpEventListerAdded: boolean;
@@ -100,7 +105,10 @@ export default class CorePlugin implements EditorPlugin {
     public performAutoComplete(callback: () => any, changeSource?: ChangeSource) {
         this.editor.addUndoSnapshot((start, end, snapshot) => {
             let data = callback();
-            this.snapshotBeforeAutoComplete = snapshot;
+            this.autoCompleteInfo = {
+                snapshot,
+                changeSource,
+            };
             return data;
         }, changeSource);
     }
@@ -147,6 +155,13 @@ export default class CorePlugin implements EditorPlugin {
     public onPluginEvent(event: PluginEvent) {
         switch (event.eventType) {
             case PluginEventType.ContentChanged:
+                if (
+                    this.autoCompleteInfo &&
+                    this.autoCompleteInfo.changeSource != event.source
+                ) {
+                    this.onContentChanged();
+                }
+                break;
             case PluginEventType.MouseDown:
                 this.onContentChanged();
                 break;
@@ -169,21 +184,23 @@ export default class CorePlugin implements EditorPlugin {
      */
     public willHandleEventExclusively(event: PluginEvent) {
         return (
-            this.snapshotBeforeAutoComplete != null &&
+            this.autoCompleteInfo &&
             event.eventType == PluginEventType.KeyDown &&
             event.rawEvent.which == KEY_BACKSPACE
         );
     }
 
     private onContentChanged(event?: KeyboardEvent) {
-        if (event && event.which == KEY_BACKSPACE && this.snapshotBeforeAutoComplete !== null) {
-            event.preventDefault();
-            this.editor.setContent(
-                this.snapshotBeforeAutoComplete,
-                false /*triggerContentChangedEvent*/
-            );
+        if (this.autoCompleteInfo) {
+            if (event && event.which == KEY_BACKSPACE) {
+                event.preventDefault();
+                this.editor.setContent(
+                    this.autoCompleteInfo.snapshot,
+                    false /*triggerContentChangedEvent*/
+                );
+            }
+            this.autoCompleteInfo = null;
         }
-        this.snapshotBeforeAutoComplete = null;
     }
 
     /**
