@@ -34,7 +34,7 @@ import {
     TableFormat,
 } from 'roosterjs-editor-types';
 import getCurrentEditor from './currentEditor';
-import { sanitizeHtml } from 'roosterjs-html-sanitizer';
+import { HtmlSanitizer } from 'roosterjs-html-sanitizer';
 
 let TABLE_FORMAT = [
     createTableFormat('#FFF', '#FFF', '#ABABAB', '#ABABAB', '#ABABAB'),
@@ -285,7 +285,7 @@ export default function initFormatBar() {
     document.getElementById('sanitizeHtmlButton').addEventListener('click', function() {
         let editor = getCurrentEditor();
         let html = editor.getContent();
-        html = sanitizeHtml(html);
+        html = HtmlSanitizer.sanitizeHtml(html);
         editor.setContent(html);
     });
 }
