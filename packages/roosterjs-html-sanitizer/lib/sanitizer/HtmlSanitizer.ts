@@ -14,8 +14,41 @@ import {
     getStyleCallbacks,
 } from '../utils/getAllowedValues';
 import getInheritableStyles from '../utils/getInheritableStyles';
+import SanitizeHtmlOptions from '../types/SanitizeHtmlOptions';
 
 export default class HtmlSanitizer {
+    /**
+     * Convert global CSS to inline CSS if any
+     * @param html HTML source
+     * @param additionalStyleNodes (Optional) additional HTML STYLE elements used as global CSS
+     */
+    static convertInlineCss(html: string, additionalStyleNodes?: HTMLStyleElement[]) {
+        let sanitizer = new HtmlSanitizer({
+            additionalGlobalStyleNodes: additionalStyleNodes,
+        });
+        return sanitizer.exec(html, true /*convertCssOnly*/);
+    }
+
+    /**
+     * Sanitize HTML string, remove any unuseful HTML node/attribute/CSS.
+     * @param html HTML source string
+     * @param options Options used for this sanitizing process
+     */
+    static sanitizeHtml(html: string, options?: SanitizeHtmlOptions) {
+        options = options || {};
+        let sanitizer = new HtmlSanitizer(options);
+        let currentStyles =
+            options.currentElementOrStyle instanceof HTMLElement
+                ? getInheritableStyles(options.currentElementOrStyle)
+                : options.currentElementOrStyle;
+        return sanitizer.exec(
+            html,
+            options.convertCssOnly,
+            options.preserveFragmentOnly,
+            currentStyles
+        );
+    }
+
     private elementCallbacks: ElementCallbackMap;
     private styleCallbacks: StyleCallbackMap;
     private attributeCallbacks: AttributeCallbackMap;
@@ -159,15 +192,9 @@ export default class HtmlSanitizer {
             let name = pair[0].trim().toLowerCase();
             let value = pair[1].trim().toLowerCase();
             let callback = this.styleCallbacks[name];
-
-            if (callback) {
-                value = callback(value, element, context);
-            }
-
             let isInheritable = thisStyle[name] != undefined;
             let keep =
-                value !== undefined &&
-                value !== null &&
+                (!callback || callback(value, element, context)) &&
                 value != 'inherit' &&
                 value.indexOf('expression') < 0 &&
                 name.substr(0, 1) != '-' &&
@@ -182,7 +209,7 @@ export default class HtmlSanitizer {
 
         if (source.length != result.length) {
             if (result.length > 0) {
-                element.setAttribute('style', result.join(';'));
+                element.setAttribute('style', result.map(s => s.trim()).join('; '));
             } else {
                 element.removeAttribute('style');
             }

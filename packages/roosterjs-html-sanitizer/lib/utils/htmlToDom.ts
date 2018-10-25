@@ -13,8 +13,7 @@ const LAST_TABLE_REGEX = /<table[^>]*>[^<]*/i;
  */
 export default function htmlToDom(html: string, preserveFragmentOnly: boolean): HTMLDocument {
     let parser = new DOMParser();
-    let doc: Document;
-    doc = parser.parseFromString(html || '', 'text/html');
+    let doc = parser.parseFromString(html || '', 'text/html');
 
     if (doc && doc.body && doc.body.firstChild) {
         // 1. Filter out html code outside of Fragment tags if need

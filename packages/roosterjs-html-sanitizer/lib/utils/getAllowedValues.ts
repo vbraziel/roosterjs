@@ -100,7 +100,7 @@ function removeValue(): null {
 
 function removeWidthForLiAndDiv(value: string, element: HTMLElement) {
     let tag = element.tagName;
-    return tag == 'LI' || tag == 'DIV' ? null : value;
+    return !(tag == 'LI' || tag == 'DIV');
 }
 
 function unique<T>(array: T[]): T[] {

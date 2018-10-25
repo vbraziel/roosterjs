@@ -25,17 +25,17 @@ interface HtmlSanitizerOptions {
     styleCallbacks?: StyleCallbackMap;
 
     /**
-     * Allowed HTML tags in addition to default tags
+     * Allowed HTML tags in addition to default tags, in upper case
      */
     additionalAllowedTags?: string[];
 
     /**
-     * Allowed HTML attributes in addition to default attributes
+     * Allowed HTML attributes in addition to default attributes, in lower case
      */
     additionalAllowAttributes?: string[];
 
     /**
-     * CSS style default values in addition to the default value map
+     * CSS style default values in addition to the default value map, style name should be in lower case
      */
     additionalDefaultStyleValues?: StringMap;
 
