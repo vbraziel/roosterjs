@@ -1,5 +1,5 @@
 import splitParentNode, { splitBalancedNodeRange } from '../../utils/splitParentNode';
-import { NodeType } from 'roosterjs-editor-types/lib';
+import { NodeType } from 'roosterjs-editor-types';
 
 describe('splitParentNode()', () => {
     function runTest(

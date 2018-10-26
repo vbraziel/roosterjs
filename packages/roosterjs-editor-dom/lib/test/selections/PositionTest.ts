@@ -1,5 +1,5 @@
 import Position from '../../selection/Position';
-import { PositionType, NodeType } from 'roosterjs-editor-types/lib';
+import { PositionType, NodeType } from 'roosterjs-editor-types';
 
 describe('Position.ctor()', () => {
     function runTest(

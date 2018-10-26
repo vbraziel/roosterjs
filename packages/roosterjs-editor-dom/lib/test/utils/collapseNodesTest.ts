@@ -1,5 +1,5 @@
 import collapseNodes from '../../utils/collapseNodes';
-import { NodeType } from 'roosterjs-editor-types/lib';
+import { NodeType } from 'roosterjs-editor-types';
 
 describe('collapseNodes()', () => {
     function runTest(
