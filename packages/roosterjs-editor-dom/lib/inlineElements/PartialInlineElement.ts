@@ -3,7 +3,7 @@ import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
-import getLeafSibling from '../utils/getLeafSibling';
+import { getNextLeafSibling, getPreviousLeafSibling } from '../utils/getLeafSibling';
 import { PositionType } from 'roosterjs-editor-types';
 
 /**
@@ -113,11 +113,11 @@ class PartialInlineElement implements InlineElement {
         let container = this.getContainerNode();
 
         if (from.isAtEnd) {
-            let nextNode = getLeafSibling(container, from.node, true /*isNext*/);
+            let nextNode = getNextLeafSibling(container, from.node);
             from = nextNode ? new Position(nextNode, PositionType.Begin) : null;
         }
         if (to.offset == 0) {
-            let previousNode = getLeafSibling(container, to.node, false /*isNext*/);
+            let previousNode = getPreviousLeafSibling(container, to.node);
             to = previousNode ? new Position(previousNode, PositionType.End) : null;
         }
 

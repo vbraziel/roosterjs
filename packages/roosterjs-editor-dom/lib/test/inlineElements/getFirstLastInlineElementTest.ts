@@ -3,7 +3,7 @@ import InlineElement from '../../inlineElements/InlineElement';
 import Position from '../../selection/Position';
 import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import { PositionType } from 'roosterjs-editor-types';
-import getLeafNode from '../../utils/getLeafNode';
+import { getFirstLeafNode, getLastLeafNode } from '../../utils/getLeafNode';
 
 let testID = 'getFirstLastInlineElement';
 
@@ -13,7 +13,7 @@ describe('getInlineElement getFirstInlineElement()', () => {
     });
 
     function getFirstInlineElement(rootNode: Node): InlineElement {
-        let node = getLeafNode(rootNode, true);
+        let node = getFirstLeafNode(rootNode);
         return node ? getInlineElementAtNode(rootNode, node) : null;
     }
 
@@ -66,7 +66,7 @@ describe('getInlineElement getLastInlineElement()', () => {
     });
 
     function getLastInlineElement(rootNode: Node): InlineElement {
-        let node = getLeafNode(rootNode, false);
+        let node = getLastLeafNode(rootNode);
         return node ? getInlineElementAtNode(rootNode, node) : null;
     }
 

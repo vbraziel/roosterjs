@@ -1,5 +1,5 @@
 import * as DomTestHelper from '../DomTestHelper';
-import getLeafSibling from '../../utils/getLeafSibling';
+import { getLeafSibling } from '../../utils/getLeafSibling';
 
 let testID = 'getLeafSibling';
 

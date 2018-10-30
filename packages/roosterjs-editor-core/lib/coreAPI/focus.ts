@@ -1,6 +1,6 @@
 import EditorCore, { Focus } from '../editor/EditorCore';
 import { PositionType } from 'roosterjs-editor-types';
-import { getLeafNode } from 'roosterjs-editor-dom';
+import { getFirstLeafNode } from 'roosterjs-editor-dom';
 
 const focus: Focus = (core: EditorCore) => {
     if (!core.api.hasFocus(core) || !core.api.getSelectionRange(core, false /*tryGetFromCache*/)) {
@@ -12,7 +12,7 @@ const focus: Focus = (core: EditorCore) => {
         // to very begin to of editor since we don't really have last saved selection (created on blur which does not fire in this case).
         // It should be better than the case you cannot type
         if (!core.cachedSelectionRange || !core.api.select(core, core.cachedSelectionRange)) {
-            let node = getLeafNode(core.contentDiv, true /*isFirst*/) || core.contentDiv;
+            let node = getFirstLeafNode(core.contentDiv) || core.contentDiv;
             core.api.select(core, node, PositionType.Begin);
         }
     }

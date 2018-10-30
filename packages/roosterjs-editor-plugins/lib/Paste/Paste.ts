@@ -13,8 +13,8 @@ import {
     applyFormat,
     fromHtml,
     getElementOrParentElement,
-    getLeafNode,
-    getLeafSibling,
+    getFirstLeafNode,
+    getNextLeafSibling,
 } from 'roosterjs-editor-dom';
 import { Editor, EditorPlugin } from 'roosterjs-editor-core';
 import { insertImage } from 'roosterjs-editor-api';
@@ -170,7 +170,7 @@ export default class Paste implements EditorPlugin {
     }
 
     private applyTextFormat(node: Node, format: DefaultFormat) {
-        let leaf = getLeafNode(node, true /*isFirst*/);
+        let leaf = getFirstLeafNode(node);
         let parents: HTMLElement[] = [];
         while (leaf) {
             if (
@@ -180,7 +180,7 @@ export default class Paste implements EditorPlugin {
             ) {
                 parents.push(<HTMLElement>leaf.parentNode);
             }
-            leaf = getLeafSibling(node, leaf, true /*isNext*/);
+            leaf = getNextLeafSibling(node, leaf);
         }
         for (let parent of parents) {
             applyFormat(parent, format);

@@ -6,7 +6,7 @@ import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
-import getLeafNode from '../utils/getLeafNode';
+import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
 import { ContentPosition } from 'roosterjs-editor-types';
 
 /**
@@ -55,7 +55,7 @@ export default class SelectionBlockScoper implements TraversingScoper {
                 case ContentPosition.End:
                     return getInlineElementAtNode(
                         this.rootNode,
-                        getLeafNode(this.rootNode, this.startFrom == ContentPosition.Begin)
+                        this.startFrom == ContentPosition.Begin ? getFirstLeafNode(this.rootNode) : getLastLeafNode(this.rootNode)
                     );
                 case ContentPosition.SelectionStart:
                     // Get the inline before selection start position, and ensure it falls in the selection block

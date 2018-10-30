@@ -2,7 +2,7 @@ import InlineElement from '../inlineElements/InlineElement';
 import PartialInlineElement from './PartialInlineElement';
 import Position from '../selection/Position';
 import getInlineElementAtNode from './getInlineElementAtNode';
-import getLeafSibling from '../utils/getLeafSibling';
+import { getLeafSibling } from '../utils/getLeafSibling';
 import shouldSkipNode from '../utils/shouldSkipNode';
 import { NodeType } from 'roosterjs-editor-types';
 

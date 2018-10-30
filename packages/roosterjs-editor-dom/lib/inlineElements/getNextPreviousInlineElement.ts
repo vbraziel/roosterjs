@@ -1,7 +1,7 @@
 import InlineElement from './InlineElement';
 import PartialInlineElement from './PartialInlineElement';
 import getInlineElementAtNode from './getInlineElementAtNode';
-import getLeafSibling from '../utils/getLeafSibling';
+import { getLeafSibling } from '../utils/getLeafSibling';
 
 export function getNextPreviousInlineElement(
     rootNode: Node,
