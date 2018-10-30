@@ -39,7 +39,7 @@ const insertNode: InsertNode = (core: EditorCore, node: Node, option: InsertOpti
                 if (
                     insertOnNewLine ||
                     refNode.nodeType == NodeType.Text ||
-                    isVoidHtmlElement(refNode as HTMLElement)
+                    isVoidHtmlElement(refNode)
                 ) {
                     // For insert on new line, or refNode is text or void html element (HR, BR etc.)
                     // which cannot have children, i.e. <div>hello<br>world</div>. 'hello', 'world' are the

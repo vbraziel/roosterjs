@@ -1,3 +1,14 @@
+import buildClipboardData from './buildClipboardData';
+import fragmentHandler from './fragmentHandler';
+import textToHtml from './textToHtml';
+import {
+    AttributeCallbackMap,
+    getInheritableStyles,
+    HtmlSanitizer,
+    htmlToDom,
+} from 'roosterjs-html-sanitizer';
+import { Editor, EditorPlugin } from 'roosterjs-editor-core';
+import { insertImage } from 'roosterjs-editor-api';
 import {
     BeforePasteEvent,
     ChangeSource,
@@ -5,28 +16,15 @@ import {
     DefaultFormat,
     NodeType,
     PasteOption,
-    PluginEvent,
     PluginEventType,
 } from 'roosterjs-editor-types';
 import {
-    Position,
     applyFormat,
     fromHtml,
-    getElementOrParentElement,
     getFirstLeafNode,
     getNextLeafSibling,
+    Position,
 } from 'roosterjs-editor-dom';
-import { Editor, EditorPlugin } from 'roosterjs-editor-core';
-import { insertImage } from 'roosterjs-editor-api';
-import buildClipboardData from './buildClipboardData';
-import convertPastedContentFromWord from './wordConverter/convertPastedContentFromWord';
-import textToHtml from './textToHtml';
-import {
-    HtmlSanitizer,
-    AttributeCallbackMap,
-    getInheritableStyles,
-    htmlToDom,
-} from 'roosterjs-html-sanitizer';
 
 /**
  * Paste plugin, handles onPaste event and paste content into editor
@@ -40,11 +38,11 @@ export default class Paste implements EditorPlugin {
     /**
      * Create an instance of Paste
      * @param deprecated Deprecated parameter only used for compatibility with old code
-     * @param htmlPropertyCallbacks A callback to help handle html sanitization
+     * @param attributeCallbacks A set of callbacks to help handle html attribute during sanitization
      */
-    constructor(deprecated?: boolean, htmlPropertyCallbacks?: AttributeCallbackMap) {
+    constructor(deprecated?: boolean, attributeCallbacks?: AttributeCallbackMap) {
         this.sanitizer = new HtmlSanitizer({
-            attributeCallbacks: htmlPropertyCallbacks,
+            attributeCallbacks,
         });
     }
 
@@ -59,19 +57,19 @@ export default class Paste implements EditorPlugin {
         this.editor = null;
     }
 
-    public onPluginEvent(event: PluginEvent) {
-        if (event.eventType == PluginEventType.BeforePaste) {
-            let beforePasteEvent = <BeforePasteEvent>event;
-
-            if (beforePasteEvent.pasteOption == PasteOption.PasteHtml) {
-                convertPastedContentFromWord(beforePasteEvent.fragment);
-            }
-        }
-    }
-
     private onPaste = (event: Event) => {
         buildClipboardData(<ClipboardEvent>event, this.editor, clipboardData => {
-            this.preprocessHtml(clipboardData);
+            let doc = htmlToDom(clipboardData.html, true /*preserveFragmentOnly*/, fragmentHandler);
+            if (doc && doc.body) {
+                this.sanitizer.convertGlobalCssToInlineCss(doc);
+
+                let range = this.editor.getSelectionRange();
+                let element = range && Position.getStart(range).normalize().element;
+                let currentStyles = getInheritableStyles(element);
+                this.sanitizer.sanitize(doc.body, currentStyles);
+                clipboardData.html = doc.body.innerHTML;
+            }
+
             this.pasteOriginal(clipboardData);
         });
     };
@@ -184,32 +182,6 @@ export default class Paste implements EditorPlugin {
         }
         for (let parent of parents) {
             applyFormat(parent, format);
-        }
-    }
-
-    private preprocessHtml(clipboardData: ClipboardData) {
-        if (clipboardData.html) {
-            let range = this.editor.getSelectionRange();
-            let element =
-                range && getElementOrParentElement(Position.getStart(range).normalize().node);
-            let currentStyles = getInheritableStyles(element);
-            let doc = htmlToDom(clipboardData.html, true /*preserveFragmentOnly*/);
-            if (doc) {
-                if (doc.firstChild.nodeType == NodeType.Element) {
-                    let attributes = (doc.firstChild as HTMLElement).attributes;
-                    for (let i = 0; i < attributes.length; i++) {
-                        let attribute = attributes[i];
-                        clipboardData.htmlAttributes[attribute.name] = attribute.value;
-                    }
-                }
-
-                this.sanitizer.convertGlobalCssToInlineCss(doc);
-                this.sanitizer.sanitize(doc.body, currentStyles);
-            }
-
-            clipboardData.html = (doc && doc.body && doc.body.innerHTML) || '';
-        } else {
-            clipboardData.html = clipboardData.text ? textToHtml(clipboardData.text) : '';
         }
     }
 }

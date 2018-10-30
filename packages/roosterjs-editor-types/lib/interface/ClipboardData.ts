@@ -33,12 +33,6 @@ interface ClipboardData {
      * If the copied data contains HTML format, this will be the html string. Otherwise it is null.
      */
     html: string;
-
-    /**
-     * The attributes on HTML node from original HTML pasting data if any
-     * e.g. { 'xmlns:x': 'urn:schemas-microsoft-com:office:excel' }
-     */
-    htmlAttributes: { [name: string]: string };
 }
 
 export default ClipboardData;

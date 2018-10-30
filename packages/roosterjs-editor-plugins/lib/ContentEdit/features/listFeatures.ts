@@ -1,6 +1,6 @@
+import { cacheGetContentSearcher, Editor } from 'roosterjs-editor-core';
+import { ContentChangedEvent, Indentation, PluginKeyboardEvent, PositionType } from 'roosterjs-editor-types';
 import { ContentEditFeature, GenericContentEditFeature, Keys } from '../ContentEditFeatures';
-import { Editor, cacheGetContentSearcher } from 'roosterjs-editor-core';
-import { Indentation, PluginKeyboardEvent, ContentChangedEvent } from 'roosterjs-editor-types';
 import {
     Browser,
     Position,
@@ -15,7 +15,6 @@ import {
     toggleBullet,
     toggleNumbering,
 } from 'roosterjs-editor-api';
-import { PositionType } from 'roosterjs-editor-types';
 
 export const IndentWhenTab: ContentEditFeature = {
     keys: [Keys.TAB],
