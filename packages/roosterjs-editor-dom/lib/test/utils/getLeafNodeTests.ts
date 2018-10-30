@@ -3,7 +3,7 @@ import { getFirstLeafNode, getLastLeafNode } from '../../utils/getLeafNode';
 
 let testID = 'getLeafNode';
 
-describe('getFirstLeafNode()', () => {
+describe('getLeafNode getFirstLeafNode()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });
@@ -55,7 +55,7 @@ describe('getFirstLeafNode()', () => {
     });
 });
 
-describe('getLastLeafNode()', () => {
+describe('getLeafNode getLastLeafNode()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });

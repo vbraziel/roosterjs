@@ -32,7 +32,7 @@ export default class Position {
      */
     constructor(node: Node, positionType: PositionType);
 
-    constructor(nodeOrPosition: Node | Position, offsetOrPosType?: number) {
+    constructor(nodeOrPosition: Node | Position, offsetOrPosType?: number | PositionType) {
         if ((<Position>nodeOrPosition).node) {
             this.node = (<Position>nodeOrPosition).node;
             offsetOrPosType = (<Position>nodeOrPosition).offset;
