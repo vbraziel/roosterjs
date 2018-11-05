@@ -26,6 +26,10 @@ export default function changeFontSize(
     applyInlineStyle(editor, element => {
         let pt = parseFloat(getComputedStyle(element, 'font-size'));
         element.style.fontSize = getNewFontSize(pt, changeBase, fontSizes) + 'pt';
+        let lineHeight = getComputedStyle(element, 'line-height');
+        if (lineHeight != 'normal') {
+            element.style.lineHeight = 'normal';
+        }
     });
 }
 

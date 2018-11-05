@@ -1,14 +1,14 @@
-import * as TestHelper from '../TestHelper';
 import * as applyInlineStyle from '../../format/applyInlineStyle';
-import toggleBullet from '../../format/toggleBullet';
-import toggleNumbering from '../../format/toggleNumbering';
-import toggleStrikethrough from '../../format/toggleStrikethrough';
-import toggleSuperscript from '../../format/toggleSuperscript';
-import toggleSubscript from '../../format/toggleSubscript';
-import setTextColor from '../../format/setTextColor';
+import * as TestHelper from '../TestHelper';
 import setBackgroundColor from '../../format/setBackgroundColor';
 import setFontName from '../../format/setFontName';
 import setFontSize from '../../format/setFontSize';
+import setTextColor from '../../format/setTextColor';
+import toggleBullet from '../../format/toggleBullet';
+import toggleNumbering from '../../format/toggleNumbering';
+import toggleStrikethrough from '../../format/toggleStrikethrough';
+import toggleSubscript from '../../format/toggleSubscript';
+import toggleSuperscript from '../../format/toggleSuperscript';
 import { Editor } from 'roosterjs-editor-core';
 
 describe('FormatUtils', () => {

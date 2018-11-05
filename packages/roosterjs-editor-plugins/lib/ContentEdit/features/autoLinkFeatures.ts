@@ -1,4 +1,10 @@
-import { ChangeSource, LinkData, PluginEvent, PluginEventType } from 'roosterjs-editor-types';
+import {
+    ChangeSource,
+    LinkData,
+    PluginEvent,
+    PluginEventType,
+    PluginKeyboardEvent,
+} from 'roosterjs-editor-types';
 import { Keys, GenericContentEditFeature } from '../ContentEditFeatures';
 import {
     Editor,
@@ -6,12 +12,12 @@ import {
     cacheGetContentSearcher,
     clearContentSearcherCache,
 } from 'roosterjs-editor-core';
-import { Browser, matchLink } from 'roosterjs-editor-dom';
-import { replaceWithNode } from 'roosterjs-editor-api';
+import { Browser, matchLink, LinkInlineElement } from 'roosterjs-editor-dom';
+import { replaceWithNode, removeLink } from 'roosterjs-editor-api';
 
 // When user type, they may end a link with a puncatuation, i.e. www.bing.com;
 // we need to trim off the trailing puncatuation before turning it to link match
-const TRAILING_PUNCTUATION_REGEX = /[.+={}\[\]\s:;"',>]+$/i;
+const TRAILING_PUNCTUATION_REGEX = /[.+=\s:;"',>]+$/i;
 const MINIMUM_LENGTH = 5;
 
 export const AutoLink: GenericContentEditFeature<PluginEvent> = {
@@ -22,6 +28,16 @@ export const AutoLink: GenericContentEditFeature<PluginEvent> = {
     shouldHandleEvent: cacheGetLinkData,
     handleEvent: autoLink,
     isAvailable: featureSet => featureSet.autoLink,
+};
+
+export const UnlinkWhenBackspaceAfterLink: GenericContentEditFeature<PluginKeyboardEvent> = {
+    keys: [Keys.BACKSPACE],
+    shouldHandleEvent: hasLinkBeforeCursor,
+    handleEvent: (event, editor) => {
+        event.rawEvent.preventDefault();
+        removeLink(editor);
+    },
+    isAvailable: featureSet => featureSet.unlinkWhenBackspaceAfterLink,
 };
 
 function cacheGetLinkData(event: PluginEvent, editor: Editor): LinkData {
@@ -36,10 +52,15 @@ function cacheGetLinkData(event: PluginEvent, editor: Editor): LinkData {
                   let trailingPunctuation = (trailingPunctuations || [])[0] || '';
                   let candidate = word.substring(0, word.length - trailingPunctuation.length);
 
-                  // Do special handling for ')'
-                  if (candidate[candidate.length - 1] == ')' && candidate.indexOf('(') < 0) {
-                      candidate = candidate.substr(0, candidate.length - 1);
-                  }
+                  // Do special handling for ')', '}', ']'
+                  ['()', '{}', '[]'].forEach(str => {
+                      if (
+                          candidate[candidate.length - 1] == str[1] &&
+                          candidate.indexOf(str[0]) < 0
+                      ) {
+                          candidate = candidate.substr(0, candidate.length - 1);
+                      }
+                  });
 
                   // Match and replace in editor
                   return matchLink(candidate);
@@ -47,6 +68,12 @@ function cacheGetLinkData(event: PluginEvent, editor: Editor): LinkData {
               return null;
           })
         : null;
+}
+
+function hasLinkBeforeCursor(event: PluginKeyboardEvent, editor: Editor): boolean {
+    let contentSearcher = cacheGetContentSearcher(event, editor);
+    let inline = contentSearcher.getInlineElementBefore();
+    return inline instanceof LinkInlineElement;
 }
 
 function autoLink(event: PluginEvent, editor: Editor) {
