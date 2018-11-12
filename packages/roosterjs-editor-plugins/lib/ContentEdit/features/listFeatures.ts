@@ -1,5 +1,10 @@
 import { cacheGetContentSearcher, Editor } from 'roosterjs-editor-core';
-import { ContentChangedEvent, Indentation, PluginKeyboardEvent, PositionType } from 'roosterjs-editor-types';
+import {
+    ContentChangedEvent,
+    Indentation,
+    PluginKeyboardEvent,
+    PositionType
+    } from 'roosterjs-editor-types';
 import { ContentEditFeature, GenericContentEditFeature, Keys } from '../ContentEditFeatures';
 import {
     Browser,
@@ -24,7 +29,7 @@ export const IndentWhenTab: ContentEditFeature = {
         setIndentation(editor, Indentation.Increase);
         event.rawEvent.preventDefault();
     },
-    isAvailable: featureSet => featureSet.indentWhenTab,
+    featureFlag: 'indentWhenTab',
 };
 
 export const OutdentWhenShiftTab: ContentEditFeature = {
@@ -35,7 +40,7 @@ export const OutdentWhenShiftTab: ContentEditFeature = {
         setIndentation(editor, Indentation.Decrease);
         event.rawEvent.preventDefault();
     },
-    isAvailable: featureSet => featureSet.outdentWhenShiftTab,
+    featureFlag: 'outdentWhenShiftTab',
 };
 
 export const MergeInNewLine: ContentEditFeature = {
@@ -57,7 +62,7 @@ export const MergeInNewLine: ContentEditFeature = {
             toggleListAndPreventDefault(event, editor);
         }
     },
-    isAvailable: featureSet => featureSet.mergeInNewLineWhenBackspaceOnFirstChar,
+    featureFlag: 'mergeInNewLineWhenBackspaceOnFirstChar',
 };
 
 export const OutdentWhenBackOn1stEmptyLine: ContentEditFeature = {
@@ -67,7 +72,7 @@ export const OutdentWhenBackOn1stEmptyLine: ContentEditFeature = {
         return li && isNodeEmpty(li) && !li.previousSibling;
     },
     handleEvent: toggleListAndPreventDefault,
-    isAvailable: featureSet => featureSet.outdentWhenBackspaceOnEmptyFirstLine,
+    featureFlag: 'outdentWhenBackspaceOnEmptyFirstLine',
 };
 
 export const OutdentWhenEnterOnEmptyLine: ContentEditFeature = {
@@ -79,7 +84,7 @@ export const OutdentWhenEnterOnEmptyLine: ContentEditFeature = {
     handleEvent: (event, editor) => {
         editor.performAutoComplete(() => toggleListAndPreventDefault(event, editor));
     },
-    isAvailable: featureSet => featureSet.outdentWhenEnterOnEmptyLine,
+    featureFlag: 'outdentWhenEnterOnEmptyLine',
 };
 
 export const AutoBullet: ContentEditFeature = {
@@ -129,7 +134,7 @@ export const AutoBullet: ContentEditFeature = {
             });
         });
     },
-    isAvailable: featureSet => featureSet.autoBullet,
+    featureFlag: 'autoBullet',
 };
 
 export function getSmartOrderedList(
@@ -148,7 +153,7 @@ export function getSmartOrderedList(
                     styles[(styles.indexOf(parentOl.style.listStyle) + 1) % styles.length];
             }
         },
-        isAvailable: featureSet => featureSet.smartOrderedList,
+        featureFlag: 'smartOrderedList',
     };
 }
 
