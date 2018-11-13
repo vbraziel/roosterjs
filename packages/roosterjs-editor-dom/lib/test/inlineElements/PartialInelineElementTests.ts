@@ -226,10 +226,11 @@ describe('PartialInlineElement getStartPosition()', () => {
         );
 
         // Act
-        let start = partialInlineElement.getStartPosition();
+        let startPosition = partialInlineElement.getStartPosition();
 
         // Assert
-        expect(start).toEqual(new Position(testDiv.firstChild.firstChild, input[1] || 0));
+        expect(startPosition.node).toEqual(testDiv.firstChild.firstChild);
+        expect(startPosition.offset).toEqual(input[1] || 0);
     }
 
     it('Partial on start position', () => {
@@ -267,10 +268,11 @@ describe('PartialInlineElement getEndPosition()', () => {
         );
 
         // Act
-        let end = partialInlineElement.getEndPosition();
+        let endPosition = partialInlineElement.getEndPosition();
 
         // Assert
-        expect(end).toEqual(new Position(testDiv.firstChild.firstChild, output));
+        expect(endPosition.node).toEqual(testDiv.firstChild.firstChild);
+        expect(endPosition.offset).toEqual(output);
     }
 
     it('Partial on start position', () => {
@@ -306,14 +308,16 @@ describe('PartialInlineElement nextInlineElement', () => {
             input[1],
             input[2]
         );
-        let end = partialInlineElement.getEndPosition();
+        let endPosition = partialInlineElement.getEndPosition();
 
         // Act
         let nextInline = partialInlineElement.getNextInlineElement();
 
         // Assert
         expect(nextInline).toEqual(
-            input[2] ? new PartialInlineElement(inlineElement, end, null /*end*/) : null
+            input[2]
+                ? new PartialInlineElement(inlineElement, endPosition, null /*endPosition*/)
+                : null
         );
     }
 
@@ -350,14 +354,16 @@ describe('PartialInlineElement previousInlineElement', () => {
             input[1],
             input[2]
         );
-        let start = partialInlineElement.getStartPosition();
+        let startPosition = partialInlineElement.getStartPosition();
 
         // Act
         let previousInline = partialInlineElement.getPreviousInlineElement();
 
         // Assert
         expect(previousInline).toEqual(
-            input[1] ? new PartialInlineElement(inlineElement, null /*end*/, start) : null
+            input[1]
+                ? new PartialInlineElement(inlineElement, null /*endPoint*/, startPosition)
+                : null
         );
     }
 
@@ -394,10 +400,10 @@ describe('PartialInlineElement contains()', () => {
             input[1],
             input[2]
         );
-        let position = new Position(testDiv.firstChild.firstChild, input[3]);
+        let endPosition = new Position(testDiv.firstChild.firstChild, input[3]);
 
         // Act
-        let elementContainsPoint = partialInlineElement.contains(position);
+        let elementContainsPoint = partialInlineElement.contains(endPosition);
 
         // Assert
         expect(elementContainsPoint).toBe(output);

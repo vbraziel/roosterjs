@@ -1,11 +1,11 @@
 import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
-import Position from '../selection/Position';
-import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
-import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
+import Position from '../selection/Position';
+import TraversingScoper from './TraversingScoper';
 import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
+import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
 
 /**
  * This provides traversing content in a selection start block

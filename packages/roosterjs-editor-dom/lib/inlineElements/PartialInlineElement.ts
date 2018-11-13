@@ -48,14 +48,14 @@ class PartialInlineElement implements InlineElement {
     }
 
     /**
-     * Gets the start position
+     * Get start position of this inline element.
      */
     public getStartPosition(): NodePosition {
         return this.start || this.inlineElement.getStartPosition();
     }
 
     /**
-     * Gets the end position
+     * Get end position of this inline element.
      */
     public getEndPosition(): NodePosition {
         return this.end || this.inlineElement.getEndPosition();
@@ -76,14 +76,10 @@ class PartialInlineElement implements InlineElement {
     }
 
     /**
-     * Checks if this inline element contains the given position
+     * Checks if it contains a position
      */
-    public contains(position: NodePosition): boolean {
-        return (
-            position &&
-            position.isAfter(this.getStartPosition()) &&
-            this.getEndPosition().isAfter(position)
-        );
+    public contains(pos: NodePosition): boolean {
+        return pos && pos.isAfter(this.getStartPosition()) && this.getEndPosition().isAfter(pos);
     }
 
     /**

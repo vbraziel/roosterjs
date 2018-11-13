@@ -1,6 +1,6 @@
-import { NodePosition, NodeType, PositionType } from 'roosterjs-editor-types';
 import getElementOrParentElement from '../utils/getElementOrParentElement';
 import isNodeAfter from '../utils/isNodeAfter';
+import { NodePosition, NodeType, PositionType } from 'roosterjs-editor-types';
 
 /**
  * Represent a position in DOM tree by the node and its offset index
@@ -32,10 +32,10 @@ export default class Position implements NodePosition {
      */
     constructor(node: Node, positionType: PositionType);
 
-    constructor(nodeOrPosition: Node | Position, offsetOrPosType?: number | PositionType) {
-        if ((<Position>nodeOrPosition).node) {
-            this.node = (<Position>nodeOrPosition).node;
-            offsetOrPosType = (<Position>nodeOrPosition).offset;
+    constructor(nodeOrPosition: Node | NodePosition, offsetOrPosType?: number) {
+        if ((<NodePosition>nodeOrPosition).node) {
+            this.node = (<NodePosition>nodeOrPosition).node;
+            offsetOrPosType = (<NodePosition>nodeOrPosition).offset;
         } else {
             this.node = <Node>nodeOrPosition;
         }
@@ -95,23 +95,25 @@ export default class Position implements NodePosition {
 
     /**
      * Check if this position is equal to the given position
-     * @param p The position to check
+     * @param position The position to check
      */
-    equalTo(p: NodePosition): boolean {
+    equalTo(position: NodePosition): boolean {
         return (
-            p &&
-            (this == p ||
-                (this.node == p.node && this.offset == p.offset && this.isAtEnd == p.isAtEnd))
+            position &&
+            (this == position ||
+                (this.node == position.node &&
+                    this.offset == position.offset &&
+                    this.isAtEnd == position.isAtEnd))
         );
     }
 
     /**
-     * Checks if position 1 is after position 2
+     * Checks if this position is after the given position
      */
-    isAfter(p: NodePosition): boolean {
-        return this.node == p.node
-            ? (this.isAtEnd && !p.isAtEnd) || this.offset > p.offset
-            : isNodeAfter(this.node, p.node);
+    isAfter(position: NodePosition): boolean {
+        return this.node == position.node
+            ? (this.isAtEnd && !position.isAtEnd) || this.offset > position.offset
+            : isNodeAfter(this.node, position.node);
     }
 
     /**

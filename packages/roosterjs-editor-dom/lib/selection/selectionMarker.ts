@@ -1,5 +1,5 @@
-import Position from './Position';
 import createRange from './createRange';
+import Position from './Position';
 import queryElements from '../utils/queryElements';
 import { NodePosition, PositionType } from 'roosterjs-editor-types';
 

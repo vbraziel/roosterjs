@@ -1,5 +1,5 @@
-import Position from '../../selection/Position';
 import applyTextStyle from '../../utils/applyTextStyle';
+import Position from '../../selection/Position';
 
 describe('applyTextStyle()', () => {
     function runTest1(

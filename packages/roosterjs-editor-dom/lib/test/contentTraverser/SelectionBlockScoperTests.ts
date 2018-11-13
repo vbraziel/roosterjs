@@ -1,4 +1,5 @@
 import * as DomTestHelper from '../DomTestHelper';
+import createRange from '../../selection/createRange';
 import Position from '../../selection/Position';
 import SelectionBlockScoper from '../../contentTraverser/SelectionBlockScoper';
 import { BlockElement, ContentPosition, PositionType } from 'roosterjs-editor-types';
@@ -65,11 +66,11 @@ describe('SelectionBlockScoper getStartBlockElement()', () => {
 
     it('input = <p>example</p>, scoper is part of NodeBlockElement', () => {
         let rootNode = DomTestHelper.createElementFromContent(testID, '<p>example</p>');
-        let start = new Position(rootNode.firstChild.firstChild, PositionType.Begin);
-        let end = new Position(rootNode.firstChild.firstChild, 1);
+        let startPosition = new Position(rootNode.firstChild.firstChild, PositionType.Begin);
+        let endPosition = new Position(rootNode.firstChild.firstChild, 1);
 
         // range is 'e'
-        let range = DomTestHelper.createRangeWithStartEndNode(start, end);
+        let range = createRange(startPosition, endPosition);
         let testBlockElement = DomTestHelper.createNodeBlockElementWithDiv(
             rootNode.firstChild as HTMLElement
         );
@@ -101,8 +102,8 @@ describe('SelectionBlockScoper getStartInlineElement()', () => {
     ) {
         // Arrange
         let scoper = createSelectionBlockScoper(rootNode, range, startPosition);
-        let start = new Position(node, startOffset);
-        let end = new Position(node, endOffset);
+        let startPoint = new Position(node, startOffset);
+        let endPoint = new Position(node, endOffset);
 
         // Act
         let inlineElement = scoper.getStartInlineElement();
@@ -111,8 +112,8 @@ describe('SelectionBlockScoper getStartInlineElement()', () => {
         expect(
             DomTestHelper.isInlineElementEqual(
                 inlineElement,
-                start,
-                end,
+                startPoint,
+                endPoint,
                 node.textContent.substr(startOffset, endOffset)
             )
         ).toBe(true);
@@ -153,11 +154,11 @@ describe('SelectionBlockScoper getStartInlineElement()', () => {
             testID,
             '<span>part1</span><span>part2</span>'
         );
-        let start = new Position(rootNode.firstChild.firstChild, 3);
-        let end = new Position(rootNode.lastChild.firstChild, PositionType.End);
+        let startPoint = new Position(rootNode.firstChild.firstChild, 3);
+        let endPoint = new Position(rootNode.lastChild.firstChild, PositionType.End);
 
         // range = 't1</span><span>part2</span>'
-        let range = DomTestHelper.createRangeWithStartEndNode(start, end);
+        let range = createRange(startPoint, endPoint);
         let node = document.createTextNode('part1');
         runTest(rootNode, range, ContentPosition.SelectionStart, 3, 5, node);
     });

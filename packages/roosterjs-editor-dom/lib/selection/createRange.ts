@@ -1,5 +1,5 @@
-import Position from './Position';
 import isVoidHtmlElement from '../utils/isVoidHtmlElement';
+import Position from './Position';
 import { NodePosition, NodeType, PositionType } from 'roosterjs-editor-types';
 
 /**

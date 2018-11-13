@@ -10,6 +10,8 @@ export { default as PartialInlineElement } from './inlineElements/PartialInlineE
 export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
 export {
     default as getInlineElementBeforeAfter,
+    getInlineElementAfter,
+    getInlineElementBefore,
 } from './inlineElements/getInlineElementBeforeAfter';
 
 export { default as ContentTraverser } from './contentTraverser/ContentTraverser';

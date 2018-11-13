@@ -1,7 +1,7 @@
-import Position from '../selection/Position';
-import { getNextLeafSibling } from './getLeafSibling';
 import getTagOfNode from './getTagOfNode';
+import Position from '../selection/Position';
 import wrap from './wrap';
+import { getNextLeafSibling } from './getLeafSibling';
 import { NodePosition, NodeType, PositionType } from 'roosterjs-editor-types';
 import { splitBalancedNodeRange } from './splitParentNode';
 

@@ -173,7 +173,7 @@ describe('NodeBlockElement contains()', () => {
         expect(nodeBlockElementContainsNode).toBe(true);
     });
 
-    it('nodeBlockElement.containerNode equals node', () => {
+    it('nodeBlockElement.node equals node', () => {
         // Arrange
         let [nodeBlockElement, testDiv] = createNodeBlockElementWithContent(
             '<div>part1</div><div>part2</div>'

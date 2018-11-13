@@ -1,8 +1,8 @@
 import * as DomTestHelper from '../DomTestHelper';
+import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import NodeBlockElement from '../../blockElements/NodeBlockElement';
 import PartialInlineElement from '../../inlineElements/PartialInlineElement';
 import Position from '../../selection/Position';
-import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import { InlineElement, PositionType } from 'roosterjs-editor-types';
 import { NodeInlineElement } from '../..';
 
@@ -65,11 +65,11 @@ describe('NodeInlineElement getStartPosition()', () => {
         let element = createNodeInlineElement('<span>www.example.com</span>');
 
         // Act
-        let start = element.getStartPosition();
+        let startPosition = element.getStartPosition();
 
         // Assert
-        expect(start.node.textContent).toBe('www.example.com');
-        expect(start.offset).toBe(PositionType.Begin);
+        expect(startPosition.node.textContent).toBe('www.example.com');
+        expect(startPosition.offset).toBe(PositionType.Begin);
     });
 
     it('input = <span><a><span>part1</span>text</a>text<span>part2</span>part3</span>', () => {
@@ -79,11 +79,11 @@ describe('NodeInlineElement getStartPosition()', () => {
         );
 
         // Act
-        let start = element.getStartPosition();
+        let startPosition = element.getStartPosition();
 
         // Assert
-        expect(start.node.textContent).toBe('part1');
-        expect(start.offset).toBe(PositionType.Begin);
+        expect(startPosition.node.textContent).toBe('part1');
+        expect(startPosition.offset).toBe(PositionType.Begin);
     });
 });
 
@@ -97,11 +97,11 @@ describe('NodeInlineElement getEndPosition()', () => {
         let element = createNodeInlineElement('<span>www.example.com</span>');
 
         // Act
-        let end = element.getEndPosition();
+        let endPosition = element.getEndPosition();
 
         // Assert
-        expect(end.node.textContent).toBe('www.example.com');
-        expect(end.offset).toBe(15);
+        expect(endPosition.node.textContent).toBe('www.example.com');
+        expect(endPosition.offset).toBe(15);
     });
 
     it('input = <span>part1<span>part2</span><a><span>part3</span></a></span>', () => {
@@ -111,11 +111,11 @@ describe('NodeInlineElement getEndPosition()', () => {
         );
 
         // Act
-        let end = element.getEndPosition();
+        let endPosition = element.getEndPosition();
 
         // Assert
-        expect(end.node.textContent).toBe('part3');
-        expect(end.offset).toBe(5);
+        expect(endPosition.node.textContent).toBe('part3');
+        expect(endPosition.offset).toBe(5);
     });
 
     it('input = <img>', () => {
@@ -123,12 +123,12 @@ describe('NodeInlineElement getEndPosition()', () => {
         let element = createNodeInlineElement('<img>');
 
         // Act
-        let end = element.getEndPosition();
+        let endPosition = element.getEndPosition();
 
         // Assert
-        expect(end.node.textContent).toBe('');
-        expect(end.offset).toBe(0);
-        expect(end.isAtEnd).toBe(true);
+        expect(endPosition.node.textContent).toBe('');
+        expect(endPosition.offset).toBe(0);
+        expect(endPosition.isAtEnd).toBe(true);
     });
 });
 
@@ -243,110 +243,6 @@ describe('NodeInlineElement applyStyle()', () => {
 
         // Assert
         expect(testDiv.innerHTML).toBe('<span style="color: red;">www.example.com</span>');
-    });
-
-    it('from != null, to != null', () => {
-        // Arrange
-        let testDiv = DomTestHelper.createElementFromContent(
-            testID,
-            '<span>www.example.com</span>'
-        );
-        let parentBlock = new NodeBlockElement(testDiv);
-        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
-        let from = new Position(testDiv.firstChild.firstChild, 3);
-        let to = new Position(testDiv.firstChild.lastChild, 11);
-        element = new PartialInlineElement(element, from, to);
-        let mockColor = 'red';
-
-        // Act
-        element.applyStyle(node => (node.style.color = mockColor));
-
-        // Assert
-        expect(testDiv.innerHTML).toBe(
-            '<span>www</span><span style="color: red;">.example</span><span>.com</span>'
-        );
-    });
-
-    it('from != null, to = null', () => {
-        // Arrange
-        let testDiv = DomTestHelper.createElementFromContent(
-            testID,
-            '<span>www.example.com</span>'
-        );
-        let parentBlock = new NodeBlockElement(testDiv);
-        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
-        let from = new Position(testDiv.firstChild.firstChild, 3);
-        element = new PartialInlineElement(element, from, null);
-        let mockColor = 'red';
-
-        // Act
-        element.applyStyle(node => (node.style.color = mockColor));
-
-        // Assert
-        expect(testDiv.innerHTML).toBe(
-            '<span>www</span><span style="color: red;">.example.com</span>'
-        );
-    });
-
-    it('from = null, to != null', () => {
-        // Arrange
-        let testDiv = DomTestHelper.createElementFromContent(
-            testID,
-            '<span>www.example.com</span>'
-        );
-        let parentBlock = new NodeBlockElement(testDiv);
-        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
-        let to = new Position(testDiv.firstChild.firstChild, 11);
-        element = new PartialInlineElement(element, null, to);
-        let mockColor = 'red';
-
-        // Act
-        element.applyStyle(node => (node.style.color = mockColor));
-
-        // Assert
-        expect(testDiv.innerHTML).toBe(
-            '<span style="color: red;">www.example</span><span>.com</span>'
-        );
-    });
-
-    it('from != null, to != null, from = to', () => {
-        // Arrange
-        let testDiv = DomTestHelper.createElementFromContent(
-            testID,
-            '<span>www.example.com</span>'
-        );
-        let parentBlock = new NodeBlockElement(testDiv);
-        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
-        let from = new Position(testDiv.firstChild.firstChild, 3);
-        let to = new Position(testDiv.firstChild.firstChild, 3);
-        element = new PartialInlineElement(element, from, to);
-        let mockColor = 'red';
-
-        // Act
-        element.applyStyle(node => (node.style.color = mockColor));
-
-        // Assert
-        expect(testDiv.innerHTML).toBe('<span>www.example.com</span>');
-    });
-
-    it('from != null, to != null, from is after to', () => {
-        // Arrange
-        let testDiv = DomTestHelper.createElementFromContent(
-            testID,
-            '<span>www.example.com</span>'
-        );
-        let parentBlock = new NodeBlockElement(testDiv);
-        let element = getInlineElementAtNode(parentBlock, testDiv.firstChild);
-        let from = new Position(testDiv.firstChild.firstChild, 4);
-        let to = new Position(testDiv.firstChild.firstChild, 3);
-        element = new PartialInlineElement(element, from, to);
-        let mockColor = 'red';
-
-        // Act
-        element.applyStyle(node => (node.style.color = mockColor));
-
-        // Assert
-        expect(testDiv.innerHTML).toBe('<span>www.example.com</span>');
     });
 });
 

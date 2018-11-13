@@ -47,7 +47,7 @@ export default class EmptyInlineElement implements InlineElement {
      * Checks if the given inline element is after this inline element
      */
     isAfter(inlineElement: InlineElement): boolean {
-        return this.position.isAfter(inlineElement.getEndPosition());
+        return inlineElement && this.position.isAfter(inlineElement.getEndPosition());
     }
 
     /**

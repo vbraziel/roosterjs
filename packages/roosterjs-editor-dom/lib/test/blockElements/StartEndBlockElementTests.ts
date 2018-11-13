@@ -218,7 +218,7 @@ describe('StartEndBlockElement contains()', () => {
         expect(blockElementContainsNode).toBe(true);
     });
 
-    it('nodeBlockElement.containerNode equals node', () => {
+    it('nodeBlockElement.node equals node', () => {
         // Arrange
         let [blockElement, testDiv] = createStartEndBlockElementWithContent('www.example.com');
         let node = testDiv.firstChild;

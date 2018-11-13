@@ -1,11 +1,11 @@
 import EditorCore, { EditWithUndo } from '../editor/EditorCore';
+import { Position } from 'roosterjs-editor-dom';
 import {
     ChangeSource,
     ContentChangedEvent,
     NodePosition,
     PluginEventType,
 } from 'roosterjs-editor-types';
-import { Position } from 'roosterjs-editor-dom';
 
 const editWithUndo: EditWithUndo = (
     core: EditorCore,

@@ -51,14 +51,14 @@ export function isInlineElementEqual(
     textContent: string
 ): boolean {
     return (
-        isPositionEqual(element.getStartPosition(), start) &&
-        isPositionEqual(element.getEndPosition(), end) &&
+        arePositionsEqual(element.getStartPosition(), start) &&
+        arePositionsEqual(element.getEndPosition(), end) &&
         element.getTextContent() == textContent
     );
 }
 
-// Check if two editor points are equal
-function isPositionEqual(point1: NodePosition, point2: NodePosition): boolean {
+// Check if two positions are equal
+function arePositionsEqual(point1: NodePosition, point2: NodePosition): boolean {
     return point1.node.isEqualNode(point2.node) && point1.offset == point2.offset;
 }
 
@@ -90,14 +90,6 @@ export function createRangeFromChildNodes(node: Node): Range {
     let selectionRange = document.createRange();
     selectionRange.setStartBefore(node.firstChild);
     selectionRange.setEndAfter(node.lastChild);
-    return selectionRange;
-}
-
-// Create range from start and end position
-export function createRangeWithStartEndNode(start: NodePosition, end: NodePosition): Range {
-    let selectionRange = document.createRange();
-    selectionRange.setStart(start.node, start.offset);
-    selectionRange.setEnd(end.node, end.offset);
     return selectionRange;
 }
 

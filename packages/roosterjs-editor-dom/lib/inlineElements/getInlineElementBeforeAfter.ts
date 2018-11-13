@@ -1,7 +1,7 @@
-import PartialInlineElement from './PartialInlineElement';
 import getInlineElementAtNode from './getInlineElementAtNode';
-import { getLeafSibling } from '../utils/getLeafSibling';
+import PartialInlineElement from './PartialInlineElement';
 import shouldSkipNode from '../utils/shouldSkipNode';
+import { getLeafSibling } from '../utils/getLeafSibling';
 import { InlineElement, NodePosition, NodeType } from 'roosterjs-editor-types';
 
 /**
@@ -12,11 +12,39 @@ import { InlineElement, NodePosition, NodeType } from 'roosterjs-editor-types';
  * @param position The position to get InlineElement before
  * @param isAfter True to get InlineElement after the position, false to get InlineElement before the position
  */
+export function getInlineElementBefore(root: Node, position: NodePosition): InlineElement {
+    return getInlineElementBeforeAfter(root, position, false /*isAfter*/);
+}
+
+/**
+ * Get inline element after a position
+ * This is mostly used when we want to get the inline element after selection/cursor
+ * There is a possible that the cursor is in middle of an inline element (i.e. mid of a text node)
+ * in this case, we only want to return what is before cursor (a partial of an inline) to indicate
+ * that we're in middle.
+ * @param root Root node of current scope, use for create InlineElement
+ * @param position The position to get InlineElement after
+ */
+export function getInlineElementAfter(root: Node, position: NodePosition): InlineElement {
+    return getInlineElementBeforeAfter(root, position, true /*isAfter*/);
+}
+
+/**
+ * Get inline element before or after a position
+ * This is mostly used when we want to get the inline element after selection/cursor
+ * There is a possible that the cursor is in middle of an inline element (i.e. mid of a text node)
+ * in this case, we only want to return what is before cursor (a partial of an inline) to indicate
+ * that we're in middle.
+ * @param root Root node of current scope, use for create InlineElement
+ * @param position The position to get InlineElement after
+ * @param isAfter True to get inlineElement after the given position, otherwise get inlineElement before
+ * the given position
+ */
 export default function getInlineElementBeforeAfter(
     root: Node,
     position: NodePosition,
     isAfter: boolean
-): InlineElement {
+) {
     if (!root || !position || !position.node) {
         return null;
     }
