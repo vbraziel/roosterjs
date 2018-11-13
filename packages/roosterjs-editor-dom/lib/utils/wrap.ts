@@ -4,7 +4,6 @@ import fromHtml from './fromHtml';
  * Wrap all the node with html and return the wrapped node, and put the wrapper node under the parent of the first node
  * @param nodes The node or node array to wrap
  * @param wrapper The wrapper HTML tag name
- * default value is false
  * @returns The wrapper element
  */
 export default function wrap<T extends keyof HTMLElementTagNameMap>(
@@ -16,7 +15,6 @@ export default function wrap<T extends keyof HTMLElementTagNameMap>(
  * Wrap all the node with html and return the wrapped node, and put the wrapper node under the parent of the first node
  * @param nodes The node or node array to wrap
  * @param wrapper The wrapper HTML string, default value is DIV
- * default value is false
  * @returns The wrapper element
  */
 export default function wrap(nodes: Node | Node[], wrapper?: string): HTMLElement;
@@ -25,7 +23,6 @@ export default function wrap(nodes: Node | Node[], wrapper?: string): HTMLElemen
  * Wrap all the node with html and return the wrapped node, and put the wrapper node under the parent of the first node
  * @param nodes The node or node array to wrap
  * @param wrapper The wrapper HTML element, default value is a new DIV element
- * default value is false
  * @returns The wrapper element
  */
 export default function wrap(nodes: Node | Node[], wrapper?: HTMLElement): HTMLElement;
