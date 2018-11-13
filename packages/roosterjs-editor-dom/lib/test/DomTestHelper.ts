@@ -1,8 +1,7 @@
-import InlineElement from '../inlineElements/InlineElement';
 import NodeBlockElement from '../blockElements/NodeBlockElement';
-import Position from '../selection/Position';
 import StartEndBlockElement from '../blockElements/StartEndBlockElement';
 import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
+import { InlineElement, NodePosition } from 'roosterjs-editor-types';
 
 // Create element with content and id and insert the element in the DOM
 export function createElementFromContent(id: string, content: string): HTMLElement {
@@ -47,8 +46,8 @@ export function runTestMethod2(
 // Check inlineElement equality based on start, end and textContent
 export function isInlineElementEqual(
     element: InlineElement,
-    start: Position,
-    end: Position,
+    start: NodePosition,
+    end: NodePosition,
     textContent: string
 ): boolean {
     return (
@@ -59,7 +58,7 @@ export function isInlineElementEqual(
 }
 
 // Check if two editor points are equal
-function isPositionEqual(point1: Position, point2: Position): boolean {
+function isPositionEqual(point1: NodePosition, point2: NodePosition): boolean {
     return point1.node.isEqualNode(point2.node) && point1.offset == point2.offset;
 }
 
@@ -95,7 +94,7 @@ export function createRangeFromChildNodes(node: Node): Range {
 }
 
 // Create range from start and end position
-export function createRangeWithStartEndNode(start: Position, end: Position): Range {
+export function createRangeWithStartEndNode(start: NodePosition, end: NodePosition): Range {
     let selectionRange = document.createRange();
     selectionRange.setStart(start.node, start.offset);
     selectionRange.setEnd(end.node, end.offset);

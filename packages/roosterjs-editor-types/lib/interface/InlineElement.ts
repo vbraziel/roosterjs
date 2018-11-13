@@ -1,5 +1,5 @@
-import BlockElement from '../blockElements/BlockElement';
-import Position from '../selection/Position';
+import BlockElement from './BlockElement';
+import NodePosition from '../interface/NodePosition';
 
 /**
  * This refers to an inline element (as opposed to block) in editor
@@ -31,12 +31,12 @@ interface InlineElement {
     /**
      * Get the start position of this inline element
      */
-    getStartPosition(): Position;
+    getStartPosition(): NodePosition;
 
     /**
      * Get the end position of this inline element
      */
-    getEndPosition(): Position;
+    getEndPosition(): NodePosition;
 
     /**
      * Checks if the given inline element is after this inline element
@@ -51,10 +51,10 @@ interface InlineElement {
     /**
      * Checks if the given editor position is contained in this inline element
      */
-    contains(position: Position): boolean;
+    contains(position: NodePosition): boolean;
 
     /**
-     * Apply inline style to a region of an inline element. The region is identified thorugh the from and to point
+     * Apply inline style to a region of an inline element
      */
     applyStyle(styler: (element: HTMLElement) => any): void;
 }

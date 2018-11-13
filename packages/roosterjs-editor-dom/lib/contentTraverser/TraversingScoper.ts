@@ -1,5 +1,4 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
+import { BlockElement, InlineElement } from 'roosterjs-editor-types';
 
 /**
  * A scoper provides two things to a content traverser:

@@ -3,8 +3,8 @@ import {
     ContentChangedEvent,
     Indentation,
     PluginKeyboardEvent,
-    PositionType
-    } from 'roosterjs-editor-types';
+    PositionType,
+} from 'roosterjs-editor-types';
 import { ContentEditFeature, GenericContentEditFeature, Keys } from '../ContentEditFeatures';
 import {
     Browser,

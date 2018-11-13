@@ -1,10 +1,9 @@
-import BlockElement from '../blockElements/BlockElement';
-import ImageInlineElement from './ImageInlineElement';
-import InlineElement from '../inlineElements/InlineElement';
-import LinkInlineElement from './LinkInlineElement';
-import NodeInlineElement from './NodeInlineElement';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getTagOfNode from '../utils/getTagOfNode';
+import ImageInlineElement from './ImageInlineElement';
+import LinkInlineElement from './LinkInlineElement';
+import NodeInlineElement from './NodeInlineElement';
+import { BlockElement, InlineElement } from 'roosterjs-editor-types';
 
 /**
  * Get the inline element at a node

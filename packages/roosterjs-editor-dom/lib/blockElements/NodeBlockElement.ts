@@ -1,6 +1,6 @@
-import BlockElement from './BlockElement';
 import contains from '../utils/contains';
 import isNodeAfter from '../utils/isNodeAfter';
+import { BlockElement } from 'roosterjs-editor-types';
 
 /**
  * This presents a content block that can be reprented by a single html block type element.

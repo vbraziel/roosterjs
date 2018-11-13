@@ -2,6 +2,7 @@ import Editor from './Editor';
 import EditorPlugin from './EditorPlugin';
 import {
     ChangeSource,
+    NodePosition,
     PluginCompositionEvent,
     PluginEvent,
     PluginEventType,
@@ -118,7 +119,7 @@ export default class CorePlugin implements EditorPlugin {
      * @param node Current node
      * @returns A new position to select
      */
-    public ensureTypeInElement(position: Position): Position {
+    public ensureTypeInElement(position: NodePosition): NodePosition {
         position = position.normalize();
         let block = getBlockElementAtNode(this.contentDiv, position.node);
         let formatNode: HTMLElement;

@@ -1,5 +1,4 @@
-import { BlockElement } from 'roosterjs-editor-dom';
-import { Direction, ChangeSource } from 'roosterjs-editor-types';
+import { BlockElement, Direction, ChangeSource } from 'roosterjs-editor-types';
 import { Editor } from 'roosterjs-editor-core';
 
 /**

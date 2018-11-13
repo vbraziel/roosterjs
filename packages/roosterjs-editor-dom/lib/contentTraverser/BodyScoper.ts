@@ -1,9 +1,8 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
-import TraversingScoper from './TraversingScoper';
 import contains from '../utils/contains';
 import getFirstLastBlockElement from '../blockElements/getFirstLastBlockElement';
 import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
+import TraversingScoper from './TraversingScoper';
+import { BlockElement, InlineElement } from 'roosterjs-editor-types';
 import { getFirstLeafNode } from '../utils/getLeafNode';
 
 /**

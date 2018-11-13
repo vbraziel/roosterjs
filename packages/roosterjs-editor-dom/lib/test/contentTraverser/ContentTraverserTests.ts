@@ -1,12 +1,11 @@
 import * as DomTestHelper from '../DomTestHelper';
-import BlockElement from '../../blockElements/BlockElement';
 import BodyScoper from '../../contentTraverser/BodyScoper';
 import ContentTraverser from '../../contentTraverser/ContentTraverser';
 import Position from '../../selection/Position';
 import SelectionScoper from '../../contentTraverser/SelectionScoper';
 import SelectionBlockScoper from '../../contentTraverser/SelectionBlockScoper';
 import TraversingScoper from '../../contentTraverser/TraversingScoper';
-import { ContentPosition, PositionType } from 'roosterjs-editor-types';
+import { BlockElement, ContentPosition, PositionType } from 'roosterjs-editor-types';
 
 let testID = 'ContentTraverser';
 

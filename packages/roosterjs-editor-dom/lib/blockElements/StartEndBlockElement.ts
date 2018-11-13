@@ -1,9 +1,9 @@
-import BlockElement from './BlockElement';
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
 import isBlockElement from '../utils/isBlockElement';
 import isNodeAfter from '../utils/isNodeAfter';
 import wrap from '../utils/wrap';
+import { BlockElement } from 'roosterjs-editor-types';
 import { splitBalancedNodeRange } from '../utils/splitParentNode';
 
 /**

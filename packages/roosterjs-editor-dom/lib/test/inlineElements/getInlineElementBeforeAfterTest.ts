@@ -1,7 +1,7 @@
 import * as DomTestHelper from '../DomTestHelper';
 import Position from '../../selection/Position';
 import getInlineElementBeforeAfter from '../../inlineElements/getInlineElementBeforeAfter';
-import { PositionType } from 'roosterjs-editor-types';
+import { NodePosition, PositionType } from 'roosterjs-editor-types';
 
 let testID = 'getInlineElementBeforeAfter';
 
@@ -12,7 +12,7 @@ describe('getInlineElement getInlineElementBeforeAfter(), isAfter=false', () => 
 
     function runTest(
         rootNode: Node,
-        position: Position,
+        position: NodePosition,
         startOffset: number,
         endOffset: number,
         node: Node
@@ -76,7 +76,7 @@ describe('getInlineElement getInlineElementBeforeAfter(), isAfter=true', () => {
 
     function runTest(
         rootNode: Node,
-        position: Position,
+        position: NodePosition,
         startOffset: number,
         endOffset: number,
         node: Node

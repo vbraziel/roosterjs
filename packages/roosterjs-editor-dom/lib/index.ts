@@ -1,10 +1,8 @@
-export { default as BlockElement } from './blockElements/BlockElement';
 export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
 export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
 export { default as getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
 
-export { default as InlineElement } from './inlineElements/InlineElement';
 export { default as ImageInlineElement } from './inlineElements/ImageInlineElement';
 export { default as LinkInlineElement } from './inlineElements/LinkInlineElement';
 export { default as NodeInlineElement } from './inlineElements/NodeInlineElement';

@@ -1,6 +1,4 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
-import Position from '../selection/Position';
+import { BlockElement, InlineElement, NodePosition } from 'roosterjs-editor-types';
 
 /**
  * Represents an empty InlineElement.
@@ -8,7 +6,7 @@ import Position from '../selection/Position';
  * An empty InlineElement means current position is at the end of a tag so nothing is included inside this element
  */
 export default class EmptyInlineElement implements InlineElement {
-    constructor(private position: Position, private parentBlock: BlockElement) {}
+    constructor(private position: NodePosition, private parentBlock: BlockElement) {}
 
     /**
      * Get the text content of this inline element
@@ -34,14 +32,14 @@ export default class EmptyInlineElement implements InlineElement {
     /**
      * Get the start position of this inline element
      */
-    getStartPosition(): Position {
+    getStartPosition(): NodePosition {
         return this.position;
     }
 
     /**
      * Get the end position of this inline element
      */
-    getEndPosition(): Position {
+    getEndPosition(): NodePosition {
         return this.position;
     }
 
@@ -62,7 +60,7 @@ export default class EmptyInlineElement implements InlineElement {
     /**
      * Checks if the given editor position is contained in this inline element
      */
-    contains(position: Position): boolean {
+    contains(position: NodePosition): boolean {
         return false;
     }
 

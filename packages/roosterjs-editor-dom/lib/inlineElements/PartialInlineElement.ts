@@ -1,10 +1,8 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
-import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
+import Position from '../selection/Position';
+import { BlockElement, InlineElement, NodePosition, PositionType } from 'roosterjs-editor-types';
 import { getNextLeafSibling, getPreviousLeafSibling } from '../utils/getLeafSibling';
-import { PositionType } from 'roosterjs-editor-types';
 
 /**
  * This is a special version of inline element that identifies a section of an inline element
@@ -16,8 +14,8 @@ import { PositionType } from 'roosterjs-editor-types';
 class PartialInlineElement implements InlineElement {
     constructor(
         private inlineElement: InlineElement,
-        private start: Position = null,
-        private end: Position = null
+        private start?: NodePosition,
+        private end?: NodePosition
     ) {}
 
     /**
@@ -52,14 +50,14 @@ class PartialInlineElement implements InlineElement {
     /**
      * Gets the start position
      */
-    public getStartPosition(): Position {
+    public getStartPosition(): NodePosition {
         return this.start || this.inlineElement.getStartPosition();
     }
 
     /**
      * Gets the end position
      */
-    public getEndPosition(): Position {
+    public getEndPosition(): NodePosition {
         return this.end || this.inlineElement.getEndPosition();
     }
 
@@ -80,7 +78,7 @@ class PartialInlineElement implements InlineElement {
     /**
      * Checks if this inline element contains the given position
      */
-    public contains(position: Position): boolean {
+    public contains(position: NodePosition): boolean {
         return (
             position &&
             position.isAfter(this.getStartPosition()) &&

@@ -1,6 +1,6 @@
 import * as DomTestHelper from '../DomTestHelper';
-import BlockElement from '../../blockElements/BlockElement';
 import getFirstLastBlockElement from '../../blockElements/getFirstLastBlockElement';
+import { BlockElement } from 'roosterjs-editor-types';
 
 let testID = 'getFirstLastBlockElement';
 

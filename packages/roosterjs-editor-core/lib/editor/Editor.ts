@@ -2,12 +2,14 @@ import EditorCore from './EditorCore';
 import EditorOptions from './EditorOptions';
 import createEditorCore from './createEditorCore';
 import {
+    BlockElement,
     ChangeSource,
     ContentPosition,
     DefaultFormat,
     DocumentCommand,
     ExtractContentEvent,
     InsertOption,
+    NodePosition,
     PluginEvent,
     PluginEventType,
     PositionType,
@@ -15,7 +17,6 @@ import {
     Rect,
 } from 'roosterjs-editor-types';
 import {
-    BlockElement,
     Browser,
     PositionContentSearcher,
     ContentTraverser,
@@ -430,7 +431,7 @@ export default class Editor {
      * @param position The position to select
      * @returns True if content is selected, otherwise false
      */
-    public select(position: Position): boolean;
+    public select(position: NodePosition): boolean;
 
     /**
      * Select content by a start and end position
@@ -438,7 +439,7 @@ export default class Editor {
      * @param end The end position to select, if this is the same with start, the selection will be collapsed
      * @returns True if content is selected, otherwise false
      */
-    public select(start: Position, end: Position): boolean;
+    public select(start: NodePosition, end: NodePosition): boolean;
 
     /**
      * Select content by node
@@ -610,7 +611,7 @@ export default class Editor {
      * a ContentChangedEvent will be fired with change source equal to this value
      */
     public addUndoSnapshot(
-        callback?: (start: Position, end: Position, snapshotBeforeCallback: string) => any,
+        callback?: (start: NodePosition, end: NodePosition, snapshotBeforeCallback: string) => any,
         changeSource?: ChangeSource | string
     ) {
         this.core.api.editWithUndo(this.core, callback, changeSource);

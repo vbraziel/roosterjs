@@ -1,7 +1,7 @@
-import InlineElement from './InlineElement';
 import PartialInlineElement from './PartialInlineElement';
 import getInlineElementAtNode from './getInlineElementAtNode';
 import { getLeafSibling } from '../utils/getLeafSibling';
+import { InlineElement } from 'roosterjs-editor-types';
 
 export function getNextPreviousInlineElement(
     rootNode: Node,

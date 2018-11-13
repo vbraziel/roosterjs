@@ -1,8 +1,7 @@
 import * as DomTestHelper from '../DomTestHelper';
-import BlockElement from '../../blockElements/BlockElement';
 import Position from '../../selection/Position';
 import SelectionScoper from '../../contentTraverser/SelectionScoper';
-import { PositionType } from 'roosterjs-editor-types';
+import { BlockElement, PositionType } from 'roosterjs-editor-types';
 
 let testID = 'SelectionScoper';
 

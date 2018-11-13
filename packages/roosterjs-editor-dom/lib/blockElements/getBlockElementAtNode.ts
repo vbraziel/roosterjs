@@ -1,10 +1,10 @@
-import BlockElement from './BlockElement';
-import NodeBlockElement from './NodeBlockElement';
-import StartEndBlockElement from './StartEndBlockElement';
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
 import getTagOfNode from '../utils/getTagOfNode';
 import isBlockElement from '../utils/isBlockElement';
+import NodeBlockElement from './NodeBlockElement';
+import StartEndBlockElement from './StartEndBlockElement';
+import { BlockElement } from 'roosterjs-editor-types';
 
 /**
  * This produces a block element from a a node

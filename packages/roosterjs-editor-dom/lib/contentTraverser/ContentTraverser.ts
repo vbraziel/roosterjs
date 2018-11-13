@@ -1,14 +1,11 @@
-import BlockElement from '../blockElements/BlockElement';
 import BodyScoper from './BodyScoper';
-import InlineElement from '../inlineElements/InlineElement';
-import Position from '../selection/Position';
+import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
+import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import SelectionBlockScoper from './SelectionBlockScoper';
 import SelectionScoper from './SelectionScoper';
 import TraversingScoper from './TraversingScoper';
-import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
-import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
+import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
 import { getLeafSibling } from '../utils/getLeafSibling';
-import { ContentPosition } from 'roosterjs-editor-types';
 import { getNextPreviousInlineElement } from '../inlineElements/getNextPreviousInlineElement';
 
 /**
@@ -53,7 +50,7 @@ export default class ContentTraverser {
      */
     public static createBlockTraverser(
         rootNode: Node,
-        position: Position | Range,
+        position: NodePosition | Range,
         start: ContentPosition = ContentPosition.SelectionStart
     ): ContentTraverser {
         return new ContentTraverser(new SelectionBlockScoper(rootNode, position, start));

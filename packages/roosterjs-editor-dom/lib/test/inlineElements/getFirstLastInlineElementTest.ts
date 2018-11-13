@@ -1,8 +1,7 @@
 import * as DomTestHelper from '../DomTestHelper';
-import InlineElement from '../../inlineElements/InlineElement';
 import Position from '../../selection/Position';
 import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
-import { PositionType } from 'roosterjs-editor-types';
+import { InlineElement, PositionType } from 'roosterjs-editor-types';
 import { getFirstLeafNode, getLastLeafNode } from '../../utils/getLeafNode';
 
 let testID = 'getFirstLastInlineElement';

@@ -1,13 +1,11 @@
-import BlockElement from '../blockElements/BlockElement';
 import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
-import InlineElement from '../inlineElements/InlineElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
-import { ContentPosition } from 'roosterjs-editor-types';
+import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
 
 /**
  * This provides traversing content in a selection start block
@@ -17,7 +15,7 @@ import { ContentPosition } from 'roosterjs-editor-types';
  */
 export default class SelectionBlockScoper implements TraversingScoper {
     private block: BlockElement;
-    private position: Position;
+    private position: NodePosition;
 
     /**
      * Create a new instance of SelectionBlockScoper class
@@ -27,7 +25,7 @@ export default class SelectionBlockScoper implements TraversingScoper {
      */
     constructor(
         public rootNode: Node,
-        position: Position | Range,
+        position: NodePosition | Range,
         private startFrom: ContentPosition
     ) {
         position = position instanceof Range ? Position.getStart(position) : position;
@@ -55,7 +53,9 @@ export default class SelectionBlockScoper implements TraversingScoper {
                 case ContentPosition.End:
                     return getInlineElementAtNode(
                         this.rootNode,
-                        this.startFrom == ContentPosition.Begin ? getFirstLeafNode(this.rootNode) : getLastLeafNode(this.rootNode)
+                        this.startFrom == ContentPosition.Begin
+                            ? getFirstLeafNode(this.rootNode)
+                            : getLastLeafNode(this.rootNode)
                     );
                 case ContentPosition.SelectionStart:
                     // Get the inline before selection start position, and ensure it falls in the selection block

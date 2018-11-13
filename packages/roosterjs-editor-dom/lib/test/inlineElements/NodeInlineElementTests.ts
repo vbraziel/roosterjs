@@ -1,10 +1,9 @@
 import * as DomTestHelper from '../DomTestHelper';
-import InlineElement from '../../inlineElements/InlineElement';
 import NodeBlockElement from '../../blockElements/NodeBlockElement';
 import PartialInlineElement from '../../inlineElements/PartialInlineElement';
 import Position from '../../selection/Position';
 import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
-import { PositionType } from 'roosterjs-editor-types';
+import { InlineElement, PositionType } from 'roosterjs-editor-types';
 import { NodeInlineElement } from '../..';
 
 let testID = 'NodeInlineElement';

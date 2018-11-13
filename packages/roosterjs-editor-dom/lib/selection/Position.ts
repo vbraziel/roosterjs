@@ -1,11 +1,11 @@
-import { NodeType, PositionType } from 'roosterjs-editor-types';
+import { NodePosition, NodeType, PositionType } from 'roosterjs-editor-types';
 import getElementOrParentElement from '../utils/getElementOrParentElement';
 import isNodeAfter from '../utils/isNodeAfter';
 
 /**
  * Represent a position in DOM tree by the node and its offset index
  */
-export default class Position {
+export default class Position implements NodePosition {
     readonly node: Node;
     readonly element: HTMLElement;
     readonly offset: number;
@@ -16,7 +16,7 @@ export default class Position {
      * If the given position has invalid offset, this function will return a corrected value.
      * @param position The original position to clone from
      */
-    constructor(position: Position);
+    constructor(position: NodePosition);
 
     /**
      * Create a Position from node and an offset number
@@ -72,7 +72,7 @@ export default class Position {
      * Normalize this position to the leaf node, return the normalize result.
      * If current position is already using leaf node, return this position object itself
      */
-    normalize(): Position {
+    normalize(): NodePosition {
         if (this.node.nodeType == NodeType.Text || !this.node.firstChild) {
             return this;
         }
@@ -97,7 +97,7 @@ export default class Position {
      * Check if this position is equal to the given position
      * @param p The position to check
      */
-    equalTo(p: Position): boolean {
+    equalTo(p: NodePosition): boolean {
         return (
             p &&
             (this == p ||
@@ -108,7 +108,7 @@ export default class Position {
     /**
      * Checks if position 1 is after position 2
      */
-    isAfter(p: Position): boolean {
+    isAfter(p: NodePosition): boolean {
         return this.node == p.node
             ? (this.isAtEnd && !p.isAtEnd) || this.offset > p.offset
             : isNodeAfter(this.node, p.node);

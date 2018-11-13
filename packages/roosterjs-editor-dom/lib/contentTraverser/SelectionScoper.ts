@@ -1,10 +1,9 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
-import Position from '../selection/Position';
-import TraversingScoper from './TraversingScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import PartialInlineElement from '../inlineElements/PartialInlineElement';
+import Position from '../selection/Position';
+import TraversingScoper from './TraversingScoper';
+import { BlockElement, InlineElement, NodePosition } from 'roosterjs-editor-types';
 
 /**
  * This is selection scoper that provide a start inline as the start of the selection
@@ -12,8 +11,8 @@ import PartialInlineElement from '../inlineElements/PartialInlineElement';
  * last trimInlineElement to trim any inline element to return a partial that falls in the selection
  */
 export default class SelectionScoper implements TraversingScoper {
-    private start: Position;
-    private end: Position;
+    private start: NodePosition;
+    private end: NodePosition;
     private startBlock: BlockElement;
     private startInline: InlineElement;
 

@@ -1,10 +1,8 @@
-import InlineElement from '../inlineElements/InlineElement';
 import PartialInlineElement from './PartialInlineElement';
-import Position from '../selection/Position';
 import getInlineElementAtNode from './getInlineElementAtNode';
 import { getLeafSibling } from '../utils/getLeafSibling';
 import shouldSkipNode from '../utils/shouldSkipNode';
-import { NodeType } from 'roosterjs-editor-types';
+import { InlineElement, NodePosition, NodeType } from 'roosterjs-editor-types';
 
 /**
  * Get inline element before or after a position
@@ -16,7 +14,7 @@ import { NodeType } from 'roosterjs-editor-types';
  */
 export default function getInlineElementBeforeAfter(
     root: Node,
-    position: Position,
+    position: NodePosition,
     isAfter: boolean
 ): InlineElement {
     if (!root || !position || !position.node) {

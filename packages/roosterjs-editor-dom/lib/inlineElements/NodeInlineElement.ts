@@ -1,9 +1,13 @@
-import BlockElement from '../blockElements/BlockElement';
-import InlineElement from '../inlineElements/InlineElement';
-import Position from '../selection/Position';
 import applyTextStyle from '../utils/applyTextStyle';
 import isNodeAfter from '../utils/isNodeAfter';
-import { NodeType, PositionType } from 'roosterjs-editor-types';
+import Position from '../selection/Position';
+import {
+    BlockElement,
+    InlineElement,
+    NodePosition,
+    NodeType,
+    PositionType,
+} from 'roosterjs-editor-types';
 
 /**
  * This presents an inline element that can be reprented by a single html node.
@@ -39,7 +43,7 @@ class NodeInlineElement implements InlineElement {
     /**
      * Get the start position of the inline element
      */
-    public getStartPosition(): Position {
+    public getStartPosition(): NodePosition {
         // For a position, we always want it to point to a leaf node
         // We should try to go get the lowest first child node from the container
         return new Position(this.containerNode, 0).normalize();
@@ -48,7 +52,7 @@ class NodeInlineElement implements InlineElement {
     /**
      * Get the end position of the inline element
      */
-    public getEndPosition(): Position {
+    public getEndPosition(): NodePosition {
         // For a position, we always want it to point to a leaf node
         // We should try to go get the lowest last child node from the container
         return new Position(this.containerNode, PositionType.End).normalize();
@@ -71,7 +75,7 @@ class NodeInlineElement implements InlineElement {
     /**
      * Checks if a positiont is contained in the inline element
      */
-    public contains(position: Position): boolean {
+    public contains(position: NodePosition): boolean {
         let start = this.getStartPosition();
         let end = this.getEndPosition();
         return position && position.isAfter(start) && end.isAfter(position);
