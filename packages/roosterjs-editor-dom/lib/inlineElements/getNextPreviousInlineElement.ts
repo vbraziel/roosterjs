@@ -1,5 +1,5 @@
-import PartialInlineElement from './PartialInlineElement';
 import getInlineElementAtNode from './getInlineElementAtNode';
+import PartialInlineElement from './PartialInlineElement';
 import { getLeafSibling } from '../utils/getLeafSibling';
 import { InlineElement } from 'roosterjs-editor-types';
 

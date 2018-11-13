@@ -4,7 +4,12 @@ import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
-import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
+import {
+    BlockElement,
+    ContentPosition,
+    InlineElement,
+    NodePosition
+    } from 'roosterjs-editor-types';
 import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
 
 /**

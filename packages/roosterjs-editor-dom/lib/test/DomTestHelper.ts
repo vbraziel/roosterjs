@@ -1,6 +1,6 @@
+import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import NodeBlockElement from '../blockElements/NodeBlockElement';
 import StartEndBlockElement from '../blockElements/StartEndBlockElement';
-import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import { InlineElement, NodePosition } from 'roosterjs-editor-types';
 
 // Create element with content and id and insert the element in the DOM

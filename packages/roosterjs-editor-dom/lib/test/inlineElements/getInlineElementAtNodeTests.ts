@@ -1,6 +1,6 @@
 import * as DomTestHelper from '../DomTestHelper';
-import Position from '../../selection/Position';
 import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
+import Position from '../../selection/Position';
 import { PositionType } from 'roosterjs-editor-types';
 
 let testID = 'getInlineElementAtNode';

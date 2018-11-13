@@ -1,5 +1,11 @@
 import EditorCore, { InsertNode } from '../editor/EditorCore';
 import {
+    ContentPosition,
+    InsertOption,
+    NodeType,
+    PositionType
+    } from 'roosterjs-editor-types';
+import {
     Position,
     changeElementTag,
     contains,
@@ -14,7 +20,6 @@ import {
     unwrap,
     wrap,
 } from 'roosterjs-editor-dom';
-import { ContentPosition, InsertOption, NodeType, PositionType } from 'roosterjs-editor-types';
 
 const insertNode: InsertNode = (core: EditorCore, node: Node, option: InsertOption) => {
     let position = option ? option.position : ContentPosition.SelectionStart;

@@ -1,6 +1,6 @@
+import createEditorCore from './createEditorCore';
 import EditorCore from './EditorCore';
 import EditorOptions from './EditorOptions';
-import createEditorCore from './createEditorCore';
 import {
     BlockElement,
     ChangeSource,

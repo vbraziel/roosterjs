@@ -1,7 +1,12 @@
 import applyTextStyle from '../utils/applyTextStyle';
 import createRange from '../selection/createRange';
 import Position from '../selection/Position';
-import { BlockElement, InlineElement, NodePosition, PositionType } from 'roosterjs-editor-types';
+import {
+    BlockElement,
+    InlineElement,
+    NodePosition,
+    PositionType
+    } from 'roosterjs-editor-types';
 import { getNextLeafSibling, getPreviousLeafSibling } from '../utils/getLeafSibling';
 
 /**
