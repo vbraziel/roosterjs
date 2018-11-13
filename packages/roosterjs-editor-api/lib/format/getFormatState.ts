@@ -1,10 +1,5 @@
 import { cacheGetNodeAtCursor } from './getNodeAtCursor';
-import {
-    DocumentCommand,
-    FormatState,
-    PluginEvent,
-    QueryScope
-    } from 'roosterjs-editor-types';
+import { DocumentCommand, FormatState, PluginEvent, QueryScope } from 'roosterjs-editor-types';
 import { Editor } from 'roosterjs-editor-core';
 import { getComputedStyles, getTagOfNode, Position } from 'roosterjs-editor-dom';
 

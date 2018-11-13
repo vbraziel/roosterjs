@@ -1,10 +1,5 @@
 import EditorCore, { InsertNode } from '../editor/EditorCore';
-import {
-    ContentPosition,
-    InsertOption,
-    NodeType,
-    PositionType
-    } from 'roosterjs-editor-types';
+import { ContentPosition, InsertOption, NodeType, PositionType } from 'roosterjs-editor-types';
 import {
     Position,
     changeElementTag,
