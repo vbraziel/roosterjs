@@ -1,4 +1,3 @@
-export { default as getNodeAtCursor, cacheGetNodeAtCursor } from './format/getNodeAtCursor';
 export { default as changeFontSize, FONT_SIZES } from './format/changeFontSize';
 export { default as clearFormat } from './format/clearFormat';
 export { default as createLink } from './format/createLink';
