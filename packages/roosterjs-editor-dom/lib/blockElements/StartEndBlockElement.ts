@@ -8,7 +8,7 @@ import { splitBalancedNodeRange } from '../utils/splitParentNode';
 
 /**
  * This reprents a block that is identified by a start and end node
- * This is for cases like <ced>Hello<BR>World</ced>
+ * This is for cases like <root>Hello<BR>World</root>
  * in that case, Hello<BR> is a block, World is another block
  * Such block cannot be represented by a NodeBlockElement since they don't chained up
  * to a single parent node, instead they have a start and end
@@ -72,8 +72,8 @@ export default class StartEndBlockElement implements BlockElement {
     /**
      * Checks if another block is after this current
      */
-    public isAfter(other: BlockElement): boolean {
-        return isNodeAfter(this.getStartNode(), other.getEndNode());
+    public isAfter(blockElement: BlockElement): boolean {
+        return isNodeAfter(this.getStartNode(), blockElement.getEndNode());
     }
 
     /**

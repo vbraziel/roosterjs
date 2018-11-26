@@ -1,8 +1,10 @@
 import * as DomTestHelper from '../DomTestHelper';
-import getInlineElementAtNode from '../../inlineElements/getInlineElementAtNode';
 import Position from '../../selection/Position';
-import { getFirstLeafNode, getLastLeafNode } from '../../utils/getLeafNode';
-import { InlineElement, PositionType } from 'roosterjs-editor-types';
+import { PositionType } from 'roosterjs-editor-types';
+import {
+    getFirstInlineElement,
+    getLastInlineElement,
+} from '../../inlineElements/getFirstLastInlineElement';
 
 let testID = 'getFirstLastInlineElement';
 
@@ -10,11 +12,6 @@ describe('getInlineElement getFirstInlineElement()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });
-
-    function getFirstInlineElement(rootNode: Node): InlineElement {
-        let node = getFirstLeafNode(rootNode);
-        return node ? getInlineElementAtNode(rootNode, node) : null;
-    }
 
     function runTest(rootNode: Node, testNode: Node, startOffset: number, endOffset: number) {
         // Arrange
@@ -63,11 +60,6 @@ describe('getInlineElement getLastInlineElement()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
     });
-
-    function getLastInlineElement(rootNode: Node): InlineElement {
-        let node = getLastLeafNode(rootNode);
-        return node ? getInlineElementAtNode(rootNode, node) : null;
-    }
 
     function runTest(rootNode: Node, testNode: Node, startOffset: number, endOffset: number) {
         // Arrange

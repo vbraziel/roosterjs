@@ -9,25 +9,27 @@ import { BlockElement } from 'roosterjs-editor-types';
 /**
  * This produces a block element from a a node
  * It needs to account for various HTML structure. Examples:
- * 1) <ced><div>abc</div></ced>
+ * 1) <root><div>abc</div></root>
  *   This is most common the case, user passes in a node pointing to abc, and get back a block representing <div>abc</div>
- * 2) <ced><p><br></p></ced>
- *   Common content for empty block for email client like OWA, user passes node pointing to <br>, and get back a block representing <p><br></p>
- * 3) <ced>abc</ced>
+ * 2) <root><p><br></p></root>
+ *   Common content for empty block, user passes node pointing to <br>, and get back a block representing <p><br></p>
+ * 3) <root>abc</root>
  *   Not common, but does happen. It is still a block in user's view. User passes in abc, and get back a start-end block representing abc
  *   NOTE: abc could be just one node. However, since it is not a html block, it is more appropriate to use start-end block although they point to same node
- * 4) <ced><div>abc<br>123</div></ced>
+ * 4) <root><div>abc<br>123</div></root>
  *   A bit tricky, but can happen when user use Ctrl+Enter which simply inserts a <BR> to create a link break. There're two blocks:
  *   block1: 1) abc<br> block2: 123
- * 5) <ced><div>abc<div>123</div></div></ced>
+ * 5) <root><div>abc<div>123</div></div></root>
  *   Nesting div and there is text node in same level as a DIV. Two blocks: 1) abc 2) <div>123</div>
- * 6) <ced<div>abc<span>123<br>456</span></div></ced>
+ * 6) <root><div>abc<span>123<br>456</span></div></root>
  *   This is really tricky. Essentially there is a <BR> in middle of a span breaking the span into two blocks;
  *   block1: abc<span>123<br> block2: 456
  * In summary, given any arbitary node (leaf), to identify the head and tail of the block, following rules need to be followed:
  * 1) to identify the head, it needs to crawl DOM tre left/up till a block node or BR is encountered
  * 2) same for identifying tail
  * 3) should also apply a block ceiling, meaning as it crawls up, it should stop at a block node
+ * @param rootNode Root node of the scope, the block element will be inside of this node
+ * @param node The node to get BlockElement start from
  */
 export default function getBlockElementAtNode(rootNode: Node, node: Node): BlockElement {
     if (!contains(rootNode, node)) {
@@ -47,8 +49,8 @@ export default function getBlockElementAtNode(rootNode: Node, node: Node): Block
     let tailNode = findHeadTailLeafNode(node, containerBlockNode, true /*isTail*/);
 
     // At this point, we have the head and tail of a block, here are some examples and where head and tail point to
-    // 1) <ced><div>hello<br></div></ced>, head: hello, tail: <br>
-    // 2) <ced><div>hello<span style="font-family: Arial">world</span></div></ced>, head: hello, tail: world
+    // 1) <root><div>hello<br></div></root>, head: hello, tail: <br>
+    // 2) <root><div>hello<span style="font-family: Arial">world</span></div></root>, head: hello, tail: world
     // Both are actually completely and exclusively wrapped in a parent div, and can be represented with a Node block
     // So we shall try to collapse as much as we can to the nearest common ancester
     let nodes = collapseNodes(rootNode, headNode, tailNode, false /*canSplitParent*/);
@@ -56,7 +58,7 @@ export default function getBlockElementAtNode(rootNode: Node, node: Node): Block
     tailNode = nodes[nodes.length - 1];
 
     if (headNode.parentNode != tailNode.parentNode) {
-        // Un-balanced start and end, create a start-end block
+        // Un-Balanced start and end, create a start-end block
         return new StartEndBlockElement(rootNode, headNode, tailNode);
     } else {
         // Balanced start and end (point to same parent), need to see if further collapsing can be done

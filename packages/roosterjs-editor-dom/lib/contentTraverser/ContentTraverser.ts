@@ -1,12 +1,12 @@
 import BodyScoper from './BodyScoper';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
 import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
+import getNextPreviousInlineElement from '../inlineElements/getNextPreviousInlineElement';
 import SelectionBlockScoper from './SelectionBlockScoper';
 import SelectionScoper from './SelectionScoper';
 import TraversingScoper from './TraversingScoper';
 import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
 import { getLeafSibling } from '../utils/getLeafSibling';
-import { getNextPreviousInlineElement } from '../inlineElements/getNextPreviousInlineElement';
 
 /**
  * The provides traversing of content inside editor.

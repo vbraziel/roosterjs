@@ -3,7 +3,7 @@ import PartialInlineElement from './PartialInlineElement';
 import { getLeafSibling } from '../utils/getLeafSibling';
 import { InlineElement } from 'roosterjs-editor-types';
 
-export function getNextPreviousInlineElement(
+export default function getNextPreviousInlineElement(
     rootNode: Node,
     current: InlineElement,
     isNext: boolean
@@ -13,11 +13,10 @@ export function getNextPreviousInlineElement(
     }
     if (current instanceof PartialInlineElement) {
         // if current is partial, get the the othe half of the inline unless it is no more
-        let nextOrPrevious = isNext
-            ? current.getNextInlineElement()
-            : current.getPreviousInlineElement();
-        if (nextOrPrevious) {
-            return nextOrPrevious;
+        let result = isNext ? current.getNextInlineElement() : current.getPreviousInlineElement();
+
+        if (result) {
+            return result;
         }
     }
 
