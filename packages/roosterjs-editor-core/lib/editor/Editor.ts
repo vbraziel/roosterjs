@@ -20,7 +20,6 @@ import {
     Rect,
 } from 'roosterjs-editor-types';
 import {
-    Browser,
     PositionContentSearcher,
     ContentTraverser,
     Position,
