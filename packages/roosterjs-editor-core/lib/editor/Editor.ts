@@ -31,9 +31,7 @@ import {
     getPositionRect,
     getTagOfNode,
     isNodeEmpty,
-    markSelection,
     queryElements,
-    removeMarker,
     collapseNodes,
     wrap,
 } from 'roosterjs-editor-dom';
@@ -495,34 +493,6 @@ export default class Editor {
 
     public select(arg1: any, arg2?: any, arg3?: any, arg4?: any): boolean {
         return this.core.api.select(this.core, arg1, arg2, arg3, arg4);
-    }
-
-    /**
-     * @deprecated
-     * Insert selection marker element into content, so that after doing some modification,
-     * we can still restore the selection as long as the selection marker is still there
-     * @returns The return value of callback
-     */
-    public runWithSelectionMarker<T>(callback: () => T, useInlineMarker?: boolean): T {
-        let selectionMarked = markSelection(
-            this.core.contentDiv,
-            this.getSelectionRange(),
-            useInlineMarker
-        );
-        try {
-            return callback && callback();
-        } finally {
-            if (selectionMarked) {
-                // In safari the selection will be lost after inserting markers, so need to restore it
-                // For other browsers we just need to delete markers here
-                this.select(
-                    removeMarker(
-                        this.core.contentDiv,
-                        Browser.isSafari || Browser.isChrome /*applySelection*/
-                    )
-                );
-            }
-        }
     }
 
     /**
