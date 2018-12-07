@@ -23,7 +23,7 @@ export default class ContentTraverser {
      * Create a content traverser for the whole body of given root node
      * @param scoper Traversing scoper object to help scope the traversing
      */
-    constructor(private scoper: TraversingScoper) {}
+    private constructor(private scoper: TraversingScoper) {}
 
     /**
      * Create a content traverser for the whole body of given root node
@@ -145,7 +145,7 @@ export default class ContentTraverser {
                 current.getStartPosition(),
                 isNext
             );
-            if (newInline && !current.getParentBlock().isInBlock(newInline)) {
+            if (newInline && !current.getParentBlock().contains(newInline.getContainerNode())) {
                 newInline = null;
             }
         } else {

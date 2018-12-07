@@ -37,10 +37,10 @@ export default class Paste implements EditorPlugin {
 
     /**
      * Create an instance of Paste
-     * @param deprecated Deprecated parameter only used for compatibility with old code
+     * @param preserved Deprecated parameter only used for compatibility with old code
      * @param attributeCallbacks A set of callbacks to help handle html attribute during sanitization
      */
-    constructor(deprecated?: boolean, attributeCallbacks?: AttributeCallbackMap) {
+    constructor(preserved?: boolean, attributeCallbacks?: AttributeCallbackMap) {
         this.sanitizer = new HtmlSanitizer({
             attributeCallbacks,
         });
