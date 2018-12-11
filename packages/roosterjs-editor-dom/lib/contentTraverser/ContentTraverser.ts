@@ -20,10 +20,11 @@ export default class ContentTraverser {
     private currentBlock: BlockElement;
 
     /**
+     * @deprecated Use static methods create*Traverser() instead
      * Create a content traverser for the whole body of given root node
      * @param scoper Traversing scoper object to help scope the traversing
      */
-    private constructor(private scoper: TraversingScoper) {}
+    constructor(private scoper: TraversingScoper) {}
 
     /**
      * Create a content traverser for the whole body of given root node
