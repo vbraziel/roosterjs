@@ -18,5 +18,9 @@
     "prettier.jsxSingleQuote": true,
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "all",
-    "prettier.printWidth": 100
+    "prettier.printWidth": 100,
+    "files.eol": "\r\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "prettier.endOfLine": "crlf"
 }
