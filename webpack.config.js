@@ -1,17 +1,22 @@
+const path = require('path');
 const devServerPort = 3000;
 
 module.exports = {
-    entry: './publish/samplesite/scripts/index.ts',
+    entry: path.join(__dirname, './publish/samplesite/scripts/index.ts'),
     devtool: 'source-map',
     output: {
         filename: 'demo.js',
-        path: __dirname + '/scripts',
+        path: path.join(__dirname, '/scripts'),
         publicPath: '/scripts/',
         sourceMapFilename: '[name].map',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.svg', '.scss', '.'],
-        modules: ['./publish/samplesite/scripts', 'packages', './node_modules'],
+        modules: [
+            path.join(__dirname, './publish/samplesite/scripts'),
+            path.join(__dirname, './packages'),
+            path.join(__dirname, './node_modules')
+        ],
     },
     mode: 'development',
     module: {
