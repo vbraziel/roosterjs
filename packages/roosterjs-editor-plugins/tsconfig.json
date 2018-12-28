@@ -20,6 +20,9 @@
     "lib": [
       "es6",
       "dom"
+    ],
+    "types": [
+      "@types/jasmine"
     ]
   },
   "include": [

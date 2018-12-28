@@ -8,14 +8,13 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "preserveConstEnums": true,
-    "baseUrl": "../../",
+    "rootDir": "../../../../",
     "paths": {
       "*": [
         "*",
         "dist/*"
       ]
     },
-    "rootDir": ".",
     "lib": [
       "es6",
       "dom"

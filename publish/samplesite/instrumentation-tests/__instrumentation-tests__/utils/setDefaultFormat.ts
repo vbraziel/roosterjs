@@ -1,7 +1,6 @@
 import { Page } from 'puppeteer';
-import DefaultFormat from '../../../../../packages/roosterjs-editor-types/lib/interface/DefaultFormat';
 export default async function setDefaultFormat(page: Page, format: { italic?: boolean, underline?: boolean, bold?: boolean }) {
-    const currentFormat: DefaultFormat = await page.evaluate(() => ({
+    const currentFormat = await page.evaluate(() => ({
         italic: (document.getElementById("italic") as HTMLInputElement).checked,
         underline: (document.getElementById("underline") as HTMLInputElement).checked,
         bold: (document.getElementById("bold") as HTMLInputElement).checked,

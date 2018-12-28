@@ -20,7 +20,8 @@
     "lib": [
       "es6",
       "dom"
-    ]
+    ],
+    "types": [],
   },
   "include": [
     "lib/**/*.ts"

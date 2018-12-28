@@ -11,10 +11,21 @@
         "noUnusedLocals": true,
         "baseUrl": "../../",
         "paths": {
-            "*": ["*", "dist/*"]
+            "*": [
+                "*",
+                "dist/*"
+            ]
         },
         "rootDir": ".",
-        "lib": ["es6", "dom"]
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "types": [
+            "@types/jasmine"
+        ],
     },
-    "include": ["lib/**/*.ts"]
+    "include": [
+        "lib/**/*.ts"
+    ]
 }
