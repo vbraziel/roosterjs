@@ -22,13 +22,13 @@ describe('Editor', () => {
             underline: true,
         });
         await focusEditor(page);
-        await page.keyboard.type('special text');
+        await page.keyboard.type('hi');
 
         // Act
         await page.keyboard.down('Control');
         await page.keyboard.press('a');
         await page.keyboard.up('Control');
-        await page.keyboard.type('more special text');
+        await page.keyboard.type('bye');
 
         // Assert
         const { fontWeight, fontStyle, textDecoration } = await page.evaluate(getTextStyleAtSelection);

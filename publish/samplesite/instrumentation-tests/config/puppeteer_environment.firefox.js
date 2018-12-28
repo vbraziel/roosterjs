@@ -1,11 +1,8 @@
 // puppeteer_environment.js
 const NodeEnvironment = require('jest-environment-node');
-const fs = require('fs');
 const path = require('path');
-const puppeteer = require('puppeteer');
 const os = require('os');
-
-const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
+const puppeteer = require('puppeteer-firefox');
 
 class PuppeteerEnvironment extends NodeEnvironment {
   constructor(config) {
@@ -14,20 +11,14 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
   async setup() {
     await super.setup();
-    // get the wsEndpoint
-    const wsEndpoint = fs.readFileSync(path.join(DIR, 'wsEndpoint'), 'utf8');
-    if (!wsEndpoint) {
-      throw new Error('wsEndpoint not found');
-    }
-
-    // connect to puppeteer
-    this.global.__BROWSER__ = await puppeteer.connect({
-      browserWSEndpoint: wsEndpoint,
+    this.global.__BROWSER__ = await puppeteer.launch({
+      headless: process.env.RUN_WITH_DISPLAY != 'true'
     });
   }
 
   async teardown() {
     await super.teardown();
+    await this.global.__BROWSER__.close();
   }
 
   runScript(script) {

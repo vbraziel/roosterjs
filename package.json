@@ -23,7 +23,10 @@
         "test": "karma start",
         "test:debug": "karma start --no-single-run",
         "prettier": "node tools/prettier.js",
-        "publish": "node tools/publish-all.js"
+        "publish": "node tools/publish-all.js",
+        "instrumentation": "yarn run instrumentation:chrome && yarn run instrumentation:firefox",
+        "instrumentation:chrome": "jest --config ./publish/samplesite/instrumentation-tests/jest.chrome.config.js",
+        "instrumentation:firefox": "jest --config ./publish/samplesite/instrumentation-tests/jest.firefox.config.js"
     },
     "devDependencies": {
         "//": "Dependencies below are for sample site only",

@@ -1,4 +1,3 @@
-// setup.js
 const puppeteer = require('puppeteer');
 const mkdirp = require('mkdirp');
 const path = require('path');
@@ -23,7 +22,7 @@ module.exports = async function () {
                 resolve();
             })
         }),
-        puppeteer.launch({ headless: false }),
+        puppeteer.launch({ headless: process.env.RUN_WITH_DISPLAY != 'true' }),
     ]);
 
     // store the browser instance so we can teardown it later
@@ -31,7 +30,7 @@ module.exports = async function () {
     global.__BROWSER_GLOBAL__ = browser;
     global.__WEBPACK_DEVSERVER_GLOBAL__ = devserver;
 
-    // use the file system to expose the wsEndpoint for TestEnvironments
+    // Chrome reuses the same puppeteer instance. create the websocket endpoint and connect.
     mkdirp.sync(DIR);
     fs.writeFileSync(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());
-};
+}
