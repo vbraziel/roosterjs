@@ -13,7 +13,7 @@ export default function getNextPreviousInlineElement(
     }
     if (current instanceof PartialInlineElement) {
         // if current is partial, get the the othe half of the inline unless it is no more
-        let result = isNext ? current.getNextInlineElement() : current.getPreviousInlineElement();
+        let result = isNext ? current.nextInlineElement : current.previousInlineElement;
 
         if (result) {
             return result;

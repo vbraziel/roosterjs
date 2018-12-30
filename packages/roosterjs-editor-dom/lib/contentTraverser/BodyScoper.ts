@@ -1,14 +1,13 @@
 import contains from '../utils/contains';
-import getFirstLastBlockElement from '../blockElements/getFirstLastBlockElement';
-import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
 import TraversingScoper from './TraversingScoper';
 import { BlockElement, InlineElement } from 'roosterjs-editor-types';
-import { getFirstLeafNode } from '../utils/getLeafNode';
+import { getFirstBlockElement } from '../blockElements/getFirstLastBlockElement';
+import { getFirstInlineElement } from '../inlineElements/getFirstLastInlineElement';
 
 /**
  * provides scoper for traversing the entire editor body starting from the beginning
  */
-export default class BodyScoper implements TraversingScoper {
+class BodyScoper implements TraversingScoper {
     /**
      * Construct a new instance of BodyScoper class
      * @param rootNode Root node of the body
@@ -19,14 +18,14 @@ export default class BodyScoper implements TraversingScoper {
      * Get the start block element
      */
     public getStartBlockElement(): BlockElement {
-        return getFirstLastBlockElement(this.rootNode, true /*isFirst*/);
+        return getFirstBlockElement(this.rootNode);
     }
 
     /**
      * Get the start inline element
      */
     public getStartInlineElement(): InlineElement {
-        return getInlineElementAtNode(this.rootNode, getFirstLeafNode(this.rootNode));
+        return getFirstInlineElement(this.rootNode);
     }
 
     /**
@@ -43,3 +42,5 @@ export default class BodyScoper implements TraversingScoper {
         return inlineElement;
     }
 }
+
+export default BodyScoper;

@@ -1,16 +1,16 @@
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
-import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import PartialInlineElement from '../inlineElements/PartialInlineElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
 import { BlockElement, InlineElement, NodePosition } from 'roosterjs-editor-types';
+import { getInlineElementAfter } from '../inlineElements/getInlineElementBeforeAfter';
 
 /**
  * This is selection scoper that provide a start inline as the start of the selection
  * and checks if a block falls in the selection (isBlockInScope)
  * last trimInlineElement to trim any inline element to return a partial that falls in the selection
  */
-export default class SelectionScoper implements TraversingScoper {
+class SelectionScoper implements TraversingScoper {
     private start: NodePosition;
     private end: NodePosition;
     private startBlock: BlockElement;
@@ -43,7 +43,7 @@ export default class SelectionScoper implements TraversingScoper {
     public getStartInlineElement(): InlineElement {
         if (!this.startInline) {
             this.startInline = this.trimInlineElement(
-                getInlineElementBeforeAfter(this.rootNode, this.start, true /*isAfter*/)
+                getInlineElementAfter(this.rootNode, this.start)
             );
         }
 
@@ -90,6 +90,7 @@ export default class SelectionScoper implements TraversingScoper {
             return null;
         }
 
+        // Temp code. Will be changed to using InlineElement.getStart/EndPosition() soon
         let start = inline.getStartPosition();
         let end = inline.getEndPosition();
 
@@ -113,7 +114,9 @@ export default class SelectionScoper implements TraversingScoper {
         return start.isAfter(end) || start.equalTo(end)
             ? null
             : startPartial || endPartial
-                ? new PartialInlineElement(inline, startPartial && start, endPartial && end)
-                : inline;
+            ? new PartialInlineElement(inline, startPartial && start, endPartial && end)
+            : inline;
     }
 }
+
+export default SelectionScoper;

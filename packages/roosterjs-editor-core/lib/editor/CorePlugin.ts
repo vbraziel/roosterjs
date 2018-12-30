@@ -33,7 +33,6 @@ interface AutoCompleteInfo {
  * 3. IME state
  */
 export default class CorePlugin implements EditorPlugin {
-    public name = 'CorePlugin';
     private editor: Editor;
     private autoCompleteInfo: AutoCompleteInfo;
     private inIME: boolean;
@@ -49,6 +48,13 @@ export default class CorePlugin implements EditorPlugin {
         private contentDiv: HTMLDivElement,
         private disableRestoreSelectionOnFocus: boolean
     ) {}
+
+    /**
+     * Get a friendly name of  this plugin
+     */
+    getName() {
+        return 'EditorCore';
+    }
 
     /**
      * Initialize this plugin. This should only be called from Editor
@@ -103,7 +109,7 @@ export default class CorePlugin implements EditorPlugin {
      * @param callback The auto complete callback, return value will be used as data field of ContentChangedEvent
      * @param changeSource Chagne source of ContentChangedEvent. If not passed, no ContentChangedEvent will be  triggered
      */
-    public performAutoComplete(callback: () => any, changeSource?: ChangeSource) {
+    public performAutoComplete(callback: () => any, changeSource?: ChangeSource | string) {
         this.editor.addUndoSnapshot((start, end, snapshot) => {
             let data = callback();
             this.autoCompleteInfo = {

@@ -1,3 +1,4 @@
+import { getFormatState } from 'roosterjs-editor-api';
 import buildClipboardData from './buildClipboardData';
 import fragmentHandler from './fragmentHandler';
 import textToHtml from './textToHtml';
@@ -33,24 +34,37 @@ export default class Paste implements EditorPlugin {
     private editor: Editor;
     private pasteDisposer: () => void;
     private sanitizer: HtmlSanitizer;
-    public name: 'Paste';
 
     /**
      * Create an instance of Paste
-     * @param deprecated Deprecated parameter only used for compatibility with old code
+     * @param preserved Not used. Preserved parameter only used for compatibility with old code
      * @param attributeCallbacks A set of callbacks to help handle html attribute during sanitization
      */
-    constructor(deprecated?: boolean, attributeCallbacks?: AttributeCallbackMap) {
+    constructor(preserved?: any, attributeCallbacks?: AttributeCallbackMap) {
         this.sanitizer = new HtmlSanitizer({
             attributeCallbacks,
         });
     }
 
+    /**
+     * Get a friendly name of  this plugin
+     */
+    getName() {
+        return 'paste';
+    }
+
+    /**
+     * Initialize this plugin. This should only be called from Editor
+     * @param editor Editor instance
+     */
     public initialize(editor: Editor) {
         this.editor = editor;
         this.pasteDisposer = editor.addDomEventHandler('paste', this.onPaste);
     }
 
+    /**
+     * Dispose this plugin
+     */
     public dispose() {
         this.pasteDisposer();
         this.pasteDisposer = null;
@@ -58,19 +72,16 @@ export default class Paste implements EditorPlugin {
     }
 
     private onPaste = (event: Event) => {
-        buildClipboardData(<ClipboardEvent>event, this.editor, clipboardData => {
-            let doc = htmlToDom(clipboardData.html, true /*preserveFragmentOnly*/, fragmentHandler);
-            if (doc && doc.body) {
-                this.sanitizer.convertGlobalCssToInlineCss(doc);
-
-                let range = this.editor.getSelectionRange();
-                let element = range && Position.getStart(range).normalize().element;
-                let currentStyles = getInheritableStyles(element);
-                this.sanitizer.sanitize(doc.body, currentStyles);
-                clipboardData.html = doc.body.innerHTML;
-            }
-
-            this.pasteOriginal(clipboardData);
+        buildClipboardData(<ClipboardEvent>event, this.editor, items => {
+            this.pasteOriginal({
+                snapshotBeforePaste: null,
+                originalFormat: this.getCurrentFormat(),
+                types: items.types,
+                image: items.image,
+                text: items.text,
+                rawHtml: items.html,
+                html: items.html ? this.sanitizeHtml(items.html) : textToHtml(items.text),
+            });
         });
     };
 
@@ -183,5 +194,34 @@ export default class Paste implements EditorPlugin {
         for (let parent of parents) {
             applyFormat(parent, format);
         }
+    }
+
+    private getCurrentFormat(): DefaultFormat {
+        let format = getFormatState(this.editor);
+        return format
+            ? {
+                  fontFamily: format.fontName,
+                  fontSize: format.fontSize,
+                  textColor: format.textColor,
+                  backgroundColor: format.backgroundColor,
+                  bold: format.isBold,
+                  italic: format.isItalic,
+                  underline: format.isUnderline,
+              }
+            : {};
+    }
+
+    private sanitizeHtml(html: string): string {
+        let doc = htmlToDom(html, true /*preserveFragmentOnly*/, fragmentHandler);
+        if (doc && doc.body) {
+            this.sanitizer.convertGlobalCssToInlineCss(doc);
+
+            let range = this.editor.getSelectionRange();
+            let element = range && Position.getStart(range).normalize().element;
+            let currentStyles = getInheritableStyles(element);
+            this.sanitizer.sanitize(doc.body, currentStyles);
+            return doc.body.innerHTML;
+        }
+        return '';
     }
 }

@@ -1,6 +1,9 @@
 import * as DomTestHelper from '../DomTestHelper';
-import getFirstLastBlockElement from '../../blockElements/getFirstLastBlockElement';
 import { BlockElement } from 'roosterjs-editor-types';
+import {
+    getFirstBlockElement,
+    getLastBlockElement,
+} from '../../blockElements/getFirstLastBlockElement';
 
 let testID = 'getFirstLastBlockElement';
 
@@ -11,7 +14,7 @@ describe('getBlockElement getFirstBlockElement', () => {
 
     function runTest(rootNode: Node, testBlockElement: BlockElement) {
         // Act
-        let blockElement = getFirstLastBlockElement(rootNode, true);
+        let blockElement = getFirstBlockElement(rootNode);
 
         // Assert
         let isBlockElementEqual = blockElement.equals(testBlockElement);
@@ -69,7 +72,7 @@ describe('getBlockElement getLastBlockElement', () => {
 
     function runTest(rootNode: Node, testBlockElement: BlockElement) {
         // Act
-        let blockElement = getFirstLastBlockElement(rootNode, false);
+        let blockElement = getLastBlockElement(rootNode);
 
         // Assert
         let isBlockElementEqual = blockElement.equals(testBlockElement);

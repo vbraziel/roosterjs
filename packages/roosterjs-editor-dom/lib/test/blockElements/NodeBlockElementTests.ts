@@ -9,6 +9,39 @@ function createNodeBlockElementWithContent(content: string): [NodeBlockElement, 
     return [nodeBlockElement, testDiv];
 }
 
+describe('NodeBlockElement getTextContent()', () => {
+    afterEach(() => {
+        DomTestHelper.removeElement(testID);
+    });
+
+    function runTest(input: string, output: string) {
+        // Arrange
+        let [nodeBlockElement] = createNodeBlockElementWithContent(input);
+
+        // Act
+        let textContent = nodeBlockElement.getTextContent();
+
+        // Assert
+        expect(textContent).toBe(output);
+    }
+
+    it('input = <span>www.example.com</span>', () => {
+        runTest('<span>www.example.com</span>', 'www.example.com');
+    });
+
+    it('input = <p>hello world</p><span>www.example.com</span>', () => {
+        runTest('<p>hello world</p><span>www.example.com</span>', 'hello worldwww.example.com');
+    });
+
+    it('input = <a>link</a><span>www.example.com</span>', () => {
+        runTest('<a>link</a><span>www.example.com</span>', 'linkwww.example.com');
+    });
+
+    it('input = <img>', () => {
+        runTest('<img>', '');
+    });
+});
+
 describe('NodeBlockElement getStartNode()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);

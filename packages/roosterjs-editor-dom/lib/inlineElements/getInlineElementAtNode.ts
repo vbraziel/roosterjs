@@ -3,7 +3,8 @@ import getTagOfNode from '../utils/getTagOfNode';
 import ImageInlineElement from './ImageInlineElement';
 import LinkInlineElement from './LinkInlineElement';
 import NodeInlineElement from './NodeInlineElement';
-import { BlockElement, InlineElement } from 'roosterjs-editor-types';
+import TextInlineElement from './NodeInlineElement';
+import { BlockElement, InlineElement, NodeType } from 'roosterjs-editor-types';
 
 /**
  * Get the inline element at a node
@@ -22,11 +23,6 @@ export default function getInlineElementAtNode(
     node: Node
 ): InlineElement;
 
-/**
- * Get the inline element at a node
- * @param rootNode The root node of current scope
- * @param node The node to get InlineElement from
- */
 export default function getInlineElementAtNode(
     parent: Node | BlockElement,
     node: Node
@@ -60,6 +56,8 @@ function resolveInlineElement(node: Node, parentBlock: BlockElement): InlineElem
             inlineElement = new LinkInlineElement(currentNode, parentBlock);
         } else if (tag == 'IMG') {
             inlineElement = new ImageInlineElement(currentNode, parentBlock);
+        } else if (currentNode.nodeType == NodeType.Text) {
+            inlineElement = new TextInlineElement(currentNode, parentBlock);
         }
     }
 

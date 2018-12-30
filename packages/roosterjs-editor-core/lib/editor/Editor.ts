@@ -9,6 +9,7 @@ import {
     DefaultFormat,
     DocumentCommand,
     ExtractContentEvent,
+    InlineElement,
     InsertOption,
     NodePosition,
     NodeType,
@@ -28,6 +29,7 @@ import {
     getBlockElementAtNode,
     findClosestElementAncestor,
     getPositionRect,
+    getInlineElementAtNode,
     getTagOfNode,
     isNodeEmpty,
     queryElements,
@@ -191,6 +193,15 @@ export default class Editor {
         }
 
         return false;
+    }
+
+    /**
+     * Get InlineElement at given node
+     * @param node The node to create InlineElement
+     * @returns The InlineElement result
+     */
+    public getInlineElementAtNode(node: Node): InlineElement {
+        return getInlineElementAtNode(this.core.contentDiv, node);
     }
 
     /**
@@ -407,14 +418,6 @@ export default class Editor {
     //#region Focus and Selection
 
     /**
-     * Get current selection
-     * @return current selection object
-     */
-    public getSelection(): Selection {
-        return this.core.document.defaultView.getSelection();
-    }
-
-    /**
      * Get current selection range from Editor.
      * It does a live pull on the selection, if nothing retrieved, return whatever we have in cache.
      * @returns current selection range, or null if editor never got focus before
@@ -492,6 +495,14 @@ export default class Editor {
 
     public select(arg1: any, arg2?: any, arg3?: any, arg4?: any): boolean {
         return this.core.api.select(this.core, arg1, arg2, arg3, arg4);
+    }
+
+    /**
+     * Get current selection
+     * @return current selection object
+     */
+    public getSelection(): Selection {
+        return this.core.document.defaultView.getSelection();
     }
 
     /**
@@ -644,7 +655,7 @@ export default class Editor {
      * @param callback The auto complete callback, return value will be used as data field of ContentChangedEvent
      * @param changeSource Chagne source of ContentChangedEvent. If not passed, no ContentChangedEvent will be  triggered
      */
-    public performAutoComplete(callback: () => any, changeSource?: ChangeSource) {
+    public performAutoComplete(callback: () => any, changeSource?: ChangeSource | string) {
         this.core.corePlugin.performAutoComplete(callback, changeSource);
     }
 
@@ -755,6 +766,19 @@ export default class Editor {
                 callback();
             }
         });
+    }
+
+    /**
+     * Set DOM attribute of editor content DIV
+     * @param name Name of the attribute
+     * @param value Value of the attribute
+     */
+    public setEditorDomAttribute(name: string, value: string) {
+        if (value === null) {
+            this.core.contentDiv.removeAttribute(name);
+        } else {
+            this.core.contentDiv.setAttribute(name, value);
+        }
     }
 
     //#endregion

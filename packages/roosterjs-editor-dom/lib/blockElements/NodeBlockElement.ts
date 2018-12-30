@@ -19,6 +19,13 @@ export default class NodeBlockElement implements BlockElement {
     }
 
     /**
+     * Get the text content in the block
+     */
+    public getTextContent(): string {
+        return this.element.textContent;
+    }
+
+    /**
      * Get the start node of the block
      * For NodeBlockElement, start and end essentially refers to same node
      */
@@ -37,9 +44,9 @@ export default class NodeBlockElement implements BlockElement {
     /**
      * Checks if it refers to same block
      */
-    public equals(other: BlockElement): boolean {
+    public equals(blockElement: BlockElement): boolean {
         // Ideally there is only one unique way to generate a block so we only need to compare the startNode
-        return this.element == other.getStartNode() && this.element == other.getEndNode();
+        return this.element == blockElement.getStartNode();
     }
 
     /**

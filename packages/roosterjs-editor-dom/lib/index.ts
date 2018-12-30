@@ -1,34 +1,39 @@
 export { default as NodeBlockElement } from './blockElements/NodeBlockElement';
-export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 export { default as getBlockElementAtNode } from './blockElements/getBlockElementAtNode';
-export { default as getFirstLastBlockElement } from './blockElements/getFirstLastBlockElement';
+export {
+    getFirstBlockElement,
+    getFirstLastBlockElement,
+    getLastBlockElement,
+} from './blockElements/getFirstLastBlockElement';
+export { default as StartEndBlockElement } from './blockElements/StartEndBlockElement';
 
+export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
+export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
+
+export { getNextLeafSibling, getPreviousLeafSibling } from './utils/getLeafSibling';
+export { getFirstLeafNode, getLastLeafNode } from './utils/getLeafNode';
+
+export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
 export { default as ImageInlineElement } from './inlineElements/ImageInlineElement';
 export { default as LinkInlineElement } from './inlineElements/LinkInlineElement';
 export { default as NodeInlineElement } from './inlineElements/NodeInlineElement';
 export { default as PartialInlineElement } from './inlineElements/PartialInlineElement';
-export { default as getInlineElementAtNode } from './inlineElements/getInlineElementAtNode';
+export { default as TextInlineElement } from './inlineElements/TextInlineElement';
 export {
-    default as getInlineElementBeforeAfter,
-    getInlineElementAfter,
     getInlineElementBefore,
+    getInlineElementAfter,
 } from './inlineElements/getInlineElementBeforeAfter';
 
-export { default as ContentTraverser } from './contentTraverser/ContentTraverser';
-export { default as PositionContentSearcher } from './contentTraverser/PositionContentSearcher';
-export { default as TraversingScoper } from './contentTraverser/TraversingScoper';
-
-export { default as Browser } from './utils/Browser';
-export { default as applyFormat } from './utils/applyFormat';
 export { default as applyTextStyle } from './utils/applyTextStyle';
+export { default as Browser, getBrowserInfo } from './utils/Browser';
+export { default as applyFormat } from './utils/applyFormat';
 export { default as changeElementTag } from './utils/changeElementTag';
 export { default as collapseNodes } from './utils/collapseNodes';
 export { default as contains } from './utils/contains';
+export { default as extractClipboardEvent } from './utils/extractClipboardEvent';
 export { default as findClosestElementAncestor } from './utils/findClosestElementAncestor';
 export { default as fromHtml } from './utils/fromHtml';
 export { default as getComputedStyles, getComputedStyle } from './utils/getComputedStyles';
-export { getFirstLeafNode, getLastLeafNode } from './utils/getLeafNode';
-export { getLeafSibling, getNextLeafSibling, getPreviousLeafSibling } from './utils/getLeafSibling';
 export { default as getTagOfNode } from './utils/getTagOfNode';
 export { default as isBlockElement } from './utils/isBlockElement';
 export { default as isNodeEmpty } from './utils/isNodeEmpty';
@@ -46,4 +51,7 @@ export { default as Position } from './selection/Position';
 export { default as createRange } from './selection/createRange';
 export { default as getPositionRect } from './selection/getPositionRect';
 export { default as isPositionAtBeginningOf } from './selection/isPositionAtBeginningOf';
-export { default as getSelectionPath, getRangeFromSelectionPath } from './selection/getSelectionPath';
+export {
+    default as getSelectionPath,
+    getRangeFromSelectionPath,
+} from './selection/getSelectionPath';

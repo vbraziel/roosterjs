@@ -73,18 +73,18 @@ class NodeInlineElement implements InlineElement {
     }
 
     /**
-     * Checks if a positiont is contained in the inline element
+     * Checks if the given position is contained in the inline element
      */
-    public contains(position: NodePosition): boolean {
+    public contains(pos: NodePosition): boolean {
         let start = this.getStartPosition();
         let end = this.getEndPosition();
-        return position && position.isAfter(start) && end.isAfter(position);
+        return pos && pos.isAfter(start) && end.isAfter(pos);
     }
 
     /**
      * Apply inline style to an inline element
      */
-    public applyStyle(styler: (element: HTMLElement) => any) {
+    public applyStyle(styler: (element: HTMLElement) => any): void {
         applyTextStyle(this.containerNode, styler);
     }
 }

@@ -1,6 +1,6 @@
 import * as DomTestHelper from '../DomTestHelper';
-import getBlockElementAtNode from '../../blockElements/getBlockElementAtNode';
 import { BlockElement } from 'roosterjs-editor-types';
+import getBlockElementAtNode from '../../blockElements/getBlockElementAtNode';
 
 let testID = 'getBlockElement';
 
@@ -55,6 +55,17 @@ describe('getBlockElement getBlockElementAtNode', () => {
         );
         let testBlockElement = DomTestHelper.createStartEndBlockElementWithStartEndNode(
             rootNode,
+            rootNode.firstChild.firstChild,
+            rootNode.firstChild.firstChild
+        );
+        runTest(rootNode, rootNode.firstChild.firstChild, testBlockElement as BlockElement);
+    });
+
+    it('input = <div><br></div> blockElementAtNode = <BR>', () => {
+        // Arrange
+        let rootNode = DomTestHelper.createElementFromContent(testID, '<div><br><br></div>');
+        let testBlockElement = DomTestHelper.createStartEndBlockElementWithStartEndNode(
+            rootNode.firstChild as HTMLElement,
             rootNode.firstChild.firstChild,
             rootNode.firstChild.firstChild
         );

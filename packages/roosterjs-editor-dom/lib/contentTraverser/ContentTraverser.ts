@@ -1,11 +1,12 @@
 import BodyScoper from './BodyScoper';
+import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
-import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
 import getNextPreviousInlineElement from '../inlineElements/getNextPreviousInlineElement';
 import SelectionBlockScoper from './SelectionBlockScoper';
 import SelectionScoper from './SelectionScoper';
 import TraversingScoper from './TraversingScoper';
 import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
+import { getInlineElementBeforeAfter } from '../inlineElements/getInlineElementBeforeAfter';
 import { getLeafSibling } from '../utils/getLeafSibling';
 
 /**
@@ -22,7 +23,7 @@ export default class ContentTraverser {
      * Create a content traverser for the whole body of given root node
      * @param scoper Traversing scoper object to help scope the traversing
      */
-    constructor(private scoper: TraversingScoper) {}
+    private constructor(private scoper: TraversingScoper) {}
 
     /**
      * Create a content traverser for the whole body of given root node
@@ -112,10 +113,12 @@ export default class ContentTraverser {
      * Current inline element getter
      */
     public get currentInlineElement(): InlineElement {
-        let inline = (this.currentInline =
-            this.currentInline || this.scoper.getStartInlineElement());
+        // Retrieve a start inline from scoper
+        if (!this.currentInline) {
+            this.currentInline = this.scoper.getStartInlineElement();
+        }
 
-        return inline.getStartPosition().equalTo(inline.getEndPosition()) ? null : inline;
+        return this.currentInline instanceof EmptyInlineElement ? null : this.currentInline;
     }
 
     /**
@@ -135,12 +138,13 @@ export default class ContentTraverser {
     private getPreviousNextInlineElement(isNext: boolean): InlineElement {
         let current = this.currentInlineElement || this.currentInline;
         let newInline: InlineElement;
-        let start = current && current.getStartPosition();
-        let end = current && current.getEndPosition();
 
-        // Empty inline element
-        if (start && start == end) {
-            newInline = getInlineElementBeforeAfter(this.scoper.rootNode, start, isNext);
+        if (current instanceof EmptyInlineElement) {
+            newInline = getInlineElementBeforeAfter(
+                this.scoper.rootNode,
+                current.getStartPosition(),
+                isNext
+            );
             if (newInline && !current.getParentBlock().contains(newInline.getContainerNode())) {
                 newInline = null;
             }

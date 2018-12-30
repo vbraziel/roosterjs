@@ -1,10 +1,14 @@
 import collapseNodes from '../utils/collapseNodes';
 import contains from '../utils/contains';
+import createRange from '../selection/createRange';
+import getTagOfNode from '../utils/getTagOfNode';
 import isBlockElement from '../utils/isBlockElement';
 import isNodeAfter from '../utils/isNodeAfter';
 import wrap from '../utils/wrap';
 import { BlockElement } from 'roosterjs-editor-types';
 import { splitBalancedNodeRange } from '../utils/splitParentNode';
+
+const STRUCTURE_NODE_TAGS = ['TD', 'TH', 'LI', 'BLOCKQUOTE'];
 
 /**
  * This reprents a block that is identified by a start and end node
@@ -37,7 +41,12 @@ export default class StartEndBlockElement implements BlockElement {
             true /*canSplitParent*/
         );
         let blockContext = StartEndBlockElement.getBlockContext(this.startNode);
-        while (nodes[0] && nodes[0] != blockContext && nodes[0].parentNode != this.rootNode) {
+        while (
+            nodes[0] &&
+            nodes[0] != blockContext &&
+            nodes[0].parentNode != this.rootNode &&
+            !isStructureNode(nodes[0].parentNode)
+        ) {
             nodes = [splitBalancedNodeRange(nodes)];
         }
         return nodes.length == 1 && isBlockElement(nodes[0])
@@ -86,4 +95,17 @@ export default class StartEndBlockElement implements BlockElement {
             (isNodeAfter(node, this.startNode) && isNodeAfter(this.endNode, node))
         );
     }
+
+    /**
+     * @deprecated
+     * Gets the text content
+     */
+    public getTextContent(): string {
+        let range = createRange(this.startNode, this.endNode);
+        return range.toString();
+    }
+}
+
+function isStructureNode(node: Node) {
+    return STRUCTURE_NODE_TAGS.indexOf(getTagOfNode(node)) >= 0;
 }

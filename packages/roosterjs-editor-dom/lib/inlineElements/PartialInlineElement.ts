@@ -44,6 +44,7 @@ class PartialInlineElement implements InlineElement {
      */
     public getTextContent(): string {
         let range = createRange(this.getStartPosition(), this.getEndPosition());
+
         return range.toString();
     }
 
@@ -64,14 +65,14 @@ class PartialInlineElement implements InlineElement {
     /**
      * Get next partial inline element if it is not at the end boundary yet
      */
-    public getNextInlineElement(): PartialInlineElement {
+    public get nextInlineElement(): PartialInlineElement {
         return this.end && new PartialInlineElement(this.inlineElement, this.end, null);
     }
 
     /**
      * Get previous partial inline element if it is not at the begin boundary yet
      */
-    public getPreviousInlineElement(): PartialInlineElement {
+    public get previousInlineElement(): PartialInlineElement {
         return this.start && new PartialInlineElement(this.inlineElement, null, this.start);
     }
 

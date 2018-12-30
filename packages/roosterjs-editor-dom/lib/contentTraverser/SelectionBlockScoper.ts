@@ -1,11 +1,10 @@
 import EmptyInlineElement from '../inlineElements/EmptyInlineElement';
 import getBlockElementAtNode from '../blockElements/getBlockElementAtNode';
-import getInlineElementAtNode from '../inlineElements/getInlineElementAtNode';
-import getInlineElementBeforeAfter from '../inlineElements/getInlineElementBeforeAfter';
+import getFirstLastInlineElementFromBlockElement from '../inlineElements/getFirstLastInlineElementFromBlockElement';
 import Position from '../selection/Position';
 import TraversingScoper from './TraversingScoper';
 import { BlockElement, ContentPosition, InlineElement, NodePosition } from 'roosterjs-editor-types';
-import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
+import { getInlineElementAfter } from '../inlineElements/getInlineElementBeforeAfter';
 
 /**
  * This provides traversing content in a selection start block
@@ -13,7 +12,7 @@ import { getFirstLeafNode, getLastLeafNode } from '../utils/getLeafNode';
  * they want to know text being typed at cursor
  * This provides a scope for parsing from cursor position up to begin of the selection block
  */
-export default class SelectionBlockScoper implements TraversingScoper {
+class SelectionBlockScoper implements TraversingScoper {
     private block: BlockElement;
     private position: NodePosition;
 
@@ -51,19 +50,13 @@ export default class SelectionBlockScoper implements TraversingScoper {
             switch (this.startFrom) {
                 case ContentPosition.Begin:
                 case ContentPosition.End:
-                    return getInlineElementAtNode(
-                        this.rootNode,
+                    return getFirstLastInlineElementFromBlockElement(
+                        this.block,
                         this.startFrom == ContentPosition.Begin
-                            ? getFirstLeafNode(this.rootNode)
-                            : getLastLeafNode(this.rootNode)
                     );
                 case ContentPosition.SelectionStart:
-                    // Get the inline before selection start position, and ensure it falls in the selection block
-                    let startInline = getInlineElementBeforeAfter(
-                        this.rootNode,
-                        this.position,
-                        true /*isAfter*/
-                    );
+                    // Get the inline before selection start point, and ensure it falls in the selection block
+                    let startInline = getInlineElementAfter(this.rootNode, this.position);
                     return startInline && this.block.contains(startInline.getContainerNode())
                         ? startInline
                         : new EmptyInlineElement(this.position, this.block);
@@ -93,3 +86,5 @@ export default class SelectionBlockScoper implements TraversingScoper {
             : null;
     }
 }
+
+export default SelectionBlockScoper;

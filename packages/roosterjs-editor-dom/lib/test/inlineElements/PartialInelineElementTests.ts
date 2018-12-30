@@ -311,7 +311,7 @@ describe('PartialInlineElement nextInlineElement', () => {
         let endPosition = partialInlineElement.getEndPosition();
 
         // Act
-        let nextInline = partialInlineElement.getNextInlineElement();
+        let nextInline = partialInlineElement.nextInlineElement;
 
         // Assert
         expect(nextInline).toEqual(
@@ -357,7 +357,7 @@ describe('PartialInlineElement previousInlineElement', () => {
         let startPosition = partialInlineElement.getStartPosition();
 
         // Act
-        let previousInline = partialInlineElement.getPreviousInlineElement();
+        let previousInline = partialInlineElement.previousInlineElement;
 
         // Assert
         expect(previousInline).toEqual(

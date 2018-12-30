@@ -13,6 +13,31 @@ function createStartEndBlockElementWithContent(
     return [startEndBlockElement, testDiv];
 }
 
+describe('StartEndBlockElement getTextContent()', () => {
+    afterEach(() => {
+        DomTestHelper.removeElement(testID);
+    });
+
+    function runTest(input: string, output: string) {
+        // Arrange
+        let [blockElement] = createStartEndBlockElementWithContent(input);
+
+        // Act
+        let textContent = blockElement.getTextContent();
+
+        // Assert
+        expect(textContent).toBe(output);
+    }
+
+    it('input = www.example.com', () => {
+        runTest('www.example.com', 'www.example.com');
+    });
+
+    it('input = hello<a>www.example.com</a><br>', () => {
+        runTest('hello<a>www.example.com</a><br>', 'hellowww.example.com');
+    });
+});
+
 describe('StartEndBlockElement getStartNode()', () => {
     afterEach(() => {
         DomTestHelper.removeElement(testID);
