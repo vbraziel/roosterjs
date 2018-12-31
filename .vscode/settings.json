@@ -19,5 +19,7 @@
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "es5",
     "prettier.printWidth": 100,
-    "typescript.extension.sortImports.sortOnSave": true
+    "typescript.extension.sortImports.sortOnSave": true,
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single"
 }
